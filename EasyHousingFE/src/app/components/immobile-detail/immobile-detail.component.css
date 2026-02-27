@@ -1,0 +1,10 @@
+/* Custom CSS #3: Stile per le Recensioni */
+.review-card {
+  transition: background-color 0.3s ease;
+  border-left: 4px solid transparent; /* Preparazione per l'hover */
+}
+
+.review-card:hover {
+  background-color: #f8f9fa; /* Grigio chiarissimo */
+  border-left: 4px solid #ffc107; /* Bordo giallo a sinistra */
+}

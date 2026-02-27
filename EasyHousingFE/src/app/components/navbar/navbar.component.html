@@ -1,0 +1,80 @@
+<nav class="navbar navbar-expand-lg bg-white shadow-sm py-3 sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center fw-bold text-dark fs-4" routerLink="/home">
+      <i class="bi bi-house-door-fill text-primary me-2 fs-2"></i>
+      Easy Housing
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-medium">
+
+        <li class="nav-item px-2">
+          <a class="nav-link text-dark" routerLink="/home" routerLinkActive="text-primary fw-bold">Home</a>
+        </li>
+        <li class="nav-item px-2">
+          <a class="nav-link text-dark" routerLink="/about" routerLinkActive="text-primary fw-bold">About</a>
+        </li>
+
+        <li class="nav-item px-2" *ngIf="authService.isVenditore()">
+          <a class="nav-link text-primary fw-bold" routerLink="/inserisci-annuncio">
+            <i class="bi bi-plus-circle"></i> Inserisci Annuncio
+          </a>
+        </li>
+
+        <li class="nav-item px-2" *ngIf="authService.isAdmin()">
+          <a class="nav-link text-danger fw-bold" href="#">
+            <i class="bi bi-shield-lock"></i> Admin
+          </a>
+        </li>
+
+        <li class="nav-item px-2">
+          <a class="nav-link text-dark" routerLink="/blog">Blog</a>
+        </li>
+        <li class="nav-item px-2">
+          <a class="nav-link text-dark" routerLink="/contact">Contact Us</a>
+        </li>
+      </ul>
+
+      <div class="d-flex gap-2 align-items-center">
+
+        <div *ngIf="!authService.isLoggedIn()" class="d-flex gap-2">
+          <a routerLink="/login" class="btn btn-outline-primary px-4">Login</a>
+          <a routerLink="/register" class="btn btn-primary px-4">Register</a>
+        </div>
+
+        <div *ngIf="authService.isLoggedIn()" class="dropdown">
+
+          <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2 border" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px;">
+              {{ authService.getUserName().charAt(0).toUpperCase() }}
+            </div>
+            <span class="fw-bold text-dark">{{ authService.getUserName() }}</span>
+          </button>
+
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+            <li><h6 class="dropdown-header">Ciao, {{ authService.getUserName() }}!</h6></li>
+            <li><a class="dropdown-item" href="#">Il mio profilo</a></li>
+
+            <li *ngIf="authService.isVenditore()">
+              <a class="dropdown-item" routerLink="/inserisci-annuncio">I miei annunci</a>
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+
+            <li>
+              <button class="dropdown-item text-danger fw-bold" (click)="doLogout()">
+                <i class="bi bi-box-arrow-right"></i> Esci
+              </button>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,44 @@
+/* GLOBAL STYLES - Easy Housing Theme */
+:root {
+  --primary-color: #FF5A3C; /* L'arancione del tuo design */
+  --text-dark: #171B2A;
+  --text-gray: #696969;
+  --bg-light: #F2F6F7;
+}
+
+body {
+  font-family: 'Inter', sans-serif; /* Assicurati di aver importato Inter in index.html */
+  color: var(--text-dark);
+  background-color: #ffffff;
+}
+
+/* Override Bootstrap Colors */
+.text-primary { color: var(--primary-color) !important; }
+.bg-primary { background-color: var(--primary-color) !important; }
+
+/* Bottoni stile "Easy Housing" */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  border-radius: 5px; /* Angoli leggermente arrotondati, non a pillola */
+  padding: 10px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #e04f35;
+  border-color: #e04f35;
+  transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: white;
+}

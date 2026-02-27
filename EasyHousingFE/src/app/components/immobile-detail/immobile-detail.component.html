@@ -1,0 +1,108 @@
+<div class="container my-5" *ngIf="immobile">
+
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ immobile.nome }}</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+
+    <div class="col-lg-8">
+
+      <div id="carouselImmobile" class="carousel slide mb-4 rounded shadow-sm overflow-hidden" data-bs-ride="carousel" *ngIf="immagini.length > 0">
+
+        <div class="carousel-inner">
+          <div class="carousel-item" *ngFor="let img of immagini; let i = index" [class.active]="i === 0">
+            <img [src]="img.immagine" class="d-block w-100" style="height: 500px; object-fit: cover;" alt="Foto casa">
+          </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselImmobile" data-bs-slide="prev" *ngIf="immagini.length > 1">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselImmobile" data-bs-slide="next" *ngIf="immagini.length > 1">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+
+      </div>
+
+      <img *ngIf="immagini.length === 0" src="https://placehold.co/800x500?text=Nessuna+Foto" class="img-fluid rounded shadow-sm mb-4 w-100" alt="Placeholder">
+
+      <h1 class="fw-bold mb-3">{{ immobile.nome }}</h1>
+      <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> {{ immobile.indirizzo }}</p>
+
+      <hr>
+
+      <div class="row text-center mb-4">
+        <div class="col-4">
+          <div class="p-3 border rounded bg-light">
+            <strong>Mq</strong><br>{{ immobile.metriQuadri }}
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="p-3 border rounded bg-light">
+            <strong>Tipo</strong><br>{{ immobile.tipoImmobile }}
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="p-3 border rounded bg-light">
+            <strong>Contratto</strong><br>{{ immobile.tipoAnnuncio }}
+          </div>
+        </div>
+      </div>
+
+      <h3>Descrizione</h3>
+      <p class="lead text-secondary">{{ immobile.descrizione }}</p>
+
+      <hr class="my-5">
+
+      <h3 class="mb-4">Recensioni ({{ immobile.recensioni?.length || 0 }})</h3>
+
+      <div *ngIf="!immobile.recensioni || immobile.recensioni.length === 0" class="alert alert-info">
+        Nessuna recensione presente per questo immobile.
+      </div>
+
+      <div class="card mb-3 border-0 shadow-sm" *ngFor="let recensione of immobile.recensioni">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h5 class="fw-bold mb-1">{{ recensione.titolo }}</h5>
+            <span class="badge bg-warning text-dark align-self-start">⭐ {{ recensione.valutazione }}/5</span>
+          </div>
+          <p class="mb-1 text-muted">{{ recensione.autore }}</p> <small class="text-muted">Autore: {{ recensione.autore }}</small>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card shadow-sm border-0 sticky-top" style="top: 100px; z-index: 1;">
+        <div class="card-body">
+          <h5 class="text-muted text-uppercase small fw-bold">Prezzo</h5>
+
+          <div *ngIf="immobile.prezzoAttuale < immobile.prezzoOrig">
+            <span class="text-decoration-line-through text-danger h5">€ {{ immobile.prezzoOrig | number }}</span>
+            <br>
+            <span class="h2 text-primary fw-bold">€ {{ immobile.prezzoAttuale | number }}</span>
+          </div>
+
+          <div *ngIf="immobile.prezzoAttuale >= immobile.prezzoOrig">
+            <span class="h2 text-primary fw-bold">€ {{ immobile.prezzoAttuale | number }}</span>
+            <small class="text-muted" *ngIf="immobile.tipoAnnuncio === 'AFFITTO'"> / mese</small>
+          </div>
+
+          <div class="d-grid gap-2 mt-4">
+            <button class="btn btn-primary btn-lg fw-bold">Contatta Venditore</button>
+            <button class="btn btn-outline-secondary fw-bold">Fai un'offerta</button>
+          </div>
+
+          <div class="mt-3 text-center small text-muted border-top pt-3">
+            <p class="mb-0">Venduto da: <strong>{{ immobile.proprietario }}</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

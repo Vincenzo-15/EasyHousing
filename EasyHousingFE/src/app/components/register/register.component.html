@@ -1,0 +1,77 @@
+<div class="container-fluid min-vh-100 d-flex p-0">
+
+  <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white py-5">
+    <div class="login-box w-75" style="max-width: 500px;">
+
+      <div class="mb-5">
+        <h2 class="fw-bold mb-2">Crea un Account</h2>
+        <p class="text-muted">Unisciti alla community di Easy Housing oggi stesso.</p>
+      </div>
+
+      <form (ngSubmit)="onRegister()">
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Nome</label>
+            <input type="text" [(ngModel)]="nuovoUtente.nome" name="nome" class="form-control bg-light border-0 py-3" placeholder="Mario" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold small text-muted">Cognome</label>
+            <input type="text" [(ngModel)]="nuovoUtente.cognome" name="cognome" class="form-control bg-light border-0 py-3" placeholder="Rossi" required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small text-muted">Email</label>
+          <input type="email" [(ngModel)]="nuovoUtente.email" name="email" class="form-control bg-light border-0 py-3" placeholder="mario@esempio.com" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small text-muted">Password</label>
+          <input type="password" [(ngModel)]="nuovoUtente.password" name="password" class="form-control bg-light border-0 py-3" placeholder="••••••••" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-bold small text-muted">Cosa vuoi fare?</label>
+          <div class="d-flex gap-3">
+
+            <div class="form-check card-radio flex-fill p-0">
+              <input class="form-check-input d-none" type="radio" name="ruolo" id="roleBuyer" value="ACQUIRENTE" [(ngModel)]="nuovoUtente.ruolo">
+              <label class="form-check-label btn btn-outline-secondary w-100 py-3 fw-bold" for="roleBuyer">
+                <i class="bi bi-search me-2"></i> Cerco Casa
+              </label>
+            </div>
+
+            <div class="form-check card-radio flex-fill p-0">
+              <input class="form-check-input d-none" type="radio" name="ruolo" id="roleSeller" value="VENDITORE" [(ngModel)]="nuovoUtente.ruolo">
+              <label class="form-check-label btn btn-outline-secondary w-100 py-3 fw-bold" for="roleSeller">
+                <i class="bi bi-house-add me-2"></i> Vendo Casa
+              </label>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="d-grid mb-4">
+          <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm">REGISTRATI</button>
+        </div>
+
+        <div class="text-center">
+          <span class="text-muted small">Hai già un account? </span>
+          <a routerLink="/login" class="text-primary fw-bold text-decoration-none small">Accedi qui</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-6 d-none d-lg-block p-0 position-relative">
+    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+         class="w-100 h-100 object-fit-cover" alt="Register Background">
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-25"></div> <div class="position-absolute top-50 start-50 translate-middle text-white text-center w-75">
+    <h1 class="display-4 fw-bold">Unisciti a noi.</h1>
+    <p class="lead">Migliaia di immobili ti aspettano.</p>
+  </div>
+  </div>
+
+</div>

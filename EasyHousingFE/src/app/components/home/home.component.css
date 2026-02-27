@@ -1,0 +1,47 @@
+/* Hero Background simile al design Easy Housing */
+/* Hero Background con Immagine Reale */
+.hero-section {
+  /* Immagine di sfondo presa da Unsplash */
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+  url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+
+  background-size: cover;       /* Adatta l'immagine per coprire tutto */
+  background-position: center;  /* Centra l'immagine */
+  background-repeat: no-repeat;
+  min-height: 600px;           /* Altezza minima */
+  padding-bottom: 50px;
+  position: relative;
+
+  /* Per centrare il contenuto verticalmente e orizzontalmente */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Rendi il testo bianco per contrastare lo sfondo scuro */
+.hero-section h1,
+.hero-section p {
+  color: white !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Ombra per leggibilità */
+}
+
+.search-box-container {
+  /* Spostiamo il box un po' in giù se necessario, o lo lasciamo centrato */
+  position: relative;
+  z-index: 10;
+}
+
+/* Stile Card */
+.property-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+}
+
+/* Dettagli estetici */
+.ls-2 { letter-spacing: 2px; }

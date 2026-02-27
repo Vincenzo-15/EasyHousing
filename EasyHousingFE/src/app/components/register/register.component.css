@@ -1,0 +1,17 @@
+/* Custom CSS: Radio Button che sembrano card */
+.card-radio input:checked + label {
+  background-color: var(--primary-color) !important; /* Arancione Easy Housing */
+  color: white !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 5px 15px rgba(255, 90, 60, 0.3);
+}
+
+.card-radio label {
+  transition: all 0.3s ease;
+  border: 2px solid #e9ecef;
+}
+
+.card-radio label:hover {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}

@@ -1,0 +1,11 @@
+/* Effetto Focus sugli input */
+.form-control:focus, .form-select:focus {
+  background-color: #fff !important;
+  box-shadow: 0 0 0 3px rgba(255, 90, 60, 0.2); /*alone arancione */
+  border: 1px solid var(--primary-color) !important;
+}
+
+/* Input Group Text */
+.input-group-text {
+  color: var(--text-gray);
+}

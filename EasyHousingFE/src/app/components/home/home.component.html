@@ -1,0 +1,145 @@
+<div class="hero-section text-center d-flex flex-column align-items-center justify-content-center">
+  <div class="container">
+    <h1 class="display-3 fw-bold mb-3 text-dark">Find Your Dream Home</h1>
+    <p class="lead text-muted mb-5">From as low as $10 per day with limited time offer discounts.</p>
+
+    <div class="search-box-container bg-white rounded shadow-lg p-4 mx-auto" style="max-width: 900px;">
+
+      <div class="d-flex justify-content-center mb-4 gap-3">
+
+        <button class="btn px-4 rounded-1"
+                [ngClass]="filtroContratto === 'TUTTI' ? 'btn-primary' : 'btn-light text-muted border'"
+                (click)="impostaFiltroContratto('TUTTI')">
+          All
+        </button>
+
+        <button class="btn px-4 rounded-1"
+                [ngClass]="filtroContratto === 'VENDITA' ? 'btn-primary' : 'btn-light text-muted border'"
+                (click)="impostaFiltroContratto('VENDITA')">
+          Buy
+        </button>
+
+        <button class="btn px-4 rounded-1"
+                [ngClass]="filtroContratto === 'AFFITTO' ? 'btn-primary' : 'btn-light text-muted border'"
+                (click)="impostaFiltroContratto('AFFITTO')">
+          Rent
+        </button>
+
+        <button class="btn px-4 rounded-1"
+                [ngClass]="filtroContratto === 'ASTA' ? 'btn-primary' : 'btn-light text-muted border'"
+                (click)="impostaFiltroContratto('ASTA')">
+          Auction
+        </button>
+
+      </div>
+
+      <div class="row g-2">
+
+        <div class="col-md-4">
+          <input type="text"
+                 class="form-control py-3 bg-light border-0"
+                 placeholder="Città, Via o Nome..."
+                 [(ngModel)]="filtroKeyword"
+                 (input)="applicaFiltri()">
+        </div>
+
+        <div class="col-md-3">
+          <select class="form-select py-3 bg-light border-0 text-muted"
+                  [(ngModel)]="filtroTipo"
+                  (change)="applicaFiltri()">
+            <option value="Tutti">Tutti i tipi</option>
+            <option value="Appartamento">Appartamento</option>
+            <option value="Villa">Villa</option>
+            <option value="Loft">Loft</option>
+            <option value="Ufficio">Ufficio</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <select class="form-select py-3 bg-light border-0 text-muted"
+                  [(ngModel)]="filtroPrezzo"
+                  (change)="applicaFiltri()">
+            <option [ngValue]="0">Qualsiasi prezzo</option>
+            <option [ngValue]="50000">Fino a 50.000 €</option>
+            <option [ngValue]="100000">Fino a 100.000 €</option>
+            <option [ngValue]="250000">Fino a 250.000 €</option>
+            <option [ngValue]="500000">Fino a 500.000 €</option>
+            <option [ngValue]="1000000">Fino a 1.000.000 €</option>
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <button class="btn btn-primary w-100 h-100 d-flex align-items-center justify-content-center rounded-1" (click)="applicaFiltri()">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="container my-5 py-5">
+  <div class="text-center mb-5">
+    <h6 class="text-primary text-uppercase fw-bold ls-2">Our Properties</h6>
+    <h2 class="fw-bold display-6">Our Featured Properties</h2>
+  </div>
+
+  <div *ngIf="immobili.length === 0" class="text-center py-5">
+    <i class="bi bi-search display-1 text-muted opacity-50 mb-3 d-block"></i>
+    <h3 class="text-muted fw-bold">Nessun immobile trovato</h3>
+    <p class="text-muted">La tua ricerca non ha prodotto risultati. Prova a modificare i filtri.</p>
+    <button class="btn btn-outline-primary mt-3 px-4" (click)="filtroKeyword=''; filtroTipo='Tutti'; filtroPrezzo=0; applicaFiltri()">
+      Resetta Filtri
+    </button>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-4" *ngFor="let immobile of immobili">
+
+      <div class="card border-0 shadow-sm h-100 property-card">
+
+        <div class="position-relative">
+          <img [src]="coverImages[immobile.idImmobile] ? coverImages[immobile.idImmobile] : 'https://placehold.co/600x400?text=No+Image'"
+               class="card-img-top object-fit-cover"
+               style="height: 250px;"
+               alt="Foto Immobile">
+
+          <span class="position-absolute top-0 start-0 m-3 badge bg-primary px-3 py-2 rounded-1 text-uppercase">
+            <span *ngIf="immobile.tipoAnnuncio === 'VENDITA'">For Sale</span>
+            <span *ngIf="immobile.tipoAnnuncio === 'AFFITTO'">For Rent</span>
+            <span *ngIf="immobile.tipoAnnuncio === 'ASTA'">Auction</span>
+            <span *ngIf="!immobile.tipoAnnuncio">{{ immobile.tipoAnnuncio }}</span>
+          </span>
+
+          <button class="position-absolute top-0 end-0 m-3 btn btn-light btn-sm rounded-circle shadow-sm" style="width: 35px; height: 35px;">
+            <i class="bi bi-heart text-muted"></i>
+          </button>
+        </div>
+
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-1">{{ immobile.nome }}</h5>
+
+          <p class="text-muted small mb-3">
+            <i class="bi bi-geo-alt-fill text-primary me-1"></i> {{ immobile.indirizzo }}
+          </p>
+
+          <h5 class="text-primary fw-bold mb-3">
+            € {{ immobile.prezzoAttuale | number }}
+            <small class="text-muted fs-6 fw-normal" *ngIf="immobile.tipoAnnuncio === 'AFFITTO'">/Mo</small>
+          </h5>
+
+          <div class="d-flex justify-content-between pt-3 border-top text-muted small">
+            <span><i class="bi bi-layout-sidebar me-1"></i> 3 Beds</span>
+            <span><i class="bi bi-droplet-fill me-1"></i> 2 Baths</span>
+            <span><i class="bi bi-arrows-move me-1"></i> {{ immobile.metriQuadri }} SqFt</span>
+          </div>
+
+          <a [routerLink]="['/dettaglio', immobile.idImmobile]" class="stretched-link"></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
