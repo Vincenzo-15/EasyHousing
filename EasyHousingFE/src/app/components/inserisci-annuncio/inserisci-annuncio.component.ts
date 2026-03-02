@@ -52,7 +52,7 @@ export class InserisciAnnuncioComponent {
   }
 
   onSubmit() {
-    const utenteCorrente = this.authService.getUserName();
+    const utenteCorrente = this.authService.getUser();
 
     // Controllo Login
     if (!utenteCorrente) {
@@ -61,14 +61,14 @@ export class InserisciAnnuncioComponent {
       return;
     }
 
-    this.nuovoImmobile.proprietario = utenteCorrente;
+    this.nuovoImmobile.proprietario = utenteCorrente.email;
     this.nuovoImmobile.prezzoAttuale = this.nuovoImmobile.prezzoOrig;
 
-    console.log('1. Salvataggio Immobile...');
+    console.log('1. Salvataggio Immobile...', utenteCorrente.email);
 
     this.immobileService.createImmobile(this.nuovoImmobile).subscribe({
       next: () => {
-        this.recuperaIdEUploadFoto(this.nuovoImmobile.proprietario);
+        this.recuperaIdEUploadFoto(utenteCorrente.email);
       },
       error: (err: any) => {
         console.error(err);

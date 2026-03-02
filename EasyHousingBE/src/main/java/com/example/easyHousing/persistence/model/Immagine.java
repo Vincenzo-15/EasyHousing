@@ -1,4 +1,4 @@
-package com.example.immobiliareClone.persistence.model;
+package com.example.easyHousing.persistence.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

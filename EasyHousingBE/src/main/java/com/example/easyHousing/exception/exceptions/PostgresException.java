@@ -1,6 +1,6 @@
-package com.example.immobiliareClone.exception.exceptions;
+package com.example.easyHousing.exception.exceptions;
 
-import com.example.immobiliareClone.dto.out.data.ResultDataOUT;
+import com.example.easyHousing.dto.out.data.ResultDataOUT;
 import lombok.Getter;
 import lombok.Setter;
 

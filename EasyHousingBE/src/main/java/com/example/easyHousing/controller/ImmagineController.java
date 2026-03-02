@@ -1,8 +1,8 @@
-package com.example.immobiliareClone.controller;
+package com.example.easyHousing.controller;
 
-import com.example.immobiliareClone.exception.exceptions.RecordNotFoundException;
-import com.example.immobiliareClone.persistence.model.Immagine;
-import com.example.immobiliareClone.service.ImmagineService;
+import com.example.easyHousing.exception.exceptions.RecordNotFoundException;
+import com.example.easyHousing.persistence.model.Immagine;
+import com.example.easyHousing.service.ImmagineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

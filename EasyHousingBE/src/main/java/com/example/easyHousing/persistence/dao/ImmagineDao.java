@@ -1,6 +1,6 @@
-package com.example.immobiliareClone.persistence.dao;
+package com.example.easyHousing.persistence.dao;
 
-import com.example.immobiliareClone.persistence.model.Immagine;
+import com.example.easyHousing.persistence.model.Immagine;
 import java.util.List;
 
 public interface ImmagineDao {

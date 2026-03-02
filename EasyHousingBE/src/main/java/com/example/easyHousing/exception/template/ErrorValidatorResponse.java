@@ -1,4 +1,4 @@
-package com.example.immobiliareClone.exception.template;
+package com.example.easyHousing.exception.template;
 
 import lombok.Data;
 

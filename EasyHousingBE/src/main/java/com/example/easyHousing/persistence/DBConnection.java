@@ -1,4 +1,4 @@
-package com.example.immobiliareClone.persistence;
+package com.example.easyHousing.persistence;
 
 import org.springframework.stereotype.Component;
 import java.sql.Connection;
@@ -7,8 +7,7 @@ import java.sql.SQLException;
 
 @Component
 public class DBConnection {
-    // Idealmente dovresti usare application.properties, ma per l'esame va bene anche hardcoded
-    // se il prof non controlla le best practice di configuration
+
     private static final String URL = "jdbc:postgresql://localhost:5432/immobiliare_db";
     private static final String USER = "postgres";
     private static final String PASSWORD = "1234";

@@ -1,25 +1,20 @@
-package com.example.immobiliareClone.exception.handler;
+package com.example.easyHousing.exception.handler;
 
-import com.example.immobiliareClone.exception.exceptions.PostgresException;
-import com.example.immobiliareClone.exception.exceptions.RecordNotFoundException;
-import com.example.immobiliareClone.exception.template.ErrorResponse;
+import com.example.easyHousing.exception.exceptions.PostgresException;
+import com.example.easyHousing.exception.exceptions.RecordNotFoundException;
+import com.example.easyHousing.exception.template.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.net.URISyntaxException;
 
 @ControllerAdvice
 @RestController

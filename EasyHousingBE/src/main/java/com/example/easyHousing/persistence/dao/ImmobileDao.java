@@ -1,7 +1,7 @@
-package com.example.immobiliareClone.persistence.dao;
+package com.example.easyHousing.persistence.dao;
 
-import com.example.immobiliareClone.persistence.model.Immobile;
-import com.example.immobiliareClone.persistence.model.Utente;
+import com.example.easyHousing.persistence.model.Immobile;
+
 import java.util.List;
 
 public interface ImmobileDao {

@@ -1,4 +1,4 @@
-package com.example.immobiliareClone.exception.exceptions;
+package com.example.easyHousing.exception.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

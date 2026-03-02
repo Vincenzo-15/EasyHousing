@@ -1,7 +1,7 @@
-package com.example.immobiliareClone.persistence.proxy;
+package com.example.easyHousing.persistence.proxy;
 
-import com.example.immobiliareClone.persistence.dao.RecensioneDao;
-import com.example.immobiliareClone.persistence.model.Recensione;
+import com.example.easyHousing.persistence.dao.RecensioneDao;
+import com.example.easyHousing.persistence.model.Recensione;
 
 import java.util.ArrayList;
 

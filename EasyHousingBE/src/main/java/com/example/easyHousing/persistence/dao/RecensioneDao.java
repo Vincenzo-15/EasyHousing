@@ -1,6 +1,6 @@
-package com.example.immobiliareClone.persistence.dao;
+package com.example.easyHousing.persistence.dao;
 
-import com.example.immobiliareClone.persistence.model.Recensione;
+import com.example.easyHousing.persistence.model.Recensione;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package com.example.immobiliareClone.service;
+package com.example.easyHousing.service;
 
-import com.example.immobiliareClone.persistence.dao.ImmagineDao;
-import com.example.immobiliareClone.persistence.model.Immagine;
+import com.example.easyHousing.persistence.dao.ImmagineDao;
+import com.example.easyHousing.persistence.model.Immagine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

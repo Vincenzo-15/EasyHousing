@@ -1,8 +1,8 @@
-package com.example.immobiliareClone.persistence.dao.postgres;
+package com.example.easyHousing.persistence.dao.postgres;
 
-import com.example.immobiliareClone.persistence.DBConnection;
-import com.example.immobiliareClone.persistence.dao.UtenteDao;
-import com.example.immobiliareClone.persistence.model.Utente;
+import com.example.easyHousing.persistence.DBConnection;
+import com.example.easyHousing.persistence.dao.UtenteDao;
+import com.example.easyHousing.persistence.model.Utente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

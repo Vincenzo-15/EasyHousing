@@ -1,8 +1,8 @@
-package com.example.immobiliareClone.controller;
+package com.example.easyHousing.controller;
 
-import com.example.immobiliareClone.exception.exceptions.RecordNotFoundException;
-import com.example.immobiliareClone.persistence.model.Asta;
-import com.example.immobiliareClone.service.AstaService;
+import com.example.easyHousing.exception.exceptions.RecordNotFoundException;
+import com.example.easyHousing.persistence.model.Asta;
+import com.example.easyHousing.service.AstaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

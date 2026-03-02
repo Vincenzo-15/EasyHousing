@@ -1,8 +1,8 @@
-package com.example.immobiliareClone.service;
+package com.example.easyHousing.service;
 
-import com.example.immobiliareClone.exception.exceptions.RecordNotFoundException;
-import com.example.immobiliareClone.persistence.dao.AstaDao;
-import com.example.immobiliareClone.persistence.model.Asta;
+import com.example.easyHousing.exception.exceptions.RecordNotFoundException;
+import com.example.easyHousing.persistence.dao.AstaDao;
+import com.example.easyHousing.persistence.model.Asta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

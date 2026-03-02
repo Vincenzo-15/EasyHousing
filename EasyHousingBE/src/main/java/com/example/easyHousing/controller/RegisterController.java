@@ -1,7 +1,7 @@
-package com.example.immobiliareClone.controller;
+package com.example.easyHousing.controller;
 
-import com.example.immobiliareClone.persistence.model.Utente;
-import com.example.immobiliareClone.service.UtenteService;
+import com.example.easyHousing.persistence.model.Utente;
+import com.example.easyHousing.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

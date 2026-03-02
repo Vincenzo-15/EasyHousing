@@ -1,10 +1,10 @@
-package com.example.immobiliareClone.persistence.dao.postgres;
+package com.example.easyHousing.persistence.dao.postgres;
 
-import com.example.immobiliareClone.persistence.DBConnection;
-import com.example.immobiliareClone.persistence.dao.ImmobileDao;
-import com.example.immobiliareClone.persistence.dao.RecensioneDao;
-import com.example.immobiliareClone.persistence.model.Immobile;
-import com.example.immobiliareClone.persistence.proxy.RecensioniProxy;
+import com.example.easyHousing.persistence.DBConnection;
+import com.example.easyHousing.persistence.dao.ImmobileDao;
+import com.example.easyHousing.persistence.dao.RecensioneDao;
+import com.example.easyHousing.persistence.model.Immobile;
+import com.example.easyHousing.persistence.proxy.RecensioniProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -185,7 +185,6 @@ public class ImmobileDaoImpl implements ImmobileDao {
         immobile.setIdImmobile(resultSet.getInt("idImmobile"));
         immobile.setNome(resultSet.getString("nome"));
 
-        // Nel DB è "tipoImmobile" (camelCase), quindi nel result set lo chiamiamo così
         immobile.setTipoImmobile(resultSet.getString("tipoImmobile"));
 
         immobile.setPrezzoOrig(resultSet.getDouble("prezzo_orig"));

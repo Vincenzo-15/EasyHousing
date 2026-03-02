@@ -1,4 +1,4 @@
-package com.example.immobiliareClone.dto.out.data;
+package com.example.easyHousing.dto.out.data;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;

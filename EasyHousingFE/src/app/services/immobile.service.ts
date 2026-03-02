@@ -27,4 +27,22 @@ export class ImmobileService {
   createImmobile(immobile: Immobile): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/save`, immobile);
   }
+
+  // immobile.service.ts
+
+  getImmobiliByProprietario(email: string): Observable<Immobile[]> {
+    // Corretto l'URL: deve contenere "findByProprietario" come nel Controller
+    return this.http.get<Immobile[]>(`${this.apiUrl}/findByProprietario/${email}`);
+  }
+
+  deleteImmobile(id: number): Observable<void> {
+    // Corretto l'URL: il Controller si aspetta /delete/{id}
+    // Passiamo direttamente l'id invece dell'oggetto intero
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
+  }
+
+  // Aggiungi questo in immobile.service.ts
+  updateImmobile(immobile: Immobile): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/update`, immobile);
+  }
 }

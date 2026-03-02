@@ -1,11 +1,19 @@
-package com.example.immobiliareClone.controller;
+package com.example.easyHousing.controller;
 
-import com.example.immobiliareClone.exception.exceptions.RecordNotFoundException;
-import com.example.immobiliareClone.persistence.model.Immobile;
-import com.example.immobiliareClone.service.ImmobileService;
+import com.example.easyHousing.exception.exceptions.RecordNotFoundException;
+import com.example.easyHousing.persistence.model.Immobile;
+import com.example.easyHousing.service.ImmobileService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -15,6 +23,7 @@ public class ImmobileController {
 
     @Autowired
     private ImmobileService immobileService;
+    private final String uploadPath = "uploads/";
 
     @GetMapping("/findByAllImmobili")
     public List<Immobile> findAllImmobili() throws RecordNotFoundException {
@@ -26,7 +35,8 @@ public class ImmobileController {
         return immobileService.getImmobileById(idImmobile);
     }
 
-    @GetMapping("/findByProprietario/{proprietario}")
+    // Cambia questa riga nel Controller
+    @GetMapping("/findByProprietario/{proprietario:.+}")
     public List<Immobile> findByProprietario(@PathVariable String proprietario) throws RecordNotFoundException {
         return immobileService.getImmobiliByProprietario(proprietario);
     }
@@ -65,4 +75,5 @@ public class ImmobileController {
         immobile.setIdImmobile(id);
         immobileService.eliminaImmobile(immobile);
     }
+
 }

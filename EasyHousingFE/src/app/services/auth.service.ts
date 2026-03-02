@@ -70,4 +70,8 @@ export class AuthService {
   isVenditore(): boolean {
     return this.userSubject.value?.ruolo === 'VENDITORE';
   }
+
+  getUser(): Utente | null {
+    return this.userSubject.value;
+  }
 }
