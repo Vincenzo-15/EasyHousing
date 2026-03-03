@@ -54,4 +54,14 @@ public class UtenteController {
         utente.setIdUtente(id);
         utenteService.eliminaUtente(utente);
     }
+
+    @PutMapping("/ban/{id}")
+    public void toggleBanUtente(@PathVariable Integer id) throws RecordNotFoundException {
+        utenteService.toggleBan(id);
+    }
+
+    @PutMapping("/promuovi/{id}")
+    public void promuoviAdmin(@PathVariable Integer id) throws RecordNotFoundException {
+        utenteService.promuoviAdAdmin(id);
+    }
 }

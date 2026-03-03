@@ -19,4 +19,10 @@ public interface UtenteDao {
     void update(Utente utente);
 
     void delete(Utente utente);
+
+    void updateBanStatus(Integer idUtente, boolean bannato);
+
+    void updateRuolo(Integer idUtente, String ruolo);
+
+    void deleteById(Integer idUtente);
 }

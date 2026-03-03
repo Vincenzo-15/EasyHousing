@@ -8,7 +8,8 @@ import { AboutComponent } from './components/about/about.component';
 import { PropertyComponent } from './components/property/property.component';
 import { BlogComponent } from './components/blog/blog.component';
 import { ContactComponent } from './components/contact/contact.component';
-import {DashboardVenditoreComponent} from './components/dashboard-venditore/dashboard-venditore.component';
+import { DashboardVenditoreComponent } from './components/dashboard-venditore/dashboard-venditore.component';
+import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-admin.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, // Se non c'è path, vai a home
@@ -22,6 +23,6 @@ export const routes: Routes = [
   { path: 'blog', component: BlogComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'dashboard-venditore', component: DashboardVenditoreComponent },
-  { path: 'inserisci-annuncio', component: InserisciAnnuncioComponent },
+  { path: 'dashboard-admin', component: DashboardAdminComponent },
   { path: '**', redirectTo: 'home' } // Se scrivi un URL a caso, torna alla home
 ];

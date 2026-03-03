@@ -60,4 +60,23 @@ public class UtenteService {
         }
         utenteDao.delete(utente);
     }
+
+    public void toggleBan(Integer idUtente) throws RecordNotFoundException {
+        Utente utente = getUtenteById(idUtente);
+        boolean nuovoStato = !utente.getBannato();
+        utenteDao.updateBanStatus(idUtente, nuovoStato);
+    }
+
+    public void promuoviAdAdmin(Integer idUtente) throws RecordNotFoundException {
+        if (getUtenteById(idUtente) != null) {
+            utenteDao.updateRuolo(idUtente, "ADMIN");
+        }
+    }
+
+    public void eliminaUtenteById(Integer idUtente) throws RecordNotFoundException {
+        if (utenteDao.findByIdUtente(idUtente) == null) {
+            throw new RecordNotFoundException("Impossibile eliminare: Utente non trovato.", 404);
+        }
+        utenteDao.deleteById(idUtente);
+    }
 }

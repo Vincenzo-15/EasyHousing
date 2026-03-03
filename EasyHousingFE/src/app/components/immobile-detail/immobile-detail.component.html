@@ -58,6 +58,25 @@
 
       <hr class="my-5">
 
+      <h3 class="mb-4"><i class="bi bi-geo-alt-fill text-danger me-2"></i>Posizione sulla Mappa</h3>
+
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+        <div class="ratio ratio-21x9" *ngIf="mappaUrlSicuro">
+          <iframe
+            [src]="mappaUrlSicuro"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+        <div class="card-footer bg-white text-muted small py-3">
+          <i class="bi bi-info-circle me-1"></i> La posizione esatta è calcolata in base all'indirizzo fornito dal venditore: <strong>{{ immobile.indirizzo }}</strong>
+        </div>
+      </div>
+
       <h3 class="mb-4">Recensioni ({{ immobile.recensioni?.length || 0 }})</h3>
 
       <div *ngIf="!immobile.recensioni || immobile.recensioni.length === 0" class="alert alert-info">

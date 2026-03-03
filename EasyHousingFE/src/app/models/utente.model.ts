@@ -6,4 +6,5 @@ export interface Utente {
   password?: string; // Opzionale nel ritorno dati per sicurezza
   telefono: string;
   ruolo: string;
+  bannato?: boolean; // Opzionale, usato solo per la gestione admin
 }
