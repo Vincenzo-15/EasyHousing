@@ -1,7 +1,7 @@
 export interface Recensione {
-  idRecensione: number;
+  idRecensione?: number;
   titolo: string;
   valutazione: number;
-  autore: string; // Stringa perché nel backend restituiamo il nome/id come stringa o l'oggetto mappato
+  idUtente: number;
   idImmobile: number;
 }

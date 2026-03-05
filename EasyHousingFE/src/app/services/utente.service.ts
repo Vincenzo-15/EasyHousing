@@ -27,4 +27,12 @@ export class UtenteService {
   deleteUtente(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
+
+  getUtenteByEmail(email: string): Observable<Utente> {
+    return this.http.get<Utente>(`${this.apiUrl}/findByEmail/${email}`);
+  }
+
+  getUtenteById(id: number): Observable<Utente> {
+    return this.http.get<Utente>(`${this.apiUrl}/findByIdUtente/${id}`);
+  }
 }

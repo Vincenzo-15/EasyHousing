@@ -12,20 +12,17 @@
     <div class="col-lg-8">
 
       <div id="carouselImmobile" class="carousel slide mb-4 rounded shadow-sm overflow-hidden" data-bs-ride="carousel" *ngIf="immagini.length > 0">
-
         <div class="carousel-inner">
           <div class="carousel-item" *ngFor="let img of immagini; let i = index" [class.active]="i === 0">
             <img [src]="img.immagine" class="d-block w-100" style="height: 500px; object-fit: cover;" alt="Foto casa">
           </div>
         </div>
-
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselImmobile" data-bs-slide="prev" *ngIf="immagini.length > 1">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#carouselImmobile" data-bs-slide="next" *ngIf="immagini.length > 1">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
         </button>
-
       </div>
 
       <img *ngIf="immagini.length === 0" src="https://placehold.co/800x500?text=Nessuna+Foto" class="img-fluid rounded shadow-sm mb-4 w-100" alt="Placeholder">
@@ -59,7 +56,6 @@
       <hr class="my-5">
 
       <h3 class="mb-4"><i class="bi bi-geo-alt-fill text-danger me-2"></i>Posizione sulla Mappa</h3>
-
       <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
         <div class="ratio ratio-21x9" *ngIf="mappaUrlSicuro">
           <iframe
@@ -83,16 +79,52 @@
         Nessuna recensione presente per questo immobile.
       </div>
 
-      <div class="card mb-3 border-0 shadow-sm" *ngFor="let recensione of immobile.recensioni">
+      <div class="card mb-3 border-0 shadow-sm review-card" *ngFor="let recensione of immobile.recensioni">
         <div class="card-body">
           <div class="d-flex justify-content-between">
             <h5 class="fw-bold mb-1">{{ recensione.titolo }}</h5>
-            <span class="badge bg-warning text-dark align-self-start">⭐ {{ recensione.valutazione }}/5</span>
+            <span class="badge bg-warning text-dark align-self-start">
+              <i class="bi bi-star-fill"></i> {{ recensione.valutazione }}/5
+            </span>
           </div>
-          <p class="mb-1 text-muted">{{ recensione.autore }}</p> <small class="text-muted">Autore: {{ recensione.autore }}</small>
+          <p class="mb-1 text-muted small fw-medium">
+            <i class="bi bi-person-circle me-1"></i>
+            {{ nomiRecensori[recensione.idUtente] || 'Caricamento...' }}
+          </p>
         </div>
       </div>
 
+      <div class="card mt-5 border-0 bg-light p-4 rounded-4" *ngIf="authService.isLoggedIn() && authService.getUser()?.ruolo === 'ACQUIRENTE'">
+        <h5 class="fw-bold mb-3"><i class="bi bi-pencil-square me-2"></i>Scrivi una Recensione</h5>
+        <form (ngSubmit)="inviaRecensione()" #reviewForm="ngForm">
+
+          <div class="mb-3">
+            <label class="form-label text-muted small fw-bold text-uppercase">La tua opinione</label>
+            <input type="text" class="form-control" [(ngModel)]="nuovaRecensione.titolo" name="titolo" placeholder="Es. Casa luminosa e spaziosa..." required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label text-muted small fw-bold text-uppercase">Voto</label>
+            <select class="form-select" [(ngModel)]="nuovaRecensione.valutazione" name="valutazione">
+              <option [ngValue]="5">⭐⭐⭐⭐⭐ (5/5) - Eccellente</option>
+              <option [ngValue]="4">⭐⭐⭐⭐ (4/5) - Molto Buono</option>
+              <option [ngValue]="3">⭐⭐⭐ (3/5) - Nella media</option>
+              <option [ngValue]="2">⭐⭐ (2/5) - Scarso</option>
+              <option [ngValue]="1">⭐ (1/5) - Pessimo</option>
+            </select>
+          </div>
+
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-warning fw-bold" [disabled]="!reviewForm.valid">
+              Pubblica Recensione
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="alert alert-secondary mt-5 text-center" *ngIf="!authService.isLoggedIn() || authService.getUser()?.ruolo !== 'ACQUIRENTE'">
+        <i class="bi bi-info-circle me-2"></i><small>Solo gli acquirenti registrati possono lasciare una recensione per l'immobile.</small>
+      </div>
     </div>
 
     <div class="col-lg-4">
@@ -112,16 +144,60 @@
           </div>
 
           <div class="d-grid gap-2 mt-4">
-            <button class="btn btn-primary btn-lg fw-bold">Contatta Venditore</button>
+            <button class="btn btn-primary btn-lg fw-bold" data-bs-toggle="modal" data-bs-target="#contactModal">
+              Contatta Venditore
+            </button>
             <button class="btn btn-outline-secondary fw-bold">Fai un'offerta</button>
           </div>
 
           <div class="mt-3 text-center small text-muted border-top pt-3">
-            <p class="mb-0">Venduto da: <strong>{{ immobile.proprietario }}</strong></p>
+            <p class="mb-0">Venduto da: <strong>{{ nomeVenditore || immobile.proprietario }}</strong></p>
           </div>
         </div>
       </div>
     </div>
 
+  </div>
+</div>
+
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+
+      <div class="modal-header bg-primary text-white border-0 rounded-top-4">
+        <h5 class="modal-title fw-bold" id="contactModalLabel">
+          <i class="bi bi-envelope-paper me-2"></i>Contatta il Venditore
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <p class="text-muted small mb-4">
+          Stai per inviare un messaggio a <strong>{{ nomeVenditore || immobile?.proprietario }}</strong> per l'annuncio selezionato.
+        </p>
+
+        <form (ngSubmit)="inviaMessaggio()" #contactForm="ngForm">
+
+          <div class="mb-3">
+            <label class="form-label fw-bold text-muted small text-uppercase">Oggetto</label>
+            <input type="text" class="form-control bg-light"
+                   [value]="'Rif. ' + immobile?.idImmobile + ' - ' + immobile?.nome" readonly>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-bold text-muted small text-uppercase">Il tuo messaggio</label>
+            <textarea class="form-control" rows="5" placeholder="Scrivi qui la tua richiesta..."
+                      [(ngModel)]="messaggioTesto" name="messaggioTesto" required></textarea>
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary py-2 fw-bold" [disabled]="!contactForm.valid" data-bs-dismiss="modal">
+              <i class="bi bi-send-fill me-2"></i>Invia Messaggio
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
   </div>
 </div>
