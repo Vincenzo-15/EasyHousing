@@ -10,6 +10,8 @@ import { UtenteService } from '../../services/utente.service';
 import { RecensioneService } from '../../services/recensione.service';
 import { AuthService } from '../../services/auth.service';
 import { Recensione } from '../../models/recensione.model';
+import { AstaService } from '../../services/asta.service';
+import { AstaModel } from '../../models/asta.model';
 
 @Component({
   selector: 'app-immobile-detail',
@@ -27,16 +29,19 @@ export class ImmobileDetailComponent implements OnInit {
   messaggioTesto: string = '';
   nomeVenditore: string = '';
 
-  // NUOVA VARIABILE: Dizionario per mappare gli ID utente ai Nomi Reali
+  // Dizionario per mappare gli ID utente ai Nomi Reali
   nomiRecensori: { [id: number]: string } = {};
 
   nuovaRecensione: Recensione = {
-    idRecensione: 0, // Aggiunto per evitare errori TS se non reso opzionale nel model
+    idRecensione: 0,
     titolo: '',
     valutazione: 5,
     idUtente: 0,
     idImmobile: 0
   };
+
+  astaCorrente: AstaModel | null = null;
+  nuovaOfferta: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +50,8 @@ export class ImmobileDetailComponent implements OnInit {
     private utenteService: UtenteService,
     private sanitizer: DomSanitizer,
     private recensioneService: RecensioneService,
-    public authService: AuthService
+    public authService: AuthService,
+    private astaService: AstaService
   ) {}
 
   ngOnInit(): void {
@@ -61,7 +67,19 @@ export class ImmobileDetailComponent implements OnInit {
         next: (data: Immobile) => {
           this.immobile = data;
 
-          // NOVITÀ: Richiamiamo il caricamento dei nomi delle recensioni
+          // RECUPERO DATI ASTA (Se l'annuncio è un'asta)
+          if (this.immobile.tipoAnnuncio === 'ASTA') {
+            this.astaService.getAstaByImmobile(this.immobile.idImmobile).subscribe({
+              next: (asta) => {
+                this.astaCorrente = asta;
+                // Imposta nel form il prezzo minimo accettabile (prezzo attuale + 50€)
+                this.nuovaOfferta = asta.prezzoAttuale + 50;
+              },
+              error: () => console.error("Nessuna asta trovata per questo immobile")
+            });
+          }
+
+          // Caricamento dei nomi delle recensioni
           if (this.immobile.recensioni && this.immobile.recensioni.length > 0) {
             this.caricaNomiRecensori(this.immobile.recensioni);
           }
@@ -92,7 +110,7 @@ export class ImmobileDetailComponent implements OnInit {
     }
   }
 
-  // NUOVO METODO: Carica i nomi per ogni recensione in modo asincrono
+  // Carica i nomi per ogni recensione in modo asincrono
   caricaNomiRecensori(recensioni: Recensione[]) {
     recensioni.forEach(rec => {
       if (!this.nomiRecensori[rec.idUtente]) {
@@ -144,7 +162,7 @@ export class ImmobileDetailComponent implements OnInit {
         if (!this.immobile!.recensioni) this.immobile!.recensioni = [];
         this.immobile!.recensioni.push({ ...this.nuovaRecensione });
 
-        // NUOVA RIGA: Mettiamo subito il nome dell'utente corrente nel dizionario per non mostrare "Caricamento"
+        // Mettiamo subito il nome dell'utente corrente nel dizionario per non mostrare "Caricamento"
         this.nomiRecensori[utenteCorrente.idUtente!] = `${utenteCorrente.nome} ${utenteCorrente.cognome}`;
 
         // Resetta il form
@@ -152,6 +170,51 @@ export class ImmobileDetailComponent implements OnInit {
         this.nuovaRecensione.valutazione = 5;
       },
       error: (err) => alert("Errore durante l'invio della recensione.")
+    });
+  }
+
+  // INVIO OFFERTA ASTA DB
+  inviaOfferta() {
+    const utenteCorrente = this.authService.getUser();
+
+    // 1. Controlli di validazione
+    if (!utenteCorrente || !this.astaCorrente || !this.immobile) {
+      alert("Devi effettuare il login per fare un'offerta.");
+      return;
+    }
+
+    if (utenteCorrente.email === this.immobile.proprietario) {
+      alert("Non puoi fare un'offerta sul tuo stesso annuncio!");
+      return;
+    }
+
+    if (this.nuovaOfferta <= this.astaCorrente.prezzoAttuale) {
+      alert("La tua offerta deve essere strettamente SUPERIORE al prezzo attuale!");
+      return;
+    }
+
+    // 2. Aggiorna i dati dell'Asta
+    this.astaCorrente.prezzoAttuale = this.nuovaOfferta;
+    this.astaCorrente.acquirente = utenteCorrente.email; // Il nuovo miglior offerente
+
+    // 3. Invia l'aggiornamento al backend
+    this.astaService.aggiornaAsta(this.astaCorrente).subscribe({
+      next: () => {
+        // Notifica simulata al venditore
+        console.log("--- SIMULAZIONE EMAIL DI SISTEMA ---");
+        console.log(`A: ${this.immobile?.proprietario}`);
+        console.log(`Oggetto: Nuova offerta ricevuta per ${this.immobile?.nome}`);
+        console.log(`Messaggio: L'utente ${utenteCorrente.email} ha appena fatto un'offerta di €${this.nuovaOfferta}.`);
+
+        alert("Offerta inviata con successo! Attualmente sei il miglior offerente.");
+
+        // Aggiorna visivamente il prezzo dell'immobile nella pagina
+        if (this.immobile) this.immobile.prezzoAttuale = this.nuovaOfferta;
+      },
+      error: (err) => {
+        console.error(err);
+        alert("Si è verificato un errore durante l'invio dell'offerta.");
+      }
     });
   }
 }

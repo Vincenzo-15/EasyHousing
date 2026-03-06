@@ -20,4 +20,18 @@ export class NavbarComponent {
     this.authService.logout(); // Pulisce il localStorage
     this.router.navigate(['/login']); // Riporta l'utente al login
   }
+
+  goToAbout() {
+    // 1. Naviga forzatamente verso la Home
+    this.router.navigate(['/home']).then(() => {
+      // 2. Aspetta 200 millisecondi per dare il tempo all'HTML di caricarsi
+      setTimeout(() => {
+        // 3. Cerca la sezione e scorre verso il basso in modo fluido
+        const element = document.getElementById('about-section');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 200);
+    });
+  }
 }

@@ -1,41 +1,61 @@
-/* Hero Background simile al design Easy Housing */
-/* Hero Background con Immagine Reale */
+/* Sfondo Hero stile Immobiliare.it */
 .hero-section {
-  /* Immagine di sfondo presa da Unsplash */
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-  url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
-
-  background-size: cover;       /* Adatta l'immagine per coprire tutto */
-  background-position: center;  /* Centra l'immagine */
-  background-repeat: no-repeat;
-  min-height: 600px;           /* Altezza minima */
-  padding-bottom: 50px;
-  position: relative;
-
-  /* Per centrare il contenuto verticalmente e orizzontalmente */
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  min-height: 70vh;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
-/* Rendi il testo bianco per contrastare lo sfondo scuro */
-.hero-section h1,
-.hero-section p {
-  color: white !important;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Ombra per leggibilità */
-}
-
+/* Stile Box Ricerca */
 .search-box-container {
-  /* Spostiamo il box un po' in giù se necessario, o lo lasciamo centrato */
-  position: relative;
-  z-index: 10;
+  background: white;
+  border-radius: 0 12px 12px 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-/* Stile Card */
+.search-tabs .btn {
+  border-radius: 12px 12px 0 0 !important;
+  background-color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  color: #495057;
+  border: none;
+}
+
+.search-tabs .btn.active-tab {
+  background-color: white !important;
+  color: #0d6efd !important;
+}
+
+/* =========================================
+   SCORRIMENTO ORIZZONTALE (CAROSELLO)
+   ========================================= */
+.horizontal-scroll-wrapper {
+  display: flex;
+  overflow-x: auto;
+  gap: 1.5rem;
+  padding-bottom: 1.5rem;
+  scroll-snap-type: x mandatory; /* Effetto calamita */
+  -webkit-overflow-scrolling: touch; /* Fluido su mobile */
+
+  /* Nasconde completamente la scrollbar */
+  -ms-overflow-style: none;  /* Per Internet Explorer 10+ */
+  scrollbar-width: none;  /* Per Firefox */
+}
+
+/* Nasconde la scrollbar brutta di Windows/Mac su Chrome/Safari */
+.horizontal-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.property-card-wrapper {
+  flex: 0 0 auto;
+  width: 320px; /* Larghezza fissa per ogni card */
+  scroll-snap-align: start; /* Si allinea all'inizio quando scorri */
+}
+
 .property-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background-color: #fff;
+  border-radius: 15px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .property-card:hover {
@@ -43,5 +63,7 @@
   box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
 }
 
-/* Dettagli estetici */
-.ls-2 { letter-spacing: 2px; }
+/* Stile About Section */
+#about-section {
+  border-top: 1px solid #eaeaea;
+}

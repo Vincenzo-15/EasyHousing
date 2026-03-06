@@ -17,7 +17,7 @@
           <a class="nav-link text-dark" routerLink="/home" routerLinkActive="text-primary fw-bold">Home</a>
         </li>
         <li class="nav-item px-2">
-          <a class="nav-link text-dark" routerLink="/about" routerLinkActive="text-primary fw-bold">About</a>
+          <a class="nav-link text-dark" (click)="goToAbout()" style="cursor: pointer;">About Us</a>
         </li>
 
         <li class="nav-item px-2" *ngIf="authService.isVenditore()">
@@ -32,12 +32,6 @@
           </a>
         </li>
 
-        <li class="nav-item px-2">
-          <a class="nav-link text-dark" routerLink="/blog">Blog</a>
-        </li>
-        <li class="nav-item px-2">
-          <a class="nav-link text-dark" routerLink="/contact">Contact Us</a>
-        </li>
       </ul>
 
       <div class="d-flex gap-2 align-items-center">
@@ -58,21 +52,30 @@
 
           <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
             <li><h6 class="dropdown-header">Ciao, {{ authService.getUserName() }}!</h6></li>
-            <li><a class="dropdown-item" href="#">Il mio profilo</a></li>
+
+            <li>
+              <a class="dropdown-item" routerLink="/profilo">
+                <i class="bi bi-person me-2"></i>Il mio profilo
+              </a>
+            </li>
 
             <li *ngIf="authService.isVenditore()">
-              <a class="dropdown-item" routerLink="/dashboard-venditore">I miei annunci</a>
+              <a class="dropdown-item" routerLink="/dashboard-venditore">
+                <i class="bi bi-house me-2"></i>I miei annunci
+              </a>
             </li>
 
             <li *ngIf="authService.isAdmin()">
-              <a class="dropdown-item text-danger fw-bold" routerLink="/dashboard-admin">Pannello Admin</a>
+              <a class="dropdown-item text-danger fw-bold" routerLink="/dashboard-admin">
+                <i class="bi bi-shield-lock me-2"></i>Pannello Admin
+              </a>
             </li>
 
             <li><hr class="dropdown-divider"></li>
 
             <li>
               <button class="dropdown-item text-danger fw-bold" (click)="doLogout()">
-                <i class="bi bi-box-arrow-right"></i> Esci
+                <i class="bi bi-box-arrow-right me-2"></i> Esci
               </button>
             </li>
           </ul>

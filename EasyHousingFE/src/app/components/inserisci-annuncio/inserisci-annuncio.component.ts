@@ -6,6 +6,7 @@ import { ImmobileService } from '../../services/immobile.service';
 import { AuthService } from '../../services/auth.service';
 import { Immobile } from '../../models/immobile.model';
 import { ImmagineService } from '../../services/immagine.service';
+import { AstaService } from '../../services/asta.service';
 
 @Component({
   selector: 'app-inserisci-annuncio',
@@ -36,7 +37,8 @@ export class InserisciAnnuncioComponent {
     private immobileService: ImmobileService,
     private immagineService: ImmagineService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private astaService: AstaService
   ) {}
 
   onFileSelected(event: any) {
@@ -54,7 +56,6 @@ export class InserisciAnnuncioComponent {
   onSubmit() {
     const utenteCorrente = this.authService.getUser();
 
-    // Controllo Login
     if (!utenteCorrente) {
       alert('Devi effettuare il login per pubblicare.');
       this.router.navigate(['/login']);
@@ -64,37 +65,80 @@ export class InserisciAnnuncioComponent {
     this.nuovoImmobile.proprietario = utenteCorrente.email;
     this.nuovoImmobile.prezzoAttuale = this.nuovoImmobile.prezzoOrig;
 
-    console.log('1. Salvataggio Immobile...', utenteCorrente.email);
+    console.log('1. Richiesta salvataggio Immobile inviata...');
 
     this.immobileService.createImmobile(this.nuovoImmobile).subscribe({
       next: () => {
-        this.recuperaIdEUploadFoto(utenteCorrente.email);
+        console.log('2. Immobile salvato. Attendo 1 secondo per far aggiornare il DB...');
+
+        setTimeout(() => {
+          this.recuperaIdEUploadFoto(utenteCorrente.email);
+        }, 1000); // <-- Aumentato a 1 secondo
       },
       error: (err: any) => {
-        console.error(err);
+        console.error('Errore salvataggio immobile', err);
         alert('Errore salvataggio immobile');
       }
     });
   }
 
   recuperaIdEUploadFoto(proprietario: string) {
-    this.immobileService.getAllImmobili().subscribe((immobili: Immobile[]) => {
-      const mieiImmobili = immobili.filter(i => i.proprietario === proprietario);
+    console.log('-> Avvio richiesta recupero ID...');
 
-      if (mieiImmobili.length > 0) {
-        mieiImmobili.sort((a, b) => b.idImmobile - a.idImmobile);
-        const nuovoId = mieiImmobili[0].idImmobile;
+    // Aggiunta la gestione { next:, error: } per catturare eventuali errori silenziosi
+    this.immobileService.getAllImmobili().subscribe({
+      next: (immobili: Immobile[]) => {
+        const mieiImmobili = immobili.filter(i => i.proprietario === proprietario);
 
-        console.log('2. ID Trovato:', nuovoId);
-        this.uploadFiles(nuovoId);
-      } else {
+        if (mieiImmobili.length > 0) {
+          mieiImmobili.sort((a, b) => b.idImmobile - a.idImmobile);
+          const nuovoId = mieiImmobili[0].idImmobile;
+
+          console.log('3. VERO ID Trovato:', nuovoId);
+
+          if (this.nuovoImmobile.tipoAnnuncio === 'ASTA') {
+
+            // Creiamo l'asta usando i millisecondi (il formato più sicuro per Java Timestamp)
+            const nuovaAsta: any = {
+              idAsta: 0,
+              idImmobile: nuovoId,
+              acquirente: null,
+              prezzoOrig: Number(this.nuovoImmobile.prezzoOrig),
+              prezzoAttuale: Number(this.nuovoImmobile.prezzoOrig),
+              fine: new Date().getTime() + 2592000000 // Scadenza +30 giorni
+            };
+
+            console.log('Tentativo salvataggio asta con payload:', nuovaAsta);
+
+            this.astaService.creaAsta(nuovaAsta).subscribe({
+              next: () => {
+                console.log('4. Asta inizializzata e collegata con successo!');
+                this.uploadFiles(nuovoId);
+              },
+              error: (err) => {
+                console.error("ERRORE BACKEND ASTA:", err);
+                this.uploadFiles(nuovoId); // Procediamo comunque per non bloccare l'utente
+              }
+            });
+          } else {
+            console.log('Annuncio non è un\'asta, procedo alle foto.');
+            this.uploadFiles(nuovoId);
+          }
+
+        } else {
+          console.error("Nessun immobile trovato nel DB per l'utente corrente.");
+          this.router.navigate(['/home']);
+        }
+      },
+      error: (err) => {
+        // Se si ferma al passaggio 2, ora vedremo questo errore!
+        console.error("Errore FATALE in getAllImmobili:", err);
         this.router.navigate(['/home']);
       }
     });
   }
 
   uploadFiles(idImmobile: number) {
-    // Caso 1: Nessun file selezionato -> Vai subito alla home
     if (this.filesSelezionati.length === 0) {
       alert('Annuncio pubblicato (senza foto).');
       this.router.navigate(['/home']);
@@ -104,7 +148,6 @@ export class InserisciAnnuncioComponent {
     let tentativiCompletati = 0;
     let errori = 0;
 
-    // Cicla su ogni file
     this.filesSelezionati.forEach(file => {
       this.immagineService.uploadImmagine(idImmobile, file).subscribe({
         next: () => {
@@ -113,7 +156,7 @@ export class InserisciAnnuncioComponent {
         },
         error: (err: any) => {
           console.error('Errore upload file:', file.name, err);
-          tentativiCompletati++; // Contiamo comunque il tentativo come "fatto" (anche se fallito)
+          tentativiCompletati++;
           errori++;
           this.checkChiusuraPagina(tentativiCompletati, errori);
         }
@@ -121,18 +164,16 @@ export class InserisciAnnuncioComponent {
     });
   }
 
-  // Funzione di supporto per decidere quando chiudere
   checkChiusuraPagina(fatti: number, errori: number) {
-    // Se abbiamo finito di processare tutti i file (con successo o errore)
     if (fatti === this.filesSelezionati.length) {
       if (errori === 0) {
         alert('Annuncio e Foto pubblicati con successo! 🚀');
       } else if (errori < this.filesSelezionati.length) {
         alert(`Annuncio pubblicato, ma ${errori} foto non sono state caricate. Controlla la console.`);
       } else {
-        alert('Annuncio pubblicato, ma il caricamento delle foto è fallito. (File troppo grandi o server spento?)');
+        alert('Annuncio pubblicato, ma il caricamento delle foto è fallito.');
       }
-      this.router.navigate(['/home']); // Ora reindirizza SEMPRE
+      this.router.navigate(['/home']);
     }
   }
 }

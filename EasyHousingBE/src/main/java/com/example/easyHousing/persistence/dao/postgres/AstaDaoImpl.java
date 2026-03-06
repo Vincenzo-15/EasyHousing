@@ -114,12 +114,17 @@ public class AstaDaoImpl implements AstaDao {
 
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement st = conn.prepareStatement(query)) {
+
             st.setInt(1, asta.getIdImmobile());
-            st.setString(2, asta.getAcquirente());
+            st.setString(2, asta.getAcquirente()); // JDBC gestisce automaticamente i NULL
             st.setDouble(3, asta.getPrezzoOrig());
             st.setDouble(4, asta.getPrezzoAttuale());
-            st.setTimestamp(5, asta.getFine());
+
+            // FIX: Convertiamo il Timestamp in un numero Long (BIGINT) per PostgreSQL
+            st.setLong(5, asta.getFine().getTime());
+
             st.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -127,18 +132,22 @@ public class AstaDaoImpl implements AstaDao {
 
     @Override
     public void update(Asta asta) {
-        // CORREZIONE: Aggiunte virgolette a "idAsta" nella WHERE
         String query = "UPDATE asta SET \"idImmobile\" = ?, acquirente = ?, prezzo_orig = ?, prezzo_attuale = ?, fine = ? WHERE \"idAsta\" = ?";
 
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement st = conn.prepareStatement(query)) {
+
             st.setInt(1, asta.getIdImmobile());
             st.setString(2, asta.getAcquirente());
             st.setDouble(3, asta.getPrezzoOrig());
             st.setDouble(4, asta.getPrezzoAttuale());
-            st.setTimestamp(5, asta.getFine());
+
+            // FIX: Convertiamo il Timestamp in un numero Long (BIGINT) per PostgreSQL
+            st.setLong(5, asta.getFine().getTime());
+
             st.setInt(6, asta.getIdAsta());
             st.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -165,7 +174,11 @@ public class AstaDaoImpl implements AstaDao {
         asta.setAcquirente(rs.getString("acquirente"));
         asta.setPrezzoOrig(rs.getDouble("prezzo_orig"));
         asta.setPrezzoAttuale(rs.getDouble("prezzo_attuale"));
-        asta.setFine(rs.getTimestamp("fine"));
+
+        // FIX: Leggiamo il BIGINT dal database e lo riconvertiamo in Timestamp per Java
+        long fineMillis = rs.getLong("fine");
+        asta.setFine(new java.sql.Timestamp(fineMillis));
+
         return asta;
     }
 }

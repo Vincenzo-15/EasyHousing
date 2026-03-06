@@ -1,145 +1,169 @@
-<div class="hero-section text-center d-flex flex-column align-items-center justify-content-center">
-  <div class="container">
-    <h1 class="display-3 fw-bold mb-3 text-dark">Find Your Dream Home</h1>
-    <p class="lead text-muted mb-5">From as low as $10 per day with limited time offer discounts.</p>
+<div class="hero-section position-relative">
+  <div class="container py-5 mt-5">
+    <h1 class="display-4 fw-bold text-white text-center mb-4 text-shadow">Cerca la casa dei tuoi sogni</h1>
 
-    <div class="search-box-container bg-white rounded shadow-lg p-4 mx-auto" style="max-width: 900px;">
+    <div class="mx-auto" style="max-width: 900px;">
 
-      <div class="d-flex justify-content-center mb-4 gap-3">
-
-        <button class="btn px-4 rounded-1"
-                [ngClass]="filtroContratto === 'TUTTI' ? 'btn-primary' : 'btn-light text-muted border'"
-                (click)="impostaFiltroContratto('TUTTI')">
-          All
-        </button>
-
-        <button class="btn px-4 rounded-1"
-                [ngClass]="filtroContratto === 'VENDITA' ? 'btn-primary' : 'btn-light text-muted border'"
-                (click)="impostaFiltroContratto('VENDITA')">
-          Buy
-        </button>
-
-        <button class="btn px-4 rounded-1"
-                [ngClass]="filtroContratto === 'AFFITTO' ? 'btn-primary' : 'btn-light text-muted border'"
-                (click)="impostaFiltroContratto('AFFITTO')">
-          Rent
-        </button>
-
-        <button class="btn px-4 rounded-1"
-                [ngClass]="filtroContratto === 'ASTA' ? 'btn-primary' : 'btn-light text-muted border'"
-                (click)="impostaFiltroContratto('ASTA')">
-          Auction
-        </button>
-
+      <div class="search-tabs d-flex">
+        <button class="btn px-4 py-3" [ngClass]="{'active-tab': filtroContratto === 'TUTTI'}" (click)="impostaFiltroContratto('TUTTI')">Tutti</button>
+        <button class="btn px-4 py-3" [ngClass]="{'active-tab': filtroContratto === 'VENDITA'}" (click)="impostaFiltroContratto('VENDITA')">Vendita</button>
+        <button class="btn px-4 py-3" [ngClass]="{'active-tab': filtroContratto === 'AFFITTO'}" (click)="impostaFiltroContratto('AFFITTO')">Affitto</button>
+        <button class="btn px-4 py-3" [ngClass]="{'active-tab': filtroContratto === 'ASTA'}" (click)="impostaFiltroContratto('ASTA')">Aste</button>
       </div>
 
-      <div class="row g-2">
-
-        <div class="col-md-4">
-          <input type="text"
-                 class="form-control py-3 bg-light border-0"
-                 placeholder="Città, Via o Nome..."
-                 [(ngModel)]="filtroKeyword"
-                 (input)="applicaFiltri()">
+      <div class="search-box-container p-4">
+        <div class="row g-3">
+          <div class="col-md-5">
+            <div class="form-floating">
+              <input type="text" class="form-control bg-light border-0" id="ricercaInput" placeholder="Città, Zona o Riferimento" [(ngModel)]="filtroKeyword" (input)="applicaFiltri()">
+              <label for="ricercaInput"><i class="bi bi-search me-2"></i>Città, Zona o Riferimento</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-floating">
+              <select class="form-select bg-light border-0" id="tipoSelect" [(ngModel)]="filtroTipo" (change)="applicaFiltri()">
+                <option value="Tutti">Tutte le tipologie</option>
+                <option value="Appartamento">Appartamento</option>
+                <option value="Villa">Villa</option>
+                <option value="Loft">Loft</option>
+                <option value="Ufficio">Ufficio</option>
+              </select>
+              <label for="tipoSelect">Tipologia</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-floating">
+              <select class="form-select bg-light border-0" id="prezzoSelect" [(ngModel)]="filtroPrezzo" (change)="applicaFiltri()">
+                <option [ngValue]="0">Nessun limite</option>
+                <option [ngValue]="50000">Fino a 50.000 €</option>
+                <option [ngValue]="150000">Fino a 150.000 €</option>
+                <option [ngValue]="300000">Fino a 300.000 €</option>
+                <option [ngValue]="500000">Fino a 500.000 €</option>
+              </select>
+              <label for="prezzoSelect">Prezzo Massimo</label>
+            </div>
+          </div>
+          <div class="col-md-1 d-flex align-items-center">
+            <button class="btn btn-primary w-100 h-100 rounded-3" (click)="applicaFiltri()">
+              <i class="bi bi-search fs-5"></i>
+            </button>
+          </div>
         </div>
-
-        <div class="col-md-3">
-          <select class="form-select py-3 bg-light border-0 text-muted"
-                  [(ngModel)]="filtroTipo"
-                  (change)="applicaFiltri()">
-            <option value="Tutti">Tutti i tipi</option>
-            <option value="Appartamento">Appartamento</option>
-            <option value="Villa">Villa</option>
-            <option value="Loft">Loft</option>
-            <option value="Ufficio">Ufficio</option>
-          </select>
-        </div>
-
-        <div class="col-md-3">
-          <select class="form-select py-3 bg-light border-0 text-muted"
-                  [(ngModel)]="filtroPrezzo"
-                  (change)="applicaFiltri()">
-            <option [ngValue]="0">Qualsiasi prezzo</option>
-            <option [ngValue]="50000">Fino a 50.000 €</option>
-            <option [ngValue]="100000">Fino a 100.000 €</option>
-            <option [ngValue]="250000">Fino a 250.000 €</option>
-            <option [ngValue]="500000">Fino a 500.000 €</option>
-            <option [ngValue]="1000000">Fino a 1.000.000 €</option>
-          </select>
-        </div>
-
-        <div class="col-md-2">
-          <button class="btn btn-primary w-100 h-100 d-flex align-items-center justify-content-center rounded-1" (click)="applicaFiltri()">
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
-
       </div>
     </div>
-
   </div>
 </div>
 
-<div class="container my-5 py-5">
-  <div class="text-center mb-5">
-    <h6 class="text-primary text-uppercase fw-bold ls-2">Our Properties</h6>
-    <h2 class="fw-bold display-6">Our Featured Properties</h2>
+<div class="container my-5 pt-4">
+  <div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+      <h3 class="fw-bold mb-0 text-dark">Annunci in Evidenza</h3>
+      <p class="text-muted mb-0">Scorri per scoprire le migliori occasioni selezionate per te</p>
+    </div>
   </div>
 
-  <div *ngIf="immobili.length === 0" class="text-center py-5">
-    <i class="bi bi-search display-1 text-muted opacity-50 mb-3 d-block"></i>
-    <h3 class="text-muted fw-bold">Nessun immobile trovato</h3>
-    <p class="text-muted">La tua ricerca non ha prodotto risultati. Prova a modificare i filtri.</p>
-    <button class="btn btn-outline-primary mt-3 px-4" (click)="filtroKeyword=''; filtroTipo='Tutti'; filtroPrezzo=0; applicaFiltri()">
-      Resetta Filtri
+  <div *ngIf="immobili.length === 0" class="text-center py-5 bg-light rounded-4">
+    <i class="bi bi-house-x display-1 text-muted opacity-50 mb-3 d-block"></i>
+    <h4 class="fw-bold text-dark">Nessun immobile trovato</h4>
+    <p class="text-muted">Modifica i filtri di ricerca per trovare altre soluzioni.</p>
+    <button class="btn btn-outline-primary mt-2 rounded-pill px-4" (click)="filtroKeyword=''; filtroTipo='Tutti'; filtroPrezzo=0; applicaFiltri()">Rimuovi Filtri</button>
+  </div>
+
+  <div class="position-relative" *ngIf="immobili.length > 0">
+
+    <button class="btn btn-dark position-absolute top-50 start-0 translate-middle-y rounded-circle shadow-lg d-none d-md-flex align-items-center justify-content-center"
+            style="z-index: 10; width: 45px; height: 45px; margin-left: -15px;"
+            (click)="scorriLista('sinistra')">
+      <i class="bi bi-chevron-left fs-5"></i>
     </button>
-  </div>
 
-  <div class="row g-4">
-    <div class="col-md-4" *ngFor="let immobile of immobili">
+    <div class="horizontal-scroll-wrapper" #scrollContainer>
 
-      <div class="card border-0 shadow-sm h-100 property-card">
+      <div class="property-card-wrapper" *ngFor="let immobile of immobili">
+        <div class="card border-0 shadow-sm h-100 property-card position-relative overflow-hidden">
 
-        <div class="position-relative">
-          <img [src]="coverImages[immobile.idImmobile] ? coverImages[immobile.idImmobile] : 'https://placehold.co/600x400?text=No+Image'"
-               class="card-img-top object-fit-cover"
-               style="height: 250px;"
-               alt="Foto Immobile">
+          <div class="position-relative">
+            <img [src]="coverImages[immobile.idImmobile] ? coverImages[immobile.idImmobile] : 'https://placehold.co/600x400?text=No+Image'"
+                 class="card-img-top object-fit-cover" style="height: 220px;" alt="Foto Immobile">
 
-          <span class="position-absolute top-0 start-0 m-3 badge bg-primary px-3 py-2 rounded-1 text-uppercase">
-            <span *ngIf="immobile.tipoAnnuncio === 'VENDITA'">For Sale</span>
-            <span *ngIf="immobile.tipoAnnuncio === 'AFFITTO'">For Rent</span>
-            <span *ngIf="immobile.tipoAnnuncio === 'ASTA'">Auction</span>
-            <span *ngIf="!immobile.tipoAnnuncio">{{ immobile.tipoAnnuncio }}</span>
-          </span>
+            <span class="position-absolute top-0 start-0 m-3 badge px-3 py-2 rounded-pill text-uppercase shadow-sm"
+                  [ngClass]="{'bg-primary': immobile.tipoAnnuncio === 'VENDITA', 'bg-success': immobile.tipoAnnuncio === 'AFFITTO', 'bg-warning text-dark': immobile.tipoAnnuncio === 'ASTA'}">
+              {{ immobile.tipoAnnuncio }}
+            </span>
 
-          <button class="position-absolute top-0 end-0 m-3 btn btn-light btn-sm rounded-circle shadow-sm" style="width: 35px; height: 35px;">
-            <i class="bi bi-heart text-muted"></i>
-          </button>
-        </div>
-
-        <div class="card-body p-4">
-          <h5 class="fw-bold mb-1">{{ immobile.nome }}</h5>
-
-          <p class="text-muted small mb-3">
-            <i class="bi bi-geo-alt-fill text-primary me-1"></i> {{ immobile.indirizzo }}
-          </p>
-
-          <h5 class="text-primary fw-bold mb-3">
-            € {{ immobile.prezzoAttuale | number }}
-            <small class="text-muted fs-6 fw-normal" *ngIf="immobile.tipoAnnuncio === 'AFFITTO'">/Mo</small>
-          </h5>
-
-          <div class="d-flex justify-content-between pt-3 border-top text-muted small">
-            <span><i class="bi bi-layout-sidebar me-1"></i> 3 Beds</span>
-            <span><i class="bi bi-droplet-fill me-1"></i> 2 Baths</span>
-            <span><i class="bi bi-arrows-move me-1"></i> {{ immobile.metriQuadri }} SqFt</span>
+            <button class="position-absolute top-0 end-0 m-3 btn btn-light btn-sm rounded-circle shadow-sm text-danger" style="width: 35px; height: 35px;">
+              <i class="bi bi-heart"></i>
+            </button>
           </div>
 
-          <a [routerLink]="['/dettaglio', immobile.idImmobile]" class="stretched-link"></a>
+          <div class="card-body p-4 d-flex flex-column">
+            <h5 class="fw-bold mb-1 text-truncate" title="{{ immobile.nome }}">{{ immobile.nome }}</h5>
+            <p class="text-muted small mb-3 text-truncate"><i class="bi bi-geo-alt text-primary me-1"></i>{{ immobile.indirizzo }}</p>
+
+            <h4 class="text-dark fw-bold mb-3 mt-auto">
+              € {{ immobile.prezzoAttuale | number }}
+              <small class="text-muted fs-6 fw-normal" *ngIf="immobile.tipoAnnuncio === 'AFFITTO'">/mese</small>
+            </h4>
+
+            <div class="d-flex justify-content-between pt-3 border-top text-muted small fw-medium">
+              <span><i class="bi bi-house me-1"></i>{{ immobile.tipoImmobile }}</span>
+              <span><i class="bi bi-arrows-fullscreen me-1"></i>{{ immobile.metriQuadri }} mq</span>
+            </div>
+
+            <a [routerLink]="['/dettaglio', immobile.idImmobile]" class="stretched-link"></a>
+          </div>
         </div>
       </div>
 
     </div>
+
+    <button class="btn btn-dark position-absolute top-50 end-0 translate-middle-y rounded-circle shadow-lg d-none d-md-flex align-items-center justify-content-center"
+            style="z-index: 10; width: 45px; height: 45px; margin-right: -15px;"
+            (click)="scorriLista('destra')">
+      <i class="bi bi-chevron-right fs-5"></i>
+    </button>
+
   </div>
 </div>
+
+<section id="about-section" class="py-5 bg-white mt-5">
+  <div class="container py-4">
+    <div class="row align-items-center g-5">
+
+      <div class="col-lg-6">
+        <div class="position-relative">
+          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+               class="img-fluid rounded-4 shadow-lg" alt="Chi Siamo">
+
+          <div class="position-absolute bottom-0 end-0 bg-primary text-white p-4 rounded-4 shadow-lg m-4 d-none d-md-block" style="max-width: 200px;">
+            <h3 class="fw-bold mb-0">10k+</h3>
+            <p class="mb-0 small">Clienti Soddisfatti in tutta Italia</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <h6 class="text-primary fw-bold text-uppercase tracking-wide mb-2">Chi Siamo</h6>
+        <h2 class="display-5 fw-bold text-dark mb-4">Easy Housing. <br>L'immobiliare moderno.</h2>
+        <p class="text-muted fs-5 mb-4">
+          Nato come progetto accademico per semplificare il mercato immobiliare, Easy Housing mette in contatto diretto venditori, acquirenti e amministratori attraverso una piattaforma sicura e all'avanguardia.
+        </p>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-3 d-flex align-items-center">
+            <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
+            <span class="fs-5 text-dark">Valutazioni e Recensioni certificate</span>
+          </li>
+          <li class="mb-3 d-flex align-items-center">
+            <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
+            <span class="fs-5 text-dark">Aste immobiliari sicure e trasparenti</span>
+          </li>
+          <li class="mb-3 d-flex align-items-center">
+            <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
+            <span class="fs-5 text-dark">Gestione diretta tramite Dashboard</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
