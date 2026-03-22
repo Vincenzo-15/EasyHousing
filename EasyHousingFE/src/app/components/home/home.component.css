@@ -67,3 +67,58 @@
 #about-section {
   border-top: 1px solid #eaeaea;
 }
+
+/* ==============================================
+   Stile Card Ultime Ricerche (Screenshot 1)
+   ============================================== */
+.recent-search-card {
+  transition: all 0.25s ease-in-out;
+  cursor: pointer;
+  border-radius: 12px; /* Angoli arrotondati come nella foto */
+}
+
+/* Effetto Hover: sollevamento e ombra più marcata */
+.recent-search-card:hover {
+  transform: translateY(-4px);
+  shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  background-color: #fcfdfe !important; /* Un leggerissimo azzurro */
+}
+
+/* Coerenza dei testi nell'hover */
+.recent-search-card:hover .search-texts h6 {
+  color: #0d6efd !important; /* Il titolo diventa blu */
+}
+
+/* Stile dell'icona a cerchio */
+.recent-search-card .icon-circle {
+  border: 1px solid #e0e0e0;
+}
+
+/* ==============================================
+   Stile Card Mappa (Stile Ricerche Frequenti)
+   ============================================== */
+.map-search-card {
+  border-radius: 12px;
+  border-color: #e5e7eb !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.map-search-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-4px);
+}
+
+.map-bg {
+  height: 120px; /* Altezza della parte con la mappa */
+  background-color: #eef2f6;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Stile dei bottoncini grigi inferiori */
+.custom-tag {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
+  background-color: #f9fafb;
+}

@@ -41,6 +41,10 @@
           <a routerLink="/register" class="btn btn-primary px-4">Register</a>
         </div>
 
+        <a *ngIf="authService.isLoggedIn()" routerLink="/lista-preferiti" class="btn btn-light position-relative me-2 rounded-circle border d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px;" title="I miei preferiti">
+          <i class="bi bi-heart-fill text-danger fs-5"></i>
+        </a>
+
         <div *ngIf="authService.isLoggedIn()" class="dropdown">
 
           <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2 border" type="button" data-bs-toggle="dropdown" aria-expanded="false">

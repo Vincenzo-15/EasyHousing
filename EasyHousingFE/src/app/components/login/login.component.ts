@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Serve per [(ngModel)]
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { PreferitiService } from '../../services/preferiti.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent {
   email = '';
   password = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private preferitiService: PreferitiService) {}
 
   onLogin() {
     // Qui chiamiamo il servizio
@@ -26,6 +27,7 @@ export class LoginComponent {
     this.authService.login(this.email, this.password).subscribe({
       next: (user) => {
         console.log('Login riuscito!', user);
+        this.preferitiService.caricaPreferitiUtenteCorrente();
         this.router.navigate(['/home']); // Vai alla home dopo il login
       },
       error: (err) => {

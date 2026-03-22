@@ -12,6 +12,7 @@ import { AuthService } from '../../services/auth.service';
 import { Recensione } from '../../models/recensione.model';
 import { AstaService } from '../../services/asta.service';
 import { AstaModel } from '../../models/asta.model';
+import { PreferitiService } from '../../services/preferiti.service'; // <--- IMPORTATO QUI
 
 @Component({
   selector: 'app-immobile-detail',
@@ -51,7 +52,8 @@ export class ImmobileDetailComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private recensioneService: RecensioneService,
     public authService: AuthService,
-    private astaService: AstaService
+    private astaService: AstaService,
+    public preferitiService: PreferitiService // <--- INIETTATO QUI
   ) {}
 
   ngOnInit(): void {
@@ -110,7 +112,6 @@ export class ImmobileDetailComponent implements OnInit {
     }
   }
 
-  // Carica i nomi per ogni recensione in modo asincrono
   caricaNomiRecensori(recensioni: Recensione[]) {
     recensioni.forEach(rec => {
       if (!this.nomiRecensori[rec.idUtente]) {
@@ -124,7 +125,6 @@ export class ImmobileDetailComponent implements OnInit {
     });
   }
 
-  // MODALE EMAIL
   inviaMessaggio() {
     if (!this.immobile) return;
 
@@ -135,37 +135,30 @@ export class ImmobileDetailComponent implements OnInit {
     console.log("Oggetto: ", oggetto);
     console.log("Messaggio: ", this.messaggioTesto);
 
-    this.messaggioTesto = ''; // Svuota il campo
+    this.messaggioTesto = '';
     alert(`Messaggio inviato con successo a ${this.nomeVenditore || this.immobile.proprietario}!`);
   }
 
-  // INVIO RECENSIONE DB
   inviaRecensione() {
     const utenteCorrente = this.authService.getUser();
 
-    // Controlli di sicurezza
     if (!utenteCorrente || !utenteCorrente.idUtente || !this.immobile) {
       alert("Devi essere loggato per lasciare una recensione!");
       return;
     }
 
-    // Popola i dati mancanti
     this.nuovaRecensione.idUtente = utenteCorrente.idUtente;
     this.nuovaRecensione.idImmobile = this.immobile.idImmobile;
 
-    // Invia al backend
     this.recensioneService.creaRecensione(this.nuovaRecensione).subscribe({
       next: () => {
         alert("Recensione pubblicata con successo!");
 
-        // Aggiunge la recensione istantaneamente all'interfaccia
         if (!this.immobile!.recensioni) this.immobile!.recensioni = [];
         this.immobile!.recensioni.push({ ...this.nuovaRecensione });
 
-        // Mettiamo subito il nome dell'utente corrente nel dizionario per non mostrare "Caricamento"
         this.nomiRecensori[utenteCorrente.idUtente!] = `${utenteCorrente.nome} ${utenteCorrente.cognome}`;
 
-        // Resetta il form
         this.nuovaRecensione.titolo = '';
         this.nuovaRecensione.valutazione = 5;
       },
@@ -173,11 +166,9 @@ export class ImmobileDetailComponent implements OnInit {
     });
   }
 
-  // INVIO OFFERTA ASTA DB
   inviaOfferta() {
     const utenteCorrente = this.authService.getUser();
 
-    // 1. Controlli di validazione
     if (!utenteCorrente || !this.astaCorrente || !this.immobile) {
       alert("Devi effettuare il login per fare un'offerta.");
       return;
@@ -193,14 +184,11 @@ export class ImmobileDetailComponent implements OnInit {
       return;
     }
 
-    // 2. Aggiorna i dati dell'Asta
     this.astaCorrente.prezzoAttuale = this.nuovaOfferta;
-    this.astaCorrente.acquirente = utenteCorrente.email; // Il nuovo miglior offerente
+    this.astaCorrente.acquirente = utenteCorrente.email;
 
-    // 3. Invia l'aggiornamento al backend
     this.astaService.aggiornaAsta(this.astaCorrente).subscribe({
       next: () => {
-        // Notifica simulata al venditore
         console.log("--- SIMULAZIONE EMAIL DI SISTEMA ---");
         console.log(`A: ${this.immobile?.proprietario}`);
         console.log(`Oggetto: Nuova offerta ricevuta per ${this.immobile?.nome}`);
@@ -208,7 +196,6 @@ export class ImmobileDetailComponent implements OnInit {
 
         alert("Offerta inviata con successo! Attualmente sei il miglior offerente.");
 
-        // Aggiorna visivamente il prezzo dell'immobile nella pagina
         if (this.immobile) this.immobile.prezzoAttuale = this.nuovaOfferta;
       },
       error: (err) => {
@@ -216,5 +203,17 @@ export class ImmobileDetailComponent implements OnInit {
         alert("Si è verificato un errore durante l'invio dell'offerta.");
       }
     });
+  }
+
+  // --- NUOVI METODI PER I PREFERITI ---
+  togglePreferito() {
+    if (this.immobile) {
+      this.preferitiService.togglePreferito(this.immobile);
+    }
+  }
+
+  isPreferito(): boolean {
+    if (!this.immobile) return false;
+    return this.preferitiService.isPreferito(this.immobile.idImmobile);
   }
 }

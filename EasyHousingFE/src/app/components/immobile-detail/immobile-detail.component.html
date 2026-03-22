@@ -153,6 +153,11 @@
               <i class="bi bi-gavel me-2"></i>Fai un'offerta
             </button>
 
+            <button class="btn btn-outline-danger btn-lg fw-bold" (click)="togglePreferito()" *ngIf="authService.isLoggedIn()">
+              <i class="bi me-2" [ngClass]="isPreferito() ? 'bi-heart-fill' : 'bi-heart'"></i>
+              {{ isPreferito() ? 'Salvato nei Preferiti' : 'Salva nei Preferiti' }}
+            </button>
+
           </div>
 
           <div class="mt-3 text-center small text-muted border-top pt-3">

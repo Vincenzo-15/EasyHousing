@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common'; // FONDAMENTALE per usare *ngIf
 import { RouterModule, Router } from '@angular/router'; // FONDAMENTALE per routerLink e navigazione
 import { AuthService } from '../../services/auth.service';
+import {PreferitiService} from "../../services/preferiti.service";
 
 @Component({
   selector: 'app-navbar',
@@ -11,13 +12,23 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+
+  numeroPreferiti: number = 0; // Per tenere traccia del numero di preferiti
 
   // Iniettiamo AuthService come 'public' così l'HTML può leggerlo direttamente
-  constructor(public authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router, public preferitiService: PreferitiService) {}
+
+  ngOnInit() {
+    // Ci "iscriviamo" al service: ogni volta che aggiungi un preferito, questo numero si aggiorna da solo!
+    this.preferitiService.preferiti$.subscribe(preferiti => {
+      this.numeroPreferiti = preferiti.length;
+    });
+  }
 
   doLogout() {
     this.authService.logout(); // Pulisce il localStorage
+    //this.preferitiService.caricaPreferitiUtenteCorrente();
     this.router.navigate(['/login']); // Riporta l'utente al login
   }
 
