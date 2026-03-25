@@ -1,0 +1,14 @@
+/* Effetto sollevamento della card al passaggio del mouse */
+.property-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+}
+
+/* Fix per l'immagine di copertina */
+.object-fit-cover {
+  object-fit: cover;
+}

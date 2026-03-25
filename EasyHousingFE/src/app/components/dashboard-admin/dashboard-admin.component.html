@@ -1,0 +1,100 @@
+<div class="admin-wrapper py-5">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+      <div>
+        <h2 class="fw-bold text-dark display-6"><i class="bi bi-shield-lock text-primary me-3"></i>Admin Workspace</h2>
+        <p class="text-muted fs-5">Gestisci utenti, permessi e accessi in un unico posto.</p>
+      </div>
+    </div>
+
+    <div class="card custom-card">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table custom-table mb-0 align-middle">
+            <thead class="bg-light text-uppercase text-muted small fw-bold">
+            <tr>
+              <th class="ps-4 py-4 border-0 rounded-start-4">Utente</th>
+              <th class="py-4 border-0">Ruolo</th>
+              <th class="py-4 border-0 text-center">Stato Account</th>
+              <th class="py-4 pe-4 border-0 text-end rounded-end-4">Azioni</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr *ngFor="let u of utenti" class="user-row">
+
+              <td class="ps-4 py-3 border-bottom-0">
+                <div class="d-flex align-items-center">
+                  <div class="avatar bg-primary-soft text-primary me-3">
+                    {{ u.nome.charAt(0) | uppercase }}{{ u.cognome.charAt(0) | uppercase }}
+                  </div>
+                  <div>
+                    <h6 class="mb-0 fw-bold text-dark">{{ u.nome }} {{ u.cognome }}</h6>
+                    <small class="text-muted">{{ u.email }}</small>
+                  </div>
+                </div>
+              </td>
+
+              <td class="border-bottom-0">
+                  <span class="custom-badge"
+                        [ngClass]="{
+                          'badge-buyer': u.ruolo === 'ACQUIRENTE',
+                          'badge-seller': u.ruolo === 'VENDITORE',
+                          'badge-admin': u.ruolo === 'ADMIN'
+                        }">
+                    <i class="bi me-1" [ngClass]="{'bi-search': u.ruolo === 'ACQUIRENTE', 'bi-shop': u.ruolo === 'VENDITORE', 'bi-star-fill': u.ruolo === 'ADMIN'}"></i>
+                    {{ u.ruolo }}
+                  </span>
+              </td>
+
+              <td class="text-center border-bottom-0">
+                  <span class="status-indicator" [ngClass]="u.bannato ? 'status-banned' : 'status-active'">
+                    <span class="status-dot"></span>
+                    {{ u.bannato ? 'Sospeso' : 'Attivo' }}
+                  </span>
+              </td>
+
+              <td class="text-end pe-4 border-bottom-0">
+                <div class="d-flex justify-content-end gap-2">
+
+                  <button class="btn action-btn"
+                          [ngClass]="u.bannato ? 'btn-light-success' : 'btn-light-warning'"
+                          (click)="toggleBan(u)"
+                          [disabled]="u.ruolo === 'ADMIN'"
+                          title="{{ u.bannato ? 'Sblocca Utente' : 'Banna Utente' }}">
+                    <i class="bi" [ngClass]="u.bannato ? 'bi-unlock' : 'bi-slash-circle'"></i>
+                  </button>
+
+                  <button class="btn action-btn btn-light-info"
+                          (click)="promuovi(u)"
+                          *ngIf="u.ruolo !== 'ADMIN'"
+                          title="Promuovi ad Admin">
+                    <i class="bi bi-person-up"></i>
+                  </button>
+
+                  <button class="btn action-btn btn-light-danger"
+                          (click)="eliminaUtente(u.idUtente!)"
+                          [disabled]="u.ruolo === 'ADMIN'"
+                          title="Elimina Definitivamente">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+
+                </div>
+              </td>
+            </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="utenti.length === 0" class="text-center py-5">
+          <div class="empty-avatar mb-3"><i class="bi bi-people text-muted display-4"></i></div>
+          <h5 class="fw-bold text-dark">Nessun utente trovato</h5>
+          <p class="text-muted">Il database è attualmente vuoto.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

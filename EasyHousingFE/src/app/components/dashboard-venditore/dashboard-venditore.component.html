@@ -1,0 +1,86 @@
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark mb-0">I Miei Annunci</h2>
+    <a routerLink="/inserisci-annuncio" class="btn btn-primary rounded-pill px-4 fw-medium">
+      <i class="bi bi-plus-lg me-2"></i>Nuovo Annuncio
+    </a>
+  </div>
+
+  <div *ngIf="mieiImmobili.length === 0" class="text-center py-5 bg-white shadow-sm rounded-4 border">
+    <i class="bi bi-house-door display-3 text-muted opacity-25 mb-3 d-block"></i>
+    <h4 class="text-muted fw-bold">Non hai ancora inserito nessun annuncio.</h4>
+    <p class="text-secondary mb-4">Inizia ora a vendere o affittare il tuo immobile.</p>
+    <a routerLink="/inserisci-annuncio" class="btn btn-primary btn-lg rounded-pill px-5 fw-bold">
+      Inserisci il primo Annuncio
+    </a>
+  </div>
+
+  <div class="row g-4" *ngIf="mieiImmobili.length > 0">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let immobile of mieiImmobili">
+      <div class="card border-0 shadow-sm h-100 property-card position-relative overflow-hidden">
+
+        <div class="position-relative">
+          <img [src]="coverImages[immobile.idImmobile] || 'https://placehold.co/800x500/f8f9fa/a3a3a3?text=Caricamento...'"
+               (error)="gestisciErroreImmagine($event)"
+               class="card-img-top object-fit-cover" style="height: 200px;" alt="Immobile">
+
+          <span class="position-absolute top-0 start-0 m-3 badge px-3 py-2 rounded-pill text-uppercase shadow-sm"
+                [ngClass]="{'bg-primary': immobile.tipoAnnuncio === 'VENDITA', 'bg-success': immobile.tipoAnnuncio === 'AFFITTO', 'bg-warning text-dark': immobile.tipoAnnuncio === 'ASTA'}">
+            {{ immobile.tipoAnnuncio }}
+          </span>
+        </div>
+
+        <div class="card-body p-4 d-flex flex-column">
+          <h5 class="fw-bold mb-1 text-truncate">{{ immobile.nome }}</h5>
+          <p class="text-muted small mb-3 text-truncate"><i class="bi bi-geo-alt text-primary me-1"></i>{{ immobile.indirizzo }}</p>
+
+          <div *ngIf="editModeId !== immobile.idImmobile" class="mt-auto">
+            <h4 class="text-primary fw-bold mb-3">
+              € {{ immobile.prezzoAttuale | number }}
+            </h4>
+          </div>
+
+          <div *ngIf="editModeId === immobile.idImmobile" class="input-group mb-3 mt-auto">
+            <span class="input-group-text bg-light fw-bold border-end-0">€</span>
+            <input type="number" class="form-control border-start-0 bg-light fw-bold" [(ngModel)]="nuovoPrezzo">
+          </div>
+
+          <div class="d-grid gap-2 pt-3 border-top mt-3">
+
+            <div *ngIf="editModeId !== immobile.idImmobile" class="row g-2">
+              <div class="col-6">
+                <button class="btn btn-outline-secondary w-100 btn-sm" (click)="attivaModifica(immobile)">
+                  <i class="bi bi-pencil me-1"></i>Cambia Prezzo
+                </button>
+              </div>
+              <div class="col-6">
+                <a [routerLink]="['/dettaglio', immobile.idImmobile]" class="btn btn-outline-primary w-100 btn-sm">
+                  <i class="bi bi-eye me-1"></i>Vedi
+                </a>
+              </div>
+              <div class="col-12 mt-2">
+                <button class="btn btn-danger w-100 btn-sm" (click)="elimina(immobile.idImmobile)">
+                  <i class="bi bi-trash3 me-1"></i>Elimina Annuncio
+                </button>
+              </div>
+            </div>
+
+            <div *ngIf="editModeId === immobile.idImmobile" class="row g-2">
+              <div class="col-6">
+                <button class="btn btn-success w-100 btn-sm" (click)="salvaPrezzo(immobile)">
+                  <i class="bi bi-check-lg me-1"></i>Salva
+                </button>
+              </div>
+              <div class="col-6">
+                <button class="btn btn-secondary w-100 btn-sm" (click)="annullaModifica()">
+                  <i class="bi bi-x-lg me-1"></i>Annulla
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

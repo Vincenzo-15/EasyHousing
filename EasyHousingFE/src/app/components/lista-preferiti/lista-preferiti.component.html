@@ -1,0 +1,55 @@
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark mb-0">I Tuoi Preferiti</h2>
+    <span class="text-muted fs-5">{{ preferiti.length }} immobili salvati</span>
+  </div>
+
+  <div *ngIf="preferiti.length === 0" class="text-center py-5 bg-white shadow-sm rounded-4 border">
+    <i class="bi bi-heart display-3 text-muted opacity-25 mb-3 d-block"></i>
+    <h4 class="text-muted fw-bold">Non hai ancora salvato nessun immobile tra i preferiti.</h4>
+    <p class="text-secondary mb-4">Naviga tra gli annunci e clicca sul cuore per salvarli qui.</p>
+    <a routerLink="/risultati-ricerca" class="btn btn-primary btn-lg rounded-pill px-5 fw-bold">
+      Inizia la Ricerca
+    </a>
+  </div>
+
+  <div class="row g-4" *ngIf="preferiti.length > 0">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let immobile of preferiti">
+      <div class="card border-0 shadow-sm h-100 property-card position-relative overflow-hidden">
+
+        <div class="position-relative">
+          <img [src]="coverImages[immobile.idImmobile] || 'https://placehold.co/800x500/f8f9fa/a3a3a3?text=Caricamento...'"
+               (error)="gestisciErroreImmagine($event)"
+               class="card-img-top object-fit-cover" style="height: 200px;" alt="Immobile">
+
+          <span class="position-absolute top-0 start-0 m-3 badge px-3 py-2 rounded-pill text-uppercase shadow-sm"
+                [ngClass]="{'bg-primary': immobile.tipoAnnuncio === 'VENDITA', 'bg-success': immobile.tipoAnnuncio === 'AFFITTO', 'bg-warning text-dark': immobile.tipoAnnuncio === 'ASTA'}">
+            {{ immobile.tipoAnnuncio }}
+          </span>
+
+          <button class="position-absolute top-0 end-0 m-3 btn btn-light btn-sm rounded-circle shadow-sm text-danger"
+                  style="width: 35px; height: 35px; z-index: 10;"
+                  (click)="rimuoviDalCuore($event, immobile)">
+            <i class="bi bi-heart-fill"></i>
+          </button>
+        </div>
+
+        <div class="card-body p-4 d-flex flex-column">
+          <h5 class="fw-bold mb-1 text-truncate">{{ immobile.nome }}</h5>
+          <p class="text-muted small mb-3 text-truncate"><i class="bi bi-geo-alt text-primary me-1"></i>{{ immobile.indirizzo }}</p>
+
+          <h4 class="text-primary fw-bold mb-3 mt-auto">
+            € {{ immobile.prezzoAttuale | number }}
+          </h4>
+
+          <div class="d-flex justify-content-between pt-3 border-top text-muted small fw-medium mt-3">
+            <span><i class="bi bi-house me-1"></i>{{ immobile.tipoImmobile }}</span>
+            <span><i class="bi bi-arrows-fullscreen me-1"></i>{{ immobile.metriQuadri }} mq</span>
+          </div>
+
+          <a [routerLink]="['/dettaglio', immobile.idImmobile]" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

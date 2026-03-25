@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/703f873a-af56-4b14-b529-50e393193cd4/console_3.sql" value="703f873a-af56-4b14-b529-50e393193cd4" />
+    <file url="file://$PROJECT_DIR$/EasyHousingBE/src/main/java/com/example/easyHousing/persistence/dao/postgres/AstaDaoImpl.java" value="703f873a-af56-4b14-b529-50e393193cd4" />
+    <file url="file://$PROJECT_DIR$/EasyHousingBE/src/main/java/com/example/easyHousing/persistence/dao/postgres/ImmagineDaoImpl.java" value="703f873a-af56-4b14-b529-50e393193cd4" />
+    <file url="file://$PROJECT_DIR$/EasyHousingBE/src/main/java/com/example/easyHousing/persistence/dao/postgres/ImmobileDaoImpl.java" value="703f873a-af56-4b14-b529-50e393193cd4" />
+    <file url="file://$PROJECT_DIR$/EasyHousingBE/src/main/java/com/example/easyHousing/persistence/dao/postgres/RecensioneDaoImpl.java" value="703f873a-af56-4b14-b529-50e393193cd4" />
+    <file url="file://$PROJECT_DIR$/EasyHousingBE/src/main/java/com/example/easyHousing/persistence/dao/postgres/UtenteDaoImpl.java" value="703f873a-af56-4b14-b529-50e393193cd4" />
+  </component>
+</project>
