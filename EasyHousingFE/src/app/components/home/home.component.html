@@ -87,8 +87,11 @@
 
           <div class="card-body p-3 d-flex flex-column">
             <h6 class="fw-bold text-dark mb-3">{{ ricerca.titolo }}</h6>
+
             <div class="d-flex flex-wrap gap-2 mt-auto">
-              <span class="custom-tag text-dark" *ngFor="let tag of ricerca.tags">{{ tag }}</span>
+              <span class="custom-tag text-dark" *ngFor="let tag of ricerca.tags">
+                {{ tag }}
+              </span>
             </div>
           </div>
         </div>
@@ -111,7 +114,8 @@
     <div class="property-card-wrapper" *ngFor="let immobile of ultimiInseriti">
       <div class="card border-0 shadow-sm h-100 property-card position-relative overflow-hidden">
         <div class="position-relative">
-          <img [src]="coverImages[immobile.idImmobile] ? coverImages[immobile.idImmobile] : 'https://placehold.co/600x400?text=No+Image'"
+          <img [src]="coverImages[immobile.idImmobile] || 'https://placehold.co/800x500/f8f9fa/a3a3a3?text=Caricamento...'"
+               (error)="gestisciErroreImmagine($event)"
                class="card-img-top object-fit-cover" style="height: 220px;" alt="Foto Immobile">
 
           <span class="position-absolute top-0 start-0 m-3 badge px-3 py-2 rounded-pill text-uppercase shadow-sm"

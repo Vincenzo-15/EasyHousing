@@ -9,9 +9,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Dice a Spring: "Quando qualcuno chiede un URL che inizia con /foto-immobili/,
-        // vai a cercare il file nella cartella 'uploads' del computer"
+        // Collega l'URL "/foto-immobili/" alla cartella fisica "uploads" del tuo PC
+        String uploadPath = "file:" + System.getProperty("user.dir") + "/uploads/";
+
         registry.addResourceHandler("/foto-immobili/**")
-                .addResourceLocations("file:uploads/");
+                .addResourceLocations(uploadPath);
     }
 }
