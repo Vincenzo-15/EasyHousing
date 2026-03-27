@@ -1,46 +1,67 @@
 @import "leaflet/dist/leaflet.css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* GLOBAL STYLES - Easy Housing Theme */
+/* GLOBAL STYLES - Tema Premium Immobiliare */
 :root {
-  --primary-color: #FF5A3C; /* L'arancione del tuo design */
-  --text-dark: #171B2A;
-  --text-gray: #696969;
-  --bg-light: #F2F6F7;
+  --primary-color: #0d6efd; /* Blu elegante (stile Immobiliare.it) */
+  --secondary-color: #FF5A3C; /* Arancione per i dettagli/notifiche */
+  --text-dark: #222222;
+  --text-gray: #717171;
+  --bg-light: #f8f9fa;
 }
 
 body {
-  font-family: 'Inter', sans-serif; /* Assicurati di aver importato Inter in index.html */
+  font-family: 'Inter', sans-serif;
   color: var(--text-dark);
-  background-color: #ffffff;
+  background-color: var(--bg-light);
+  -webkit-font-smoothing: antialiased; /* Rende il font più nitido */
 }
 
-/* Override Bootstrap Colors */
-.text-primary { color: var(--primary-color) !important; }
-.bg-primary { background-color: var(--primary-color) !important; }
-
-/* Bottoni stile "Easy Housing" */
-.btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
-  color: white;
-  border-radius: 5px; /* Angoli leggermente arrotondati, non a pillola */
-  padding: 10px 24px;
-  font-weight: 600;
-  transition: all 0.3s ease;
+/* =========================================
+   STILE GLOBALE CARD IMMOBILI (Effetto Wow)
+   ========================================= */
+.property-card {
+  border-radius: 16px !important;
+  border: 1px solid #ebebeb !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  background-color: white;
+  overflow: hidden; /* Fondamentale per far arrotondare l'immagine in alto */
 }
 
-.btn-primary:hover {
-  background-color: #e04f35;
-  border-color: #e04f35;
-  transform: translateY(-2px);
+/* Effetto Hover: la card si solleva e l'ombra aumenta */
+.property-card:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-6px);
 }
 
-.btn-outline-primary {
-  color: var(--primary-color);
-  border-color: var(--primary-color);
+/* Immagine dentro la card con effetto Zoom */
+.property-card img {
+  transition: transform 0.6s ease;
 }
 
-.btn-outline-primary:hover {
-  background-color: var(--primary-color);
-  color: white;
+.property-card:hover img {
+  transform: scale(1.08); /* Zoom leggero dell'immagine */
+}
+
+/* Stile Badge Annuncio (Vendita/Affitto) */
+.property-card .badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(4px); /* Effetto vetro opaco dietro il testo */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Pulsante Cuore (Preferiti) */
+.property-card .btn-light {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(4px);
+  transition: all 0.2s ease;
+}
+
+.property-card .btn-light:hover {
+  background-color: white !important;
+  transform: scale(1.15);
+  color: #ff3366 !important; /* Diventa rosso vivo al passaggio */
 }

@@ -1,0 +1,155 @@
+<div class="container-fluid min-vh-100 bg-white">
+  <div class="row min-vh-100">
+
+    <div class="col-lg-8 p-4 p-md-5">
+
+      <div *ngIf="step === 1" class="fade-in">
+        <p class="text-muted fw-bold mb-2">PASSAGGIO 1 DI 2</p>
+        <h1 class="display-6 fw-bold mb-5">Dove si trova l'immobile?</h1>
+
+        <div class="form-floating mb-4" style="max-width: 600px;">
+          <input type="text" class="form-control form-control-lg border-2" id="inputIndirizzo" placeholder="Via, Città o CAP" [(ngModel)]="indirizzo">
+          <label for="inputIndirizzo">Indirizzo, Comune o Zona</label>
+        </div>
+
+        <button class="btn btn-primary btn-lg px-5 py-3 fw-bold rounded-pill" [disabled]="indirizzo.length < 3" (click)="avanti()">
+          Continua <i class="bi bi-arrow-right ms-2"></i>
+        </button>
+      </div>
+
+      <div *ngIf="step === 2" class="fade-in">
+        <button class="btn btn-link text-decoration-none text-muted px-0 mb-4" (click)="indietro()"><i class="bi bi-arrow-left me-2"></i>Indietro</button>
+        <p class="text-muted fw-bold mb-2 text-uppercase small">Passaggio 2 di 2</p>
+        <h2 class="fw-bold mb-4">Indica la tipologia</h2>
+
+        <div class="d-flex flex-wrap gap-3 mb-5" style="max-width: 700px;">
+          <div class="type-box" [ngClass]="{'active': tipologia === 'Appartamento'}" (click)="selezionaTipologia('Appartamento')">
+            <i class="bi bi-building fs-4 mb-2 d-block"></i> Appartamento
+          </div>
+          <div class="type-box" [ngClass]="{'active': tipologia === 'Villa'}" (click)="selezionaTipologia('Villa')">
+            <i class="bi bi-house fs-4 mb-2 d-block"></i> Villa / Indipendente
+          </div>
+          <div class="type-box" [ngClass]="{'active': tipologia === 'Attico'}" (click)="selezionaTipologia('Attico')">
+            <i class="bi bi-clouds fs-4 mb-2 d-block"></i> Attico
+          </div>
+          <div class="type-box" [ngClass]="{'active': tipologia === 'Loft'}" (click)="selezionaTipologia('Loft')">
+            <i class="bi bi-bricks fs-4 mb-2 d-block"></i> Loft / Open Space
+          </div>
+        </div>
+
+        <h2 class="fw-bold mb-4">Indica le caratteristiche</h2>
+
+        <div class="d-flex flex-column gap-3 mb-5" style="max-width: 500px;">
+          <div class="d-flex align-items-center justify-content-between py-2 border-bottom">
+            <span class="fw-medium text-dark">Superficie</span>
+            <div class="input-group" style="width: 140px;">
+              <span class="input-group-text bg-white border-end-0">m²</span>
+              <input type="number" class="form-control border-start-0" placeholder="Es. 110" [(ngModel)]="superficie">
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between py-2 border-bottom">
+            <span class="fw-medium text-dark">Piano</span>
+            <select class="form-select" style="width: 140px;" [(ngModel)]="piano">
+              <option value="Terra">Piano Terra</option>
+              <option value="1">1° Piano</option>
+              <option value="2">2° Piano</option>
+              <option value="3">3° Piano</option>
+              <option value="4">4° Piano</option>
+              <option value="5">5° Piano</option>
+              <option value="6">6° Piano</option>
+              <option value="7">7° Piano</option>
+              <option value="8">8° Piano</option>
+              <option value="9">9° Piano</option>
+              <option value="10">10° Piano o oltre</option>
+              <option value="Ultimo">Ultimo Piano</option>
+            </select>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between py-2 border-bottom">
+            <span class="fw-medium text-dark">Locali</span>
+            <div class="d-flex align-items-center gap-3">
+              <button class="btn btn-outline-secondary rounded-circle btn-sm d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" (click)="cambiaValore('locali', -1)"><i class="bi bi-dash"></i></button>
+              <span class="fw-bold fs-5" style="width: 20px; text-align: center;">{{ locali }}</span>
+              <button class="btn btn-outline-primary rounded-circle btn-sm d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" (click)="cambiaValore('locali', 1)"><i class="bi bi-plus"></i></button>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between py-2 border-bottom">
+            <span class="fw-medium text-dark">Bagni</span>
+            <div class="d-flex align-items-center gap-3">
+              <button class="btn btn-outline-secondary rounded-circle btn-sm d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" (click)="cambiaValore('bagni', -1)"><i class="bi bi-dash"></i></button>
+              <span class="fw-bold fs-5" style="width: 20px; text-align: center;">{{ bagni }}</span>
+              <button class="btn btn-outline-primary rounded-circle btn-sm d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" (click)="cambiaValore('bagni', 1)"><i class="bi bi-plus"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg px-5 py-3 fw-bold rounded-pill" [disabled]="!superficie" (click)="avanti()">
+          Ottieni Valutazione <i class="bi bi-check-lg ms-2"></i>
+        </button>
+      </div>
+
+      <div *ngIf="step === 3" class="fade-in text-center pt-5">
+        <div *ngIf="isCalculating">
+          <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status"></div>
+          <h3 class="mt-4 fw-bold">Analisi di mercato in corso...</h3>
+          <p class="text-muted">Stiamo confrontando il tuo immobile con centinaia di annunci simili a {{ indirizzo }}.</p>
+        </div>
+
+        <div *ngIf="!isCalculating">
+          <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+          <h4 class="mt-3 text-muted">Valutazione Completata</h4>
+          <h1 class="display-3 fw-bold text-dark my-4">€ {{ stimaFinale | number }}</h1>
+
+          <div class="progress mx-auto mb-4" style="height: 8px; max-width: 400px;">
+            <div class="progress-bar bg-primary" style="width: 85%;"></div>
+          </div>
+          <p class="text-muted mb-5">Indice di affidabilità della stima: <strong class="text-success">Alto</strong></p>
+
+          <button class="btn btn-outline-secondary btn-lg rounded-pill px-4 me-3" (click)="step = 1; indirizzo = ''">Nuova Valutazione</button>
+          <button class="btn btn-primary btn-lg rounded-pill px-4" routerLink="/inserisci-annuncio">Vendi Ora</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-4 bg-light d-none d-lg-flex flex-column justify-content-center p-5 border-start">
+      <div class="tracker-wrapper">
+
+        <div class="tracker-step d-flex mb-5" [ngClass]="{'active': step >= 1, 'completed': step > 1}">
+          <div class="tracker-icon rounded-circle d-flex align-items-center justify-content-center me-3 border border-2">
+            <i class="bi bi-geo-alt fs-5" *ngIf="step === 1"></i>
+            <i class="bi bi-check-lg fs-5 text-white" *ngIf="step > 1"></i>
+          </div>
+          <div>
+            <h5 class="fw-bold mb-1" [ngClass]="{'text-primary': step === 1, 'text-dark': step > 1}">1. Indirizzo</h5>
+            <p class="text-muted small mb-0" *ngIf="indirizzo">{{ indirizzo }}</p>
+          </div>
+        </div>
+
+        <div class="tracker-step d-flex mb-5" [ngClass]="{'active': step >= 2, 'completed': step > 2}">
+          <div class="tracker-icon rounded-circle d-flex align-items-center justify-content-center me-3 border border-2">
+            <i class="bi bi-bar-chart-steps fs-5" *ngIf="step === 2"></i>
+            <i class="bi bi-check-lg fs-5 text-white" *ngIf="step > 2"></i>
+          </div>
+          <div>
+            <h5 class="fw-bold mb-1" [ngClass]="{'text-primary': step === 2, 'text-muted': step < 2}">2. Caratteristiche</h5>
+            <p class="text-muted small mb-0" *ngIf="superficie">{{ superficie }} m², {{ locali }} locali</p>
+          </div>
+        </div>
+
+        <div class="tracker-step d-flex" [ngClass]="{'active': step === 3}">
+          <div class="tracker-icon rounded-circle d-flex align-items-center justify-content-center me-3 border border-2">
+            <i class="bi bi-patch-check fs-5"></i>
+          </div>
+          <div>
+            <h5 class="fw-bold mb-1" [ngClass]="{'text-primary': step === 3, 'text-muted': step < 3}">3. La tua valutazione</h5>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

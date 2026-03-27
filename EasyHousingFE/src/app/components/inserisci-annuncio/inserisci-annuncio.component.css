@@ -1,11 +1,27 @@
 /* Effetto Focus sugli input */
 .form-control:focus, .form-select:focus {
   background-color: #fff !important;
-  box-shadow: 0 0 0 3px rgba(255, 90, 60, 0.2); /*alone arancione */
-  border: 1px solid var(--primary-color) !important;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15) !important; /* Alone blu morbido */
+  border: 1px solid #0d6efd !important;
 }
 
-/* Input Group Text */
-.input-group-text {
-  color: var(--text-gray);
+/* Stile speciale per l'area drag & drop finta */
+.border-dashed {
+  transition: background-color 0.3s ease;
+}
+
+.border-dashed:hover {
+  background-color: #eef2f6 !important;
+}
+
+/* Tasto pubblica bottone */
+.btn-primary.btn-lg {
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary.btn-lg:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(13, 110, 253, 0.4) !important;
 }

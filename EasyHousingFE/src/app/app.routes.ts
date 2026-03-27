@@ -9,6 +9,7 @@ import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-
 import {ProfiloComponent} from "./components/profilo/profilo.component";
 import {ListaPreferitiComponent} from './components/lista-preferiti/lista-preferiti.component';
 import {RisultatiRicercaComponent} from './components/risultati-ricerca/risultati-ricerca.component';
+import { ValutaCasaComponent } from './components/valuta-casa/valuta-casa.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, // Se non c'è path, vai a home
@@ -22,5 +23,6 @@ export const routes: Routes = [
   {path: 'profilo', component: ProfiloComponent},
   {path: 'lista-preferiti', component: ListaPreferitiComponent},
   { path: 'risultati-ricerca', component: RisultatiRicercaComponent },
+  {path: 'valuta-casa', component: ValutaCasaComponent},
   { path: '**', redirectTo: 'home' }
 ];

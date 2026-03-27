@@ -1,0 +1,83 @@
+.fade-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Stile per i box tipologia selezionabili (Es. Appartamento, Villa) */
+.type-box {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
+  width: calc(50% - 0.5rem); /* Due per riga */
+  text-align: center;
+  cursor: pointer;
+  color: #6c757d;
+  font-weight: 500;
+  transition: all 0.2s;
+  background-color: white;
+}
+
+.type-box:hover {
+  border-color: #0d6efd;
+  color: #0d6efd;
+  background-color: #f8f9fa;
+}
+
+.type-box.active {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: white;
+  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+/* Stile per la Sidebar (Timeline laterale) */
+.tracker-step {
+  position: relative;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.tracker-step.active, .tracker-step.completed {
+  opacity: 1;
+}
+
+.tracker-icon {
+  width: 45px;
+  height: 45px;
+  background-color: white;
+  border-color: #dee2e6 !important;
+  color: #adb5bd;
+  transition: all 0.3s;
+  position: relative;
+  z-index: 2;
+}
+
+/* La linea verticale che unisce i cerchi */
+.tracker-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 45px;
+  left: 22px; /* Centro esatto dell'icona (45/2) */
+  bottom: -30px; /* Si estende fino allo step successivo */
+  width: 2px;
+  background-color: #dee2e6;
+  z-index: 1;
+}
+
+.tracker-step.active .tracker-icon {
+  border-color: #0d6efd !important;
+  color: #0d6efd;
+}
+
+.tracker-step.completed .tracker-icon {
+  background-color: #0d6efd;
+  border-color: #0d6efd !important;
+}
+
+.tracker-step.completed::after {
+  background-color: #0d6efd;
+}

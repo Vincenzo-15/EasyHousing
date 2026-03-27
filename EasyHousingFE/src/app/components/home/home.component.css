@@ -1,124 +1,194 @@
-/* Sfondo Hero stile Immobiliare.it */
+/* =========================================
+   HERO SECTION (Motore di ricerca centrale)
+   ========================================= */
 .hero-section {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-  min-height: 70vh;
+  background: linear-gradient(rgba(17, 24, 39, 0.5), rgba(17, 24, 39, 0.7)),
+  url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  min-height: 75vh;
   display: flex;
   align-items: center;
 }
 
-/* Stile Box Ricerca */
 .search-box-container {
   background: white;
-  border-radius: 0 12px 12px 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  border-radius: 0 16px 16px 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  padding: 1.5rem !important;
 }
 
 .search-tabs .btn {
   border-radius: 12px 12px 0 0 !important;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
   font-weight: 600;
   color: #495057;
   border: none;
+  padding: 12px 24px;
+  transition: all 0.2s ease;
 }
 
-.search-tabs .btn.active-tab {
+.search-tabs .btn:hover {
+  background-color: white;
+}
+
+.search-tabs .active-tab {
   background-color: white !important;
   color: #0d6efd !important;
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+}
+
+.form-floating .form-control, .form-floating .form-select {
+  border-radius: 10px;
+  background-color: #f3f4f6 !important;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.form-floating .form-control:focus, .form-floating .form-select:focus {
+  background-color: white !important;
+  border: 1px solid #0d6efd;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+}
+
+.btn-primary {
+  border-radius: 10px !important;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(13, 110, 253, 0.3);
 }
 
 /* =========================================
-   SCORRIMENTO ORIZZONTALE (CAROSELLO)
+   CAROSELLO SCORRIMENTO ORIZZONTALE
    ========================================= */
 .horizontal-scroll-wrapper {
   display: flex;
   overflow-x: auto;
   gap: 1.5rem;
-  padding-bottom: 1.5rem;
-  scroll-snap-type: x mandatory; /* Effetto calamita */
-  -webkit-overflow-scrolling: touch; /* Fluido su mobile */
-
-  /* Nasconde completamente la scrollbar */
-  -ms-overflow-style: none;  /* Per Internet Explorer 10+ */
-  scrollbar-width: none;  /* Per Firefox */
+  padding: 1rem 0.5rem 2rem 0.5rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
-/* Nasconde la scrollbar brutta di Windows/Mac su Chrome/Safari */
 .horizontal-scroll-wrapper::-webkit-scrollbar {
   display: none;
 }
 
 .property-card-wrapper {
   flex: 0 0 auto;
-  width: 320px; /* Larghezza fissa per ogni card */
-  scroll-snap-align: start; /* Si allinea all'inizio quando scorri */
+  width: 340px;
+  scroll-snap-align: start;
 }
 
-.property-card {
-  border-radius: 15px;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.property-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
-}
-
-/* Stile About Section */
-#about-section {
-  border-top: 1px solid #eaeaea;
-}
-
-/* ==============================================
-   Stile Card Ultime Ricerche (Screenshot 1)
-   ============================================== */
-.recent-search-card {
-  transition: all 0.25s ease-in-out;
-  cursor: pointer;
-  border-radius: 12px; /* Angoli arrotondati come nella foto */
-}
-
-/* Effetto Hover: sollevamento e ombra più marcata */
-.recent-search-card:hover {
-  transform: translateY(-4px);
-  shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-  background-color: #fcfdfe !important; /* Un leggerissimo azzurro */
-}
-
-/* Coerenza dei testi nell'hover */
-.recent-search-card:hover .search-texts h6 {
-  color: #0d6efd !important; /* Il titolo diventa blu */
-}
-
-/* Stile dell'icona a cerchio */
-.recent-search-card .icon-circle {
-  border: 1px solid #e0e0e0;
-}
-
-/* ==============================================
-   Stile Card Mappa (Stile Ricerche Frequenti)
-   ============================================== */
+/* =========================================
+   SEZIONE CHI SIAMO E ULTIME RICERCHE
+   ========================================= */
 .map-search-card {
-  border-radius: 12px;
-  border-color: #e5e7eb !important;
-  transition: all 0.2s ease-in-out;
+  border-radius: 16px;
+  border: 1px solid #eaeaea !important;
+  transition: all 0.3s ease;
 }
 
 .map-search-card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
-  transform: translateY(-4px);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08) !important;
 }
 
 .map-bg {
-  height: 120px; /* Altezza della parte con la mappa */
+  height: 120px;
   background-color: #eef2f6;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #eaeaea;
 }
 
-/* Stile dei bottoncini grigi inferiori */
 .custom-tag {
   font-size: 0.75rem;
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: 1px solid #d1d5db;
-  background-color: #f9fafb;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background-color: #f3f4f6;
+  font-weight: 500;
 }
+
+/* =========================================
+   NUOVO: ANIMAZIONI ALLO SCORRIMENTO
+   ========================================= */
+.reveal-element {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.reveal-element.show-reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================
+   NUOVO: CARD CITTÀ IN EVIDENZA
+   ========================================= */
+.city-card {
+  height: 220px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.city-card img {
+  transition: transform 0.6s ease;
+}
+
+.city-card:hover img {
+  transform: scale(1.1); /* Zoom dell'immagine */
+}
+
+.city-card-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 60%);
+}
+
+.city-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2) !important;
+}
+
+/* =========================================
+   NUOVO: BANNER VALUTA CASA
+   ========================================= */
+.valuta-banner {
+  background: linear-gradient(135deg, #0d6efd 0%, #00378b 100%);
+}
+
+.bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.bg-shape-1 {
+  width: 400px; height: 400px;
+  top: -150px; right: -100px;
+}
+
+.bg-shape-2 {
+  width: 250px; height: 250px;
+  bottom: -80px; left: -80px;
+}
+
+.attribute-box {
+  transition: all 0.2s ease;
+}
+
+.attribute-box:focus-within {
+  border-color: #0d6efd !important;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1) !important;
+}
+
+/* Togliamo il bordo arancione di focus standard di bootstrap sugli input */
+.form-control.form-control-sm:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
