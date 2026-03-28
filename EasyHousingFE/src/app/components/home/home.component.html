@@ -51,7 +51,7 @@
 </div>
 
 <ng-container *ngIf="authService.isLoggedIn()">
-  <div class="container mt-5 reveal-element" *ngIf="ultimeRicerche.length > 0">
+  <div class="container mt-5 pt-4 reveal-element" *ngIf="ultimeRicerche.length > 0">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h4 class="fw-bold text-dark mb-0 d-flex align-items-center">
         <i class="bi bi-clock-history me-2 text-primary"></i> Le tue ultime ricerche
@@ -60,7 +60,6 @@
         Cancella cronologia
       </button>
     </div>
-
     <div class="row g-3">
       <div class="col-12 col-md-6 col-lg-3" *ngFor="let ricerca of ultimeRicerche">
         <div (click)="apriRicercaSalvata(ricerca)" class="card h-100 border map-search-card text-decoration-none p-0 overflow-hidden bg-white" style="cursor: pointer;">
@@ -85,7 +84,7 @@
   </div>
 </ng-container>
 
-<div class="container mt-4 pt-2 reveal-element">
+<div class="container mt-5 pt-5 mb-4 reveal-element">
   <h3 class="fw-bold mb-4 text-dark">Le città più cercate</h3>
   <div class="row g-3">
     <div class="col-6 col-md-3" *ngFor="let citta of cittaEvidenza">
@@ -93,14 +92,13 @@
         <img [src]="citta.img" class="w-100 h-100 object-fit-cover" alt="{{ citta.nome }}">
         <div class="city-card-overlay d-flex flex-column justify-content-end p-3">
           <h5 class="text-white fw-bold mb-0">{{ citta.nome }}</h5>
-          <small class="text-white opacity-75">{{ citta.annunci }} annunci</small>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="container mt-4 pt-2 reveal-element">
+<div class="container mt-5 pt-5 mb-4 reveal-element">
   <div class="d-flex justify-content-between align-items-end mb-4">
     <div>
       <h3 class="fw-bold mb-0 text-dark">Nuovi arrivi sul mercato</h3>
@@ -132,7 +130,7 @@
   </div>
 </div>
 
-<div class="container mt-5 pt-3 mb-5 reveal-element">
+<div class="container mt-5 pt-5 mb-5 reveal-element">
   <div class="row align-items-center g-5">
     <div class="col-lg-5">
       <h1 class="display-5 fw-bold text-dark mb-4">Scopri il valore della tua casa</h1>
@@ -169,8 +167,49 @@
   </div>
 </div>
 
+<div class="container mt-5 pt-5 mb-5 reveal-element">
+  <div class="p-4 p-md-5 rounded-4 shadow-sm border" style="background-color: #f4f8fb;">
+    <div class="row align-items-center g-5">
+
+      <div class="col-lg-5 text-center text-lg-start">
+        <h2 class="display-5 fw-bold text-dark mb-3">Confronta i prezzi di mercato</h2>
+        <p class="fs-5 text-muted mb-4">Analizza il mercato e scopri quanto valgono le case nella zona che ti interessa, esplorando la mappa interattiva d'Italia.</p>
+
+        <button class="btn btn-danger btn-lg fw-bold px-5 rounded-pill shadow-sm" routerLink="/prezzi-immobili" style="background-color: #E60000;">
+          CONFRONTA ORA <i class="bi bi-arrow-right ms-2"></i>
+        </button>
+      </div>
+
+      <div class="col-lg-7">
+        <div class="card border-0 rounded-4 overflow-hidden shadow-sm position-relative">
+          <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80" class="w-100 object-fit-cover" style="height: 300px; opacity: 0.8;" alt="Mappa Prezzi">
+
+          <div class="position-absolute top-0 end-0 m-3 d-flex gap-2">
+            <div class="bg-white rounded-pill px-3 py-2 shadow-sm fw-bold text-muted small"><i class="bi bi-search me-1"></i> Cerca zona</div>
+            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 35px; height: 35px;"><i class="bi bi-search"></i></div>
+          </div>
+
+          <div class="position-absolute top-50 start-50 translate-middle">
+            <span class="badge bg-primary rounded-pill px-3 py-2 shadow border border-2 border-white fs-6"><i class="bi bi-currency-euro"></i> 3.200/m²</span>
+          </div>
+          <div class="position-absolute top-25 start-25">
+            <span class="badge bg-primary rounded-pill px-3 py-2 shadow border border-2 border-white fs-6"><i class="bi bi-currency-euro"></i> 1.850/m²</span>
+          </div>
+          <div class="position-absolute bottom-0 start-50 translate-middle-x mb-3 w-75">
+            <div class="bg-white rounded-pill p-2 shadow-sm d-flex align-items-center">
+              <span class="small fw-bold text-muted me-3 ms-2">Euro al m²</span>
+              <div class="flex-grow-1 rounded-pill" style="height: 12px; background: linear-gradient(to right, #28a745, #ffc107, #dc3545);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <section id="about-section" class="py-5 bg-white mt-5 border-top reveal-element">
-  <div class="container py-4">
+  <div class="container py-5">
     <div class="row align-items-center g-5">
       <div class="col-lg-6">
         <div class="position-relative reveal-element" style="transition-delay: 0.2s;">

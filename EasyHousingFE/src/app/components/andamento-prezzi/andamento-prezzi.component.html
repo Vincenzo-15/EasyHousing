@@ -1,1 +1,64 @@
-<p>andamento-prezzi works!</p>
+<div class="border-bottom bg-light pt-4 pb-3 mb-4">
+  <div class="container-fluid px-4 px-lg-5">
+    <div class="d-flex align-items-center gap-3">
+      <a routerLink="/home" class="btn btn-light border shadow-sm rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;"><i class="bi bi-arrow-left"></i></a>
+      <div>
+        <h2 class="fw-bold text-dark mb-1">Andamento dei prezzi degli immobili in Italia</h2>
+        <p class="text-muted mb-0">I grafici seguenti mostrano l'andamento dei prezzi nel tempo in Italia per vendite e affitti.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid px-4 px-lg-5 pb-5">
+  <div class="row g-4">
+
+    <div class="col-lg-5 col-xl-4 d-flex flex-column gap-4 pb-4" style="height: calc(100vh - 150px); overflow-y: auto;">
+
+      <div class="bg-white">
+        <p class="text-dark" style="line-height: 1.8; font-size: 1.05rem;">
+          A Febbraio 2026 per gli immobili residenziali in vendita sono stati richiesti in media <strong>€ 2.167 al metro quadro</strong>, con <strong>un aumento del 3,73% rispetto a Febbraio 2025</strong> (2.089 €/m²).
+          Negli ultimi 2 anni, il prezzo medio in Italia ha raggiunto il suo massimo proprio questo mese.
+        </p>
+      </div>
+
+      <div class="card border rounded-3 bg-white shadow-sm d-flex flex-column">
+        <div class="bg-light p-3 border-bottom d-flex align-items-center">
+          <span class="rounded-circle d-inline-block me-3" style="width: 12px; height: 12px; background-color: #0d6efd;"></span>
+          <span class="fw-bold text-dark">Prezzo medio vendita (€/m²)</span>
+        </div>
+        <div class="p-3 position-relative" style="height: 300px;">
+          <canvas #trendChart></canvas>
+        </div>
+      </div>
+
+      <div class="card border rounded-3 bg-white shadow-sm d-flex flex-column mt-2">
+        <div class="bg-light p-3 border-bottom d-flex align-items-center">
+          <span class="rounded-circle d-inline-block me-3" style="width: 12px; height: 12px; background-color: #198754;"></span>
+          <span class="fw-bold text-dark">Prezzo medio affitto (€/m²)</span>
+        </div>
+        <div class="p-3 position-relative" style="height: 300px;">
+          <canvas #rentChart></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-7 col-xl-8">
+      <div class="card border rounded-3 shadow-sm h-100 position-relative overflow-hidden">
+
+        <div class="position-absolute top-0 start-0 m-3 z-index-top bg-white border rounded-3 shadow-sm p-2 d-flex align-items-center gap-3" style="z-index: 1000;">
+          <div class="fw-bold px-2 text-dark">Vendita</div>
+          <div class="d-flex align-items-center gap-2 small fw-medium text-muted">
+            <span>&lt; 1.300 €/m²</span>
+            <div style="width: 150px; height: 12px; background: linear-gradient(to right, #91cf60, #d9ef8b, #fee08b, #fc8d59, #d73027); border-radius: 4px;"></div>
+            <span>&gt; 3.000 €/m²</span>
+          </div>
+        </div>
+
+        <div id="italyMap" style="width: 100%; height: calc(100vh - 150px);"></div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImmobileService } from '../../services/immobile.service';
@@ -20,23 +20,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
   immobiliTutti: Immobile[] = [];
   immobili: Immobile[] = [];
   ultimiInseriti: Immobile[] = [];
-
-  // RISTABILITO: Array per le ultime ricerche
   ultimeRicerche: any[] = [];
   coverImages: { [id: number]: string } = {};
 
-  // Filtri Ricerca
   filtroKeyword: string = '';
   filtroTipo: string = 'Tutti';
   filtroPrezzo: number = 0;
   filtroContratto: string = 'VENDITA';
 
-  // --- DATI: Città in Evidenza ( assets/images/ ) ---
+  // Dati Città in evidenza
   cittaEvidenza = [
-    { nome: 'Milano', img: 'assets/images/milano.jpeg', annunci: 124 },
-    { nome: 'Roma', img: 'assets/images/roma.jpeg', annunci: 98 },
-    { nome: 'Firenze', img: 'assets/images/firenze.jpeg', annunci: 45 },
-    { nome: 'Napoli', img: 'assets/images/napoli.jpeg', annunci: 67 }
+    { nome: 'Milano', img: 'assets/images/milano.jpeg' },
+    { nome: 'Roma', img: 'assets/images/roma.jpeg' },
+    { nome: 'Firenze', img: 'assets/images/firenze.jpeg' },
+    { nome: 'Napoli', img: 'assets/images/napoli.jpeg' }
   ];
 
   constructor(
@@ -51,14 +48,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.caricaImmobili();
-
-    // RISTABILITO: Carica le ricerche se l'utente è loggato
     if (this.authService.isLoggedIn()) {
       this.caricaUltimeRicerche();
     }
   }
 
-  // Animazioni allo Scorrimento
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       const observer = new IntersectionObserver((entries) => {
@@ -69,9 +63,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         });
       }, { threshold: 0.10 });
 
-      document.querySelectorAll('.reveal-element').forEach((el) => {
-        observer.observe(el);
-      });
+      setTimeout(() => {
+        document.querySelectorAll('.reveal-element').forEach((el) => {
+          observer.observe(el);
+        });
+      }, 300);
     }
   }
 
@@ -97,7 +93,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // LOGICA DI RICERCA ESISTENTE
   impostaFiltroContratto(tipo: string) {
     this.filtroContratto = tipo;
     this.applicaFiltri();
@@ -115,32 +110,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   eseguiRicerca() {
-    // RISTABILITO: Salva la ricerca prima di cambiare pagina
-    if (this.authService.isLoggedIn()) {
-      this.salvaRicerca();
-    }
-
-    this.router.navigate(['/risultati-ricerca'], {
-      queryParams: { keyword: this.filtroKeyword, tipo: this.filtroTipo, prezzo: this.filtroPrezzo, contratto: this.filtroContratto }
-    });
+    if (this.authService.isLoggedIn()) this.salvaRicerca();
+    this.router.navigate(['/risultati-ricerca'], { queryParams: { keyword: this.filtroKeyword, tipo: this.filtroTipo, prezzo: this.filtroPrezzo, contratto: this.filtroContratto } });
   }
 
-  // Ricerca Rapida per Città
   eseguiRicercaCitta(citta: string) {
-    this.router.navigate(['/risultati-ricerca'], {
-      queryParams: { keyword: citta, contratto: 'TUTTI' }
-    });
+    this.router.navigate(['/risultati-ricerca'], { queryParams: { keyword: citta, contratto: 'TUTTI' } });
   }
 
-  // PREFERITI
   togglePreferito(event: Event, immobile: Immobile) {
     event.stopPropagation();
     event.preventDefault();
     this.preferitiService.togglePreferito(immobile);
   }
+
   isPreferito(idImmobile: number): boolean { return this.preferitiService.isPreferito(idImmobile); }
   gestisciErroreImmagine(event: any) { event.target.src = 'https://placehold.co/800x500/f8f9fa/a3a3a3?text=Nessuna+Foto+Disponibile'; }
-
 
   private getStorageKey(): string | null {
     const utente = this.authService.getUser();
@@ -157,7 +142,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   salvaRicerca() {
     if (!this.filtroKeyword && this.filtroTipo === 'Tutti' && this.filtroPrezzo === 0 && this.filtroContratto === 'TUTTI') return;
-
     const key = this.getStorageKey();
     if (!key) return;
 
@@ -175,21 +159,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     if (this.filtroPrezzo > 0) tags.push(`Max ${this.filtroPrezzo.toLocaleString('it-IT')}€`);
 
-    const nuovaRicerca = {
-      keyword: keywordSafe, tipo: this.filtroTipo, prezzo: this.filtroPrezzo,
-      contratto: this.filtroContratto, titolo: titoloStr, tags: tags
-    };
+    const nuovaRicerca = { keyword: keywordSafe, tipo: this.filtroTipo, prezzo: this.filtroPrezzo, contratto: this.filtroContratto, titolo: titoloStr, tags: tags };
 
-    const indiceDuplicato = this.ultimeRicerche.findIndex(r =>
-      (r.keyword || '').toLowerCase() === keywordSafe.toLowerCase() &&
-      r.tipo === nuovaRicerca.tipo && r.prezzo === nuovaRicerca.prezzo && r.contratto === nuovaRicerca.contratto
-    );
-
+    const indiceDuplicato = this.ultimeRicerche.findIndex(r => (r.keyword || '').toLowerCase() === keywordSafe.toLowerCase() && r.tipo === nuovaRicerca.tipo && r.prezzo === nuovaRicerca.prezzo && r.contratto === nuovaRicerca.contratto);
     if (indiceDuplicato !== -1) this.ultimeRicerche.splice(indiceDuplicato, 1);
 
     this.ultimeRicerche.unshift(nuovaRicerca);
     if (this.ultimeRicerche.length > 4) this.ultimeRicerche.pop();
-
     localStorage.setItem(key, JSON.stringify(this.ultimeRicerche));
   }
 
@@ -202,8 +178,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   apriRicercaSalvata(ricerca: any) {
-    this.router.navigate(['/risultati-ricerca'], {
-      queryParams: { contratto: ricerca.contratto, keyword: ricerca.keyword, tipo: ricerca.tipo, prezzo: ricerca.prezzo }
-    });
+    this.router.navigate(['/risultati-ricerca'], { queryParams: { contratto: ricerca.contratto, keyword: ricerca.keyword, tipo: ricerca.tipo, prezzo: ricerca.prezzo } });
   }
 }
