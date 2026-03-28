@@ -17,6 +17,9 @@ import { AstaService } from '../../services/asta.service';
 })
 export class InserisciAnnuncioComponent {
 
+  // --- VARIABILE PER GESTIRE I PASSAGGI ---
+  step: number = 1;
+
   nuovoImmobile: Immobile = {
     idImmobile: 0,
     nome: '',
@@ -32,6 +35,18 @@ export class InserisciAnnuncioComponent {
   };
 
   filesSelezionati: File[] = [];
+  descrizioneLibera: string = '';
+
+  dettagliExtra = {
+    locali: 2,
+    bagni: 1,
+    piano: 'Terra',
+    condizioni: 'Buono / Abitabile',
+    ascensore: 'No',
+    classeEnergetica: 'G'
+  };
+
+  isSubmitting = false; // Per il bottone finale
 
   constructor(
     private immobileService: ImmobileService,
@@ -40,6 +55,29 @@ export class InserisciAnnuncioComponent {
     private router: Router,
     private astaService: AstaService
   ) {}
+
+  // --- FUNZIONI DI NAVIGAZIONE STEP ---
+  avanti() {
+    // Validazione base per evitare passaggi a vuoto
+    if (this.step === 1) {
+      if (!this.nuovoImmobile.nome || !this.nuovoImmobile.indirizzo) {
+        alert("Inserisci Titolo e Indirizzo per continuare.");
+        return;
+      }
+    } else if (this.step === 2) {
+      if (this.nuovoImmobile.prezzoOrig <= 0 || this.nuovoImmobile.metriQuadri <= 0) {
+        alert("Prezzo e Metratura devono essere maggiori di 0.");
+        return;
+      }
+    }
+    window.scrollTo(0,0);
+    this.step++;
+  }
+
+  indietro() {
+    window.scrollTo(0,0);
+    this.step--;
+  }
 
   onFileSelected(event: any) {
     if (event.target.files && event.target.files.length > 0) {
@@ -62,30 +100,29 @@ export class InserisciAnnuncioComponent {
       return;
     }
 
+    this.isSubmitting = true;
+
+    // Impacchetta i dettagli extra dentro la descrizione
+    const extraJson = JSON.stringify(this.dettagliExtra);
+    this.nuovoImmobile.descrizione = this.descrizioneLibera + '|||' + extraJson;
+
     this.nuovoImmobile.proprietario = utenteCorrente.email;
     this.nuovoImmobile.prezzoAttuale = this.nuovoImmobile.prezzoOrig;
 
-    console.log('1. Richiesta salvataggio Immobile inviata...');
-
     this.immobileService.createImmobile(this.nuovoImmobile).subscribe({
       next: () => {
-        console.log('2. Immobile salvato. Attendo 1 secondo per far aggiornare il DB...');
-
         setTimeout(() => {
           this.recuperaIdEUploadFoto(utenteCorrente.email);
-        }, 1000); // <-- Aumentato a 1 secondo
+        }, 1000);
       },
       error: (err: any) => {
-        console.error('Errore salvataggio immobile', err);
+        this.isSubmitting = false;
         alert('Errore salvataggio immobile');
       }
     });
   }
 
   recuperaIdEUploadFoto(proprietario: string) {
-    console.log('-> Avvio richiesta recupero ID...');
-
-    // Aggiunta la gestione { next:, error: } per catturare eventuali errori silenziosi
     this.immobileService.getAllImmobili().subscribe({
       next: (immobili: Immobile[]) => {
         const mieiImmobili = immobili.filter(i => i.proprietario === proprietario);
@@ -94,45 +131,25 @@ export class InserisciAnnuncioComponent {
           mieiImmobili.sort((a, b) => b.idImmobile - a.idImmobile);
           const nuovoId = mieiImmobili[0].idImmobile;
 
-          console.log('3. VERO ID Trovato:', nuovoId);
-
           if (this.nuovoImmobile.tipoAnnuncio === 'ASTA') {
-
-            // Creiamo l'asta usando i millisecondi (il formato più sicuro per Java Timestamp)
             const nuovaAsta: any = {
-              idAsta: 0,
-              idImmobile: nuovoId,
-              acquirente: null,
+              idAsta: 0, idImmobile: nuovoId, acquirente: null,
               prezzoOrig: Number(this.nuovoImmobile.prezzoOrig),
               prezzoAttuale: Number(this.nuovoImmobile.prezzoOrig),
-              fine: new Date().getTime() + 2592000000 // Scadenza +30 giorni
+              fine: new Date().getTime() + 2592000000
             };
-
-            console.log('Tentativo salvataggio asta con payload:', nuovaAsta);
-
             this.astaService.creaAsta(nuovaAsta).subscribe({
-              next: () => {
-                console.log('4. Asta inizializzata e collegata con successo!');
-                this.uploadFiles(nuovoId);
-              },
-              error: (err) => {
-                console.error("ERRORE BACKEND ASTA:", err);
-                this.uploadFiles(nuovoId); // Procediamo comunque per non bloccare l'utente
-              }
+              next: () => this.uploadFiles(nuovoId),
+              error: () => this.uploadFiles(nuovoId)
             });
           } else {
-            console.log('Annuncio non è un\'asta, procedo alle foto.');
             this.uploadFiles(nuovoId);
           }
-
         } else {
-          console.error("Nessun immobile trovato nel DB per l'utente corrente.");
           this.router.navigate(['/home']);
         }
       },
-      error: (err) => {
-        // Se si ferma al passaggio 2, ora vedremo questo errore!
-        console.error("Errore FATALE in getAllImmobili:", err);
+      error: () => {
         this.router.navigate(['/home']);
       }
     });
@@ -154,10 +171,8 @@ export class InserisciAnnuncioComponent {
           tentativiCompletati++;
           this.checkChiusuraPagina(tentativiCompletati, errori);
         },
-        error: (err: any) => {
-          console.error('Errore upload file:', file.name, err);
-          tentativiCompletati++;
-          errori++;
+        error: () => {
+          tentativiCompletati++; errori++;
           this.checkChiusuraPagina(tentativiCompletati, errori);
         }
       });
@@ -166,13 +181,8 @@ export class InserisciAnnuncioComponent {
 
   checkChiusuraPagina(fatti: number, errori: number) {
     if (fatti === this.filesSelezionati.length) {
-      if (errori === 0) {
-        alert('Annuncio e Foto pubblicati con successo! 🚀');
-      } else if (errori < this.filesSelezionati.length) {
-        alert(`Annuncio pubblicato, ma ${errori} foto non sono state caricate. Controlla la console.`);
-      } else {
-        alert('Annuncio pubblicato, ma il caricamento delle foto è fallito.');
-      }
+      this.isSubmitting = false;
+      alert('Annuncio pubblicato con successo! 🚀');
       this.router.navigate(['/home']);
     }
   }

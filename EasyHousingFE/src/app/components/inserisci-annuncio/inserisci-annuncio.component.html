@@ -1,119 +1,229 @@
-<div class="container my-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
+<div class="container-fluid min-vh-100 bg-white">
 
-      <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-        <div class="bg-primary p-4 text-white text-center">
-          <h2 class="fw-bold mb-0"><i class="bi bi-house-add-fill me-2"></i> Pubblica Annuncio</h2>
-          <p class="mb-0 opacity-75">Compila i dettagli del tuo immobile</p>
+  <div class="row min-vh-100">
+
+    <div class="col-lg-8 p-4 p-md-5">
+
+      <div *ngIf="step === 1" class="fade-in">
+        <p class="text-muted fw-bold mb-2 text-uppercase small">Passaggio 1 di 3</p>
+        <h2 class="fw-bold mb-4">Le basi del tuo annuncio</h2>
+        <p class="text-muted mb-5">Iniziamo con le informazioni fondamentali del tuo immobile per attirare l'attenzione.</p>
+
+        <div class="row g-4" style="max-width: 700px;">
+
+          <div class="col-12">
+            <label class="form-label fw-bold text-dark">Titolo Annuncio *</label>
+            <input type="text" [(ngModel)]="nuovoImmobile.nome" class="form-control form-control-lg bg-light" placeholder="Es. Bellissimo attico luminoso in centro" required>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-bold text-dark">Indirizzo Completo *</label>
+            <div class="input-group input-group-lg">
+              <span class="input-group-text bg-light"><i class="bi bi-geo-alt text-muted"></i></span>
+              <input type="text" [(ngModel)]="nuovoImmobile.indirizzo" class="form-control bg-light" placeholder="Es. Via Roma 15, Milano" required>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark">Tipologia Immobile</label>
+            <select [(ngModel)]="nuovoImmobile.tipoImmobile" class="form-select form-select-lg bg-light">
+              <option value="Appartamento">Appartamento</option>
+              <option value="Villa">Villa / Indipendente</option>
+              <option value="Loft">Loft</option>
+              <option value="Attico">Attico</option>
+              <option value="Garage">Garage</option>
+              <option value="Terreno">Terreno Edificabile</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark">Tipo di Contratto</label>
+            <select [(ngModel)]="nuovoImmobile.tipoAnnuncio" class="form-select form-select-lg bg-light">
+              <option value="VENDITA">In Vendita</option>
+              <option value="AFFITTO">In Affitto</option>
+              <option value="ASTA">All'Asta (Offerta Base)</option>
+            </select>
+          </div>
+
         </div>
 
-        <div class="card-body p-5">
-          <form (ngSubmit)="onSubmit()">
-
-            <div class="row mb-4">
-              <div class="col-12 mb-3">
-                <label class="form-label fw-bold text-muted small text-uppercase"><i class="bi bi-fonts me-2"></i>Titolo Annuncio</label>
-                <input type="text" [(ngModel)]="nuovoImmobile.nome" name="nome" class="form-control form-control-lg bg-light border-0" placeholder="Es. Attico luminoso in centro..." required>
-              </div>
-              <div class="col-12">
-                <label class="form-label fw-bold text-muted small text-uppercase"><i class="bi bi-text-paragraph me-2"></i>Descrizione dettagliata</label>
-                <textarea [(ngModel)]="nuovoImmobile.descrizione" name="descrizione" rows="4" class="form-control bg-light border-0" placeholder="Descrivi i dettagli migliori del tuo immobile..."></textarea>
-              </div>
-            </div>
-
-            <div class="row mb-4">
-              <div class="col-md-6 mb-3 mb-md-0">
-                <label class="form-label fw-bold text-muted small text-uppercase"><i class="bi bi-house me-2"></i>Tipologia Immobile</label>
-                <select [(ngModel)]="nuovoImmobile.tipoImmobile" name="tipoImmobile" class="form-select form-select-lg bg-light border-0">
-                  <option value="Appartamento">Appartamento</option>
-                  <option value="Villa">Villa</option>
-                  <option value="Loft">Loft</option>
-                  <option value="Attico">Attico</option>
-                  <option value="Garage">Garage</option>
-                  <option value="Terreno">Terreno Edificabile</option>
-                  <option value="Ufficio">Ufficio / Negozio</option>
-                </select>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label fw-bold text-muted small text-uppercase"><i class="bi bi-file-earmark-text me-2"></i>Tipo di Contratto</label>
-                <select [(ngModel)]="nuovoImmobile.tipoAnnuncio" name="tipoAnnuncio" class="form-select form-select-lg bg-light border-0">
-                  <option value="VENDITA">In Vendita</option>
-                  <option value="AFFITTO">In Affitto</option>
-                  <option value="ASTA">All'Asta (Offerta Base)</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row mb-4">
-              <div class="col-md-6 mb-3 mb-md-0">
-                <label class="form-label fw-bold text-muted small text-uppercase"><i class="bi bi-currency-euro me-2"></i>Prezzo Richiesto</label>
-                <div class="input-group input-group-lg">
-                  <span class="input-group-text bg-light border-0 fw-bold">€</span>
-                  <input type="number" [(ngModel)]="nuovoImmobile.prezzoOrig" name="prezzo" class="form-control bg-light border-0" placeholder="0.00" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label fw-bold text-muted small text-uppercase"><i class="bi bi-arrows-fullscreen me-2"></i>Superficie (m²)</label>
-                <div class="input-group input-group-lg">
-                  <input type="number" [(ngModel)]="nuovoImmobile.metriQuadri" name="mq" class="form-control bg-light border-0" placeholder="Es. 120" required>
-                  <span class="input-group-text bg-light border-0 text-muted">m²</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="mb-4">
-              <label class="form-label fw-bold text-muted small text-uppercase"><i class="bi bi-geo-alt me-2"></i>Indirizzo Completo</label>
-              <div class="input-group input-group-lg">
-                <span class="input-group-text bg-light border-0"><i class="bi bi-map text-muted"></i></span>
-                <input type="text" [(ngModel)]="nuovoImmobile.indirizzo" name="indirizzo" class="form-control bg-light border-0" placeholder="Es. Via Garibaldi 12, Milano" required>
-              </div>
-            </div>
-
-            <div class="mb-5 p-4 rounded-4 border" style="background-color: #f8f9fa; border-style: dashed !important; border-width: 2px !important; border-color: #dee2e6 !important;">
-              <div class="text-center mb-4">
-                <i class="bi bi-cloud-arrow-up display-4 text-primary opacity-75"></i>
-                <h5 class="fw-bold mt-2">Carica le Foto dell'Immobile</h5>
-                <p class="text-muted small">I formati supportati sono JPG e PNG. Puoi selezionare più file.</p>
-              </div>
-
-              <input type="file"
-                     class="form-control form-control-lg"
-                     id="inputFoto"
-                     (change)="onFileSelected($event)"
-                     multiple
-                     accept="image/jpeg, image/png">
-
-              <div class="mt-4" *ngIf="filesSelezionati.length > 0">
-                <h6 class="fw-bold text-dark small text-uppercase mb-3">File pronti per il caricamento:</h6>
-                <ul class="list-group shadow-sm border-0">
-                  <li class="list-group-item d-flex justify-content-between align-items-center border-bottom"
-                      *ngFor="let file of filesSelezionati; let i = index">
-                    <div class="d-flex align-items-center">
-                      <i class="bi bi-image text-primary me-3 fs-5"></i>
-                      <div>
-                        <span class="fw-bold text-dark">{{ file.name }}</span>
-                        <br>
-                        <small class="text-muted">{{ (file.size / 1024 / 1024).toFixed(2) }} MB</small>
-                      </div>
-                    </div>
-                    <button type="button" class="btn btn-light text-danger btn-sm rounded-circle shadow-sm" (click)="rimuoviFile(i)" title="Rimuovi immagine">
-                      <i class="bi bi-trash3-fill"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="d-grid mt-4">
-              <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm rounded-3">
-                <i class="bi bi-check2-circle me-2 fs-5"></i> PUBBLICA ANNUNCIO ORA
-              </button>
-            </div>
-
-          </form>
+        <div class="mt-5 pt-3 border-top d-flex justify-content-end" style="max-width: 700px;">
+          <button class="btn btn-primary btn-lg px-5 rounded-pill fw-bold" (click)="avanti()">Continua <i class="bi bi-arrow-right ms-2"></i></button>
         </div>
       </div>
+
+
+      <div *ngIf="step === 2" class="fade-in">
+        <button class="btn btn-link text-decoration-none text-muted px-0 mb-4" (click)="indietro()"><i class="bi bi-arrow-left me-2"></i>Indietro</button>
+        <p class="text-muted fw-bold mb-2 text-uppercase small">Passaggio 2 di 3</p>
+        <h2 class="fw-bold mb-4">Caratteristiche Tecniche e Prezzo</h2>
+
+        <div class="row g-4" style="max-width: 700px;">
+
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark">Prezzo Richiesto *</label>
+            <div class="input-group input-group-lg">
+              <span class="input-group-text bg-light fw-bold">€</span>
+              <input type="number" [(ngModel)]="nuovoImmobile.prezzoOrig" class="form-control bg-light" placeholder="0.00" required>
+            </div>
+            <small class="text-muted" *ngIf="nuovoImmobile.tipoAnnuncio === 'ASTA'">Sarà il prezzo di partenza dell'asta.</small>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark">Superficie *</label>
+            <div class="input-group input-group-lg">
+              <input type="number" [(ngModel)]="nuovoImmobile.metriQuadri" class="form-control bg-light" placeholder="Es. 120" required>
+              <span class="input-group-text bg-light text-muted">m²</span>
+            </div>
+          </div>
+
+          <div class="col-12 mt-4">
+            <div class="p-4 rounded-4 border bg-light">
+              <h6 class="fw-bold mb-3">Dettagli Aggiuntivi</h6>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label class="small fw-bold text-muted">Locali</label>
+                  <input type="number" [(ngModel)]="dettagliExtra.locali" class="form-control border-0 shadow-sm" min="1">
+                </div>
+                <div class="col-md-4">
+                  <label class="small fw-bold text-muted">Bagni</label>
+                  <input type="number" [(ngModel)]="dettagliExtra.bagni" class="form-control border-0 shadow-sm" min="1">
+                </div>
+                <div class="col-md-4">
+                  <label class="small fw-bold text-muted">Piano</label>
+                  <select [(ngModel)]="dettagliExtra.piano" class="form-select border-0 shadow-sm">
+                    <option value="Terra">Terra</option>
+                    <option value="Intermedio">Intermedio</option>
+                    <option value="Ultimo">Ultimo Piano</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="small fw-bold text-muted">Condizioni</label>
+                  <select [(ngModel)]="dettagliExtra.condizioni" class="form-select border-0 shadow-sm">
+                    <option value="Nuovo / Costruzione">Nuovo / Costruzione</option>
+                    <option value="Ottimo / Ristrutturato">Ristrutturato</option>
+                    <option value="Buono / Abitabile">Abitabile</option>
+                    <option value="Da Ristrutturare">Da Ristrutturare</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="small fw-bold text-muted">Ascensore</label>
+                  <select [(ngModel)]="dettagliExtra.ascensore" class="form-select border-0 shadow-sm">
+                    <option value="Sì">Sì</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="small fw-bold text-muted">Classe Energetica</label>
+                  <select [(ngModel)]="dettagliExtra.classeEnergetica" class="form-select border-0 shadow-sm">
+                    <option value="A+">A+</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="G">G</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mt-5 pt-3 border-top d-flex justify-content-between" style="max-width: 700px;">
+          <button class="btn btn-outline-secondary px-4 rounded-pill fw-bold" (click)="indietro()">Indietro</button>
+          <button class="btn btn-primary btn-lg px-5 rounded-pill fw-bold" (click)="avanti()">Continua <i class="bi bi-arrow-right ms-2"></i></button>
+        </div>
+      </div>
+
+
+      <div *ngIf="step === 3" class="fade-in">
+        <button class="btn btn-link text-decoration-none text-muted px-0 mb-4" (click)="indietro()"><i class="bi bi-arrow-left me-2"></i>Indietro</button>
+        <p class="text-muted fw-bold mb-2 text-uppercase small">Passaggio 3 di 3</p>
+        <h2 class="fw-bold mb-4">Il tocco finale</h2>
+
+        <div class="row g-4" style="max-width: 700px;">
+
+          <div class="col-12">
+            <label class="form-label fw-bold text-dark">Descrizione Pubblica dell'annuncio</label>
+            <textarea [(ngModel)]="descrizioneLibera" rows="5" class="form-control bg-light" placeholder="Descrivi i dettagli migliori, i punti di forza e perché qualcuno dovrebbe acquistare o affittare questo immobile..."></textarea>
+          </div>
+
+          <div class="col-12 mt-4">
+            <label class="form-label fw-bold text-dark">Galleria Fotografica</label>
+            <div class="p-5 rounded-4 border text-center border-dashed" style="background-color: #fcfcfc;">
+              <i class="bi bi-cloud-arrow-up display-4 text-primary opacity-75"></i>
+              <h5 class="fw-bold mt-3">Carica le Foto dell'Immobile</h5>
+              <p class="text-muted small mb-4">Trascina qui le immagini o clicca per sfogliare. (Formati supportati: JPG, PNG)</p>
+
+              <input type="file" class="form-control" id="inputFoto" (change)="onFileSelected($event)" multiple accept="image/jpeg, image/png">
+            </div>
+
+            <div class="mt-4" *ngIf="filesSelezionati.length > 0">
+              <h6 class="fw-bold text-dark small text-uppercase mb-3">Immagini pronte ({{filesSelezionati.length}}):</h6>
+              <ul class="list-group shadow-sm border-0">
+                <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let file of filesSelezionati; let i = index">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-image text-primary me-3 fs-5"></i>
+                    <div>
+                      <span class="fw-bold text-dark">{{ file.name }}</span><br>
+                      <small class="text-muted">{{ (file.size / 1024 / 1024).toFixed(2) }} MB</small>
+                    </div>
+                  </div>
+                  <button class="btn btn-light text-danger rounded-circle p-2" (click)="rimuoviFile(i)"><i class="bi bi-trash-fill"></i></button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mt-5 pt-3 border-top d-flex justify-content-between" style="max-width: 700px;">
+          <button class="btn btn-outline-secondary px-4 rounded-pill fw-bold" (click)="indietro()" [disabled]="isSubmitting">Indietro</button>
+          <button class="btn btn-success btn-lg px-5 rounded-pill fw-bold" (click)="onSubmit()" [disabled]="isSubmitting">
+            <span *ngIf="!isSubmitting"><i class="bi bi-check-lg me-2"></i> PUBBLICA ORA</span>
+            <span *ngIf="isSubmitting"><i class="spinner-border spinner-border-sm me-2"></i> Salvataggio...</span>
+          </button>
+        </div>
+      </div>
+
     </div>
+
+    <div class="col-lg-4 bg-light d-none d-lg-flex flex-column justify-content-center p-5 border-start position-relative">
+      <div class="tracker-wrapper">
+
+        <div class="tracker-step d-flex mb-5" [ngClass]="{'active': step === 1, 'completed': step > 1}">
+          <div class="tracker-icon rounded-circle d-flex align-items-center justify-content-center me-3 border border-2 bg-white">
+            <i class="bi bi-pencil-square fs-5" *ngIf="step === 1"></i>
+            <i class="bi bi-check-lg fs-5 text-white" *ngIf="step > 1"></i>
+          </div>
+          <div>
+            <h5 class="fw-bold mb-1" [ngClass]="{'text-primary': step === 1, 'text-dark': step > 1}">Basi Annuncio</h5>
+            <p class="text-muted small mb-0">Titolo e Indirizzo</p>
+          </div>
+        </div>
+
+        <div class="tracker-step d-flex mb-5" [ngClass]="{'active': step === 2, 'completed': step > 2}">
+          <div class="tracker-icon rounded-circle d-flex align-items-center justify-content-center me-3 border border-2 bg-white">
+            <i class="bi bi-tags fs-5" *ngIf="step === 2"></i>
+            <i class="bi bi-check-lg fs-5 text-white" *ngIf="step > 2"></i>
+          </div>
+          <div>
+            <h5 class="fw-bold mb-1" [ngClass]="{'text-primary': step === 2, 'text-muted': step < 2, 'text-dark': step > 2}">Caratteristiche</h5>
+            <p class="text-muted small mb-0">Prezzo e Dati Tecnici</p>
+          </div>
+        </div>
+
+        <div class="tracker-step d-flex" [ngClass]="{'active': step === 3}">
+          <div class="tracker-icon rounded-circle d-flex align-items-center justify-content-center me-3 border border-2 bg-white">
+            <i class="bi bi-images fs-5"></i>
+          </div>
+          <div>
+            <h5 class="fw-bold mb-1" [ngClass]="{'text-primary': step === 3, 'text-muted': step < 3}">Pubblicazione</h5>
+            <p class="text-muted small mb-0">Descrizione e Foto</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </div>

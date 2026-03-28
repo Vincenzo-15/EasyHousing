@@ -126,7 +126,7 @@ export class RisultatiRicercaComponent implements OnInit, AfterViewInit {
       'roma': [41.9028, 12.4964], 'milano': [45.4642, 9.1900], 'positano': [40.6281, 14.4850],
       'siena': [43.3188, 11.3308], 'torino': [45.0703, 7.6869], 'bologna': [44.4949, 11.3426],
       'firenze': [43.7696, 11.2558], 'padova': [45.4064, 11.8768], 'napoli': [40.8518, 14.2681],
-      'verona': [45.4384, 10.9916], 'salerno': [40.6824, 14.7681], 'cortina': [46.5405, 12.1366]
+      'verona': [45.4384, 10.9916], 'salerno': [40.6824, 14.7681], 'cortina': [46.5405, 12.1366], 'reggio calabria': [38.1105, 15.6613], 'cosenza': [39.2992, 16.2538], 'rende': [39.3521, 16.2038]
     };
 
     let viewLat = 41.8719; // Centro Italia

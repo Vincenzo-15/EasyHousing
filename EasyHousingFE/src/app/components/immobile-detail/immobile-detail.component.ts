@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
 import { Recensione } from '../../models/recensione.model';
 import { AstaService } from '../../services/asta.service';
 import { AstaModel } from '../../models/asta.model';
-import { PreferitiService } from '../../services/preferiti.service'; // <--- IMPORTATO QUI
+import { PreferitiService } from '../../services/preferiti.service';
 
 @Component({
   selector: 'app-immobile-detail',
@@ -29,6 +29,9 @@ export class ImmobileDetailComponent implements OnInit {
 
   messaggioTesto: string = '';
   nomeVenditore: string = '';
+
+  descrizionePulita: string = ' ';
+  dettagliExtra: any = null;
 
   // Dizionario per mappare gli ID utente ai Nomi Reali
   nomiRecensori: { [id: number]: string } = {};
@@ -68,6 +71,20 @@ export class ImmobileDetailComponent implements OnInit {
       this.immobileService.getImmobileById(id).subscribe({
         next: (data: Immobile) => {
           this.immobile = data;
+
+          if (this.immobile.descrizione && this.immobile.descrizione.includes('|||')) {
+            const parti = this.immobile.descrizione.split('|||');
+            this.descrizionePulita = parti[0]; // La prima parte è il testo vero e proprio
+            try {
+              this.dettagliExtra = JSON.parse(parti[1]); // La seconda parte la ritrasformiamo in oggetto!
+            } catch (e) {
+              this.dettagliExtra = null;
+            }
+          } else {
+            // Se è un vecchio annuncio del database senza dettagli extra
+            this.descrizionePulita = this.immobile.descrizione;
+            this.dettagliExtra = null;
+          }
 
           // RECUPERO DATI ASTA (Se l'annuncio è un'asta)
           if (this.immobile.tipoAnnuncio === 'ASTA') {
