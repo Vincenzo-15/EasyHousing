@@ -1,0 +1,21 @@
+.footer-link {
+  opacity: 0.85;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.footer-link:hover {
+  opacity: 1;
+  text-decoration: underline !important;
+  transform: translateX(3px); /* Si sposta leggermente a destra */
+}
+
+.social-icon {
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  opacity: 1;
+  transform: scale(1.2); /* Ingrandisce l'icona */
+}
