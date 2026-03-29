@@ -20,12 +20,17 @@ export class RegisterComponent {
     cognome: '',
     email: '',
     password: '',
-    telefono: '', // Aggiungiamo un campo vuoto se serve
-    ruolo: 'ACQUIRENTE' // Default
-    // idUtente non serve, lo genera il DB
+    telefono: '',
+    ruolo: 'ACQUIRENTE' // Valore di default
   } as Utente;
 
   constructor(private authService: AuthService, private router: Router) {}
+
+  // --- ECCO LA FUNZIONE MANCANTE CHE RISOLVE L'ERRORE ---
+  setRuolo(ruoloSelezionato: string) {
+    this.nuovoUtente.ruolo = ruoloSelezionato;
+  }
+  // ------------------------------------------------------
 
   onRegister() {
     console.log('Registrazione in corso...', this.nuovoUtente);
@@ -37,8 +42,8 @@ export class RegisterComponent {
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        console.error('Errore registrazione:', err);
-        alert('Errore durante la registrazione. Controlla la console.');
+        console.error('Errore registrazione', err);
+        alert('Errore durante la registrazione. Riprova.');
       }
     });
   }

@@ -35,4 +35,8 @@ export class UtenteService {
   getUtenteById(id: number): Observable<Utente> {
     return this.http.get<Utente>(`${this.apiUrl}/findByIdUtente/${id}`);
   }
+
+  aggiornaUtente(utente: Utente): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/update`, utente);
+  }
 }

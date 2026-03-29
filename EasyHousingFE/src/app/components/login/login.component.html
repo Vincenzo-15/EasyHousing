@@ -1,56 +1,67 @@
-<div class="container-fluid vh-100">
-  <div class="row h-100">
+<div class="container-fluid min-vh-100 d-flex p-0 mb-5 pb-5"> <div class="col-lg-6 d-none d-lg-block p-0 position-relative">
+  <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80"
+       class="w-100 h-100 object-fit-cover" alt="Sfondo Login">
 
-    <div class="col-lg-6 d-none d-lg-block p-0 position-relative">
-      <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-           class="w-100 h-100 object-fit-cover" alt="Login Background">
-      <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-25"></div> <div class="position-absolute bottom-0 start-0 p-5 text-white">
-      <h2 class="fw-bold">Bentornato su Easy Housing.</h2>
-      <p class="lead">Trova la casa dei tuoi sogni oggi stesso.</p>
+  <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
+
+  <div class="position-absolute bottom-0 start-0 p-5 text-white w-100" style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
+    <h2 class="display-5 fw-bold mb-3">Bentornato su Easy Housing.</h2>
+    <p class="fs-5 opacity-75 mb-0">Accedi al tuo account per gestire i tuoi immobili, salvare i preferiti e scoprire le ultime novità del mercato.</p>
+  </div>
+</div>
+
+  <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white py-4 position-relative">
+
+    <a routerLink="/home" class="position-absolute top-0 end-0 m-3 btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+      <i class="bi bi-x-lg"></i>
+    </a>
+
+    <div class="login-box w-100 px-4 px-md-5" style="max-width: 450px;"> <div class="text-center mb-4 fade-in">
+      <div class="bg-primary text-white rounded-3 d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 50px; height: 50px;">
+        <i class="bi bi-house-door-fill fs-3"></i>
+      </div>
+      <h4 class="fw-bold mb-1">Accedi al tuo Account</h4>
+      <p class="text-muted small">Inserisci le tue credenziali per continuare</p>
     </div>
-    </div>
 
-    <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white">
-      <div class="login-box w-75" style="max-width: 450px;">
+      <form (ngSubmit)="onLogin()" class="fade-in" style="animation-delay: 0.1s;">
 
-        <div class="text-center mb-5">
-          <h3 class="fw-bold mb-2">Accedi al tuo Account</h3>
-          <p class="text-muted">Inserisci le tue credenziali per continuare</p>
+        <div class="mb-3">
+          <label class="form-label fw-bold small text-uppercase text-muted mb-1">Email</label>
+          <div class="input-group shadow-sm-focus"> <span class="input-group-text bg-light border-0 px-3"><i class="bi bi-envelope text-muted"></i></span>
+            <input type="email" [(ngModel)]="email" name="email" class="form-control bg-light border-0 ps-0" placeholder="mario.rossi@email.com" required>
+          </div>
         </div>
 
-        <form (ngSubmit)="onLogin()">
-
-          <div class="mb-4">
-            <label class="form-label fw-bold small text-uppercase text-muted">Email</label>
-            <input type="email" [(ngModel)]="email" name="email" class="form-control form-control-lg bg-light border-0" required>
+        <div class="mb-3">
+          <label class="form-label fw-bold small text-uppercase text-muted mb-1">Password</label>
+          <div class="input-group shadow-sm-focus">
+            <span class="input-group-text bg-light border-0 px-3"><i class="bi bi-lock text-muted"></i></span>
+            <input type="password" [(ngModel)]="password" name="password" class="form-control bg-light border-0 ps-0" placeholder="••••••••" required>
           </div>
+        </div>
 
-          <div class="mb-4">
-            <label class="form-label fw-bold small text-uppercase text-muted">Password</label>
-            <input type="password" [(ngModel)]="password" name="password" class="form-control form-control-lg bg-light border-0" required>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="rememberMe">
+            <label class="form-check-label small text-muted fw-medium" for="rememberMe">Ricordami</label>
           </div>
+          <a href="javascript:void(0)" class="small text-primary text-decoration-none fw-bold">Password dimenticata?</a>
+        </div>
 
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="rememberMe">
-              <label class="form-check-label small" for="rememberMe">Ricordami</label>
-            </div>
-            <a href="#" class="small text-primary text-decoration-none fw-bold">Password dimenticata?</a>
-          </div>
+        <div class="d-grid mb-4">
+          <button type="submit" class="btn btn-primary py-2 fw-bold shadow-sm rounded-pill transition-hover">
+            ACCEDI ORA <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
 
-          <div class="d-grid mb-4">
-            <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm">ACCEDI</button>
-          </div>
+        <div class="text-center mt-4">
+          <span class="text-muted small">Non hai ancora un account? </span>
+          <a routerLink="/register" class="text-primary fw-bold text-decoration-none small hover-underline">Registrati qui</a>
+        </div>
 
-          <div class="text-center">
-            <span class="text-muted small">Non hai un account? </span>
-            <a routerLink="/register" class="text-primary fw-bold text-decoration-none small">Registrati ora</a>
-          </div>
-
-        </form>
-
-      </div>
+      </form>
     </div>
-
   </div>
+
 </div>

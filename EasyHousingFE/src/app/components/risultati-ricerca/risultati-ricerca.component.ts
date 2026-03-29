@@ -121,12 +121,21 @@ export class RisultatiRicercaComponent implements OnInit, AfterViewInit {
     this.markers.forEach(marker => this.map.removeLayer(marker));
     this.markers = [];
 
-    // 1. Dizionario veloce per gli immobili di base (per un caricamento istantaneo)
+    // 1. DIZIONARIO ESTESO: Capoluoghi e principali città italiane
     const coordinateCitta: { [key: string]: [number, number] } = {
-      'roma': [41.9028, 12.4964], 'milano': [45.4642, 9.1900], 'positano': [40.6281, 14.4850],
-      'siena': [43.3188, 11.3308], 'torino': [45.0703, 7.6869], 'bologna': [44.4949, 11.3426],
-      'firenze': [43.7696, 11.2558], 'padova': [45.4064, 11.8768], 'napoli': [40.8518, 14.2681],
-      'verona': [45.4384, 10.9916], 'salerno': [40.6824, 14.7681], 'cortina': [46.5405, 12.1366], 'reggio calabria': [38.1105, 15.6613], 'cosenza': [39.2992, 16.2538], 'rende': [39.3521, 16.2038]
+      // Nord
+      'aosta': [45.7349, 7.3131], 'torino': [45.0703, 7.6869], 'genova': [44.4056, 8.9463], 'milano': [45.4642, 9.1900],
+      'trento': [46.0664, 11.1258], 'bolzano': [46.4983, 11.3548], 'venezia': [45.4408, 12.3155], 'verona': [45.4384, 10.9916],
+      'padova': [45.4064, 11.8768], 'cortina': [46.5405, 12.1366], 'trieste': [45.6495, 13.7768], 'bologna': [44.4949, 11.3426],
+      // Centro
+      'firenze': [43.7696, 11.2558], 'siena': [43.3188, 11.3308], 'perugia': [43.1107, 12.3908], 'ancona': [43.6158, 13.5189],
+      'roma': [41.9028, 12.4964], 'latina': [41.4676, 12.9036], 'viterbo': [42.4207, 12.1016],
+      // Sud e Isole
+      'l\'aquila': [42.3498, 13.3995], 'pescara': [42.4618, 14.2161], 'campobasso': [41.5601, 14.6627], 'napoli': [40.8518, 14.2681],
+      'salerno': [40.6824, 14.7681], 'positano': [40.6281, 14.4850], 'bari': [41.1171, 16.8719], 'lecce': [40.3515, 18.1750],
+      'potenza': [40.6366, 15.8023], 'matera': [40.6333, 16.6000], 'catanzaro': [38.9098, 16.5877], 'reggio calabria': [38.1105, 15.6613],
+      'cosenza': [39.2992, 16.2538], 'rende': [39.3521, 16.2038], 'palermo': [38.1157, 13.3615], 'catania': [37.5079, 15.0830],
+      'messina': [38.1938, 15.5540], 'cagliari': [39.2238, 9.1116], 'sassari': [39.7299, 8.5555]
     };
 
     let viewLat = 41.8719; // Centro Italia
@@ -134,7 +143,6 @@ export class RisultatiRicercaComponent implements OnInit, AfterViewInit {
     let zoomLevel = 5.5;
 
     // 2. CENTRATURA DINAMICA TRAMITE API
-    // Se l'utente cerca una città non in lista (es. "Cosenza"), l'API trova le coordinate e ci vola sopra!
     if (this.filtroKeyword && this.filtroKeyword.trim() !== '') {
       const keywordLower = this.filtroKeyword.toLowerCase();
       let found = false;
@@ -149,7 +157,6 @@ export class RisultatiRicercaComponent implements OnInit, AfterViewInit {
         }
       }
 
-      // Se la parola cercata non è nel dizionario, usa l'API OpenStreetMap!
       if (!found) {
         try {
           const resp = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(this.filtroKeyword)}`);
@@ -164,17 +171,17 @@ export class RisultatiRicercaComponent implements OnInit, AfterViewInit {
     }
 
     // 3. POSIZIONAMENTO MARKER DEGLI IMMOBILI CON API GEOCODING
-    // Usiamo for...of invece di forEach perché stiamo usando 'await'
     for (const immobile of this.immobiliFiltrati) {
-      let lat = 41.9028;
+      let lat = 41.9028; // Default Roma
       let lng = 12.4964;
       let trovataInCache = false;
 
       const indirizzoLower = immobile.indirizzo.toLowerCase();
 
-      // Controllo rapido nel dizionario locale
+      // Controllo rapido nel dizionario locale ESTESO
       for (const citta in coordinateCitta) {
         if (indirizzoLower.includes(citta)) {
+          // Aggiunge offset per non far sovrapporre gli immobili
           lat = coordinateCitta[citta][0] + (Math.random() - 0.5) * 0.015;
           lng = coordinateCitta[citta][1] + (Math.random() - 0.5) * 0.015;
           trovataInCache = true;
@@ -182,15 +189,15 @@ export class RisultatiRicercaComponent implements OnInit, AfterViewInit {
         }
       }
 
-      // Se è un immobile nuovo in una città sconosciuta, CHIAMIAMO L'API ESTERNA!
+      // Se non la troviamo nel dizionario, usiamo l'API con la cache per evitare i limiti di Rate (Max 1 req/sec)
       if (!trovataInCache) {
         if (this.geocodeCache[immobile.indirizzo]) {
-          // Se l'abbiamo già cercata prima, usa la cache per essere velocissimi
           lat = this.geocodeCache[immobile.indirizzo][0];
           lng = this.geocodeCache[immobile.indirizzo][1];
         } else {
-          // Altrimenti contatta OpenStreetMap per avere le coordinate esatte dell'indirizzo
           try {
+            // Piccolo delay artificiale per non far arrabbiare l'API di OpenStreetMap
+            await new Promise(r => setTimeout(r, 500));
             const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(immobile.indirizzo)}`);
             const data = await response.json();
             if (data && data.length > 0) {
@@ -199,7 +206,7 @@ export class RisultatiRicercaComponent implements OnInit, AfterViewInit {
               this.geocodeCache[immobile.indirizzo] = [lat, lng]; // Salva nella cache
             }
           } catch (error) {
-            console.error("Geocoding fallito per:", immobile.indirizzo);
+            console.error("Geocoding fallito o bloccato per:", immobile.indirizzo);
           }
         }
       }
@@ -253,12 +260,10 @@ export class RisultatiRicercaComponent implements OnInit, AfterViewInit {
     });
   }
 
-
-
   apriDettaglio(id: number) {
     this.router.navigate(['/dettaglio', id]);
   }
-  // --- GESTIONE ERRORI IMMAGINI ---
+
   gestisciErroreImmagine(event: any) {
     event.target.src = 'https://placehold.co/800x500/f8f9fa/a3a3a3?text=Nessuna+Foto+Disponibile';
   }

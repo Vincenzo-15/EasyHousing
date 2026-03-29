@@ -40,6 +40,11 @@ export class AuthService {
     this.userSubject.next(null);
   }
 
+  updateCurrentUser(user: Utente) {
+    this.saveUserToStorage(user); // Salva col nome corretto
+    this.userSubject.next(user);  // Avvisa la Navbar di aggiornarsi
+  }
+
   // 3. RECUPERA UTENTE (al refresh F5)
   private getUserFromStorage(): Utente | null {
     const userJson = localStorage.getItem('utente_sessione');

@@ -1,77 +1,95 @@
-<div class="container-fluid min-vh-100 d-flex p-0">
+<div class="container-fluid min-vh-100 d-flex p-0 mb-5 pb-5"> <div class="col-lg-5 d-none d-lg-block p-0 position-relative">
+  <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80"
+       class="w-100 h-100 object-fit-cover" alt="Sfondo Registrazione">
 
-  <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white py-5">
-    <div class="login-box w-75" style="max-width: 500px;">
+  <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
 
-      <div class="mb-5">
-        <h2 class="fw-bold mb-2">Crea un Account</h2>
-        <p class="text-muted">Unisciti alla community di Easy Housing oggi stesso.</p>
+  <div class="position-absolute bottom-0 start-0 p-5 text-white w-100" style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
+    <h2 class="display-5 fw-bold mb-3">Il tuo viaggio inizia qui.</h2>
+    <p class="fs-5 opacity-75 mb-0">Unisciti a migliaia di utenti. Che tu voglia vendere il tuo immobile o cercare la casa dei sogni, Easy Housing è la soluzione perfetta.</p>
+  </div>
+</div>
+
+  <div class="col-lg-7 d-flex align-items-center justify-content-center bg-white py-4 position-relative">
+
+    <a routerLink="/home" class="position-absolute top-0 end-0 m-3 btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 10;">
+      <i class="bi bi-x-lg"></i>
+    </a>
+
+    <div class="login-box w-100 px-4 px-md-5" style="max-width: 550px;">
+
+      <div class="mb-4 fade-in">
+        <h3 class="fw-bold mb-1">Crea un Account</h3>
+        <p class="text-muted small">Compila i campi sottostanti per unirti a Easy Housing.</p>
       </div>
 
-      <form (ngSubmit)="onRegister()">
+      <form (ngSubmit)="onRegister()" class="fade-in" style="animation-delay: 0.1s;">
 
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label class="form-label fw-bold small text-muted">Nome</label>
-            <input type="text" [(ngModel)]="nuovoUtente.nome" name="nome" class="form-control bg-light border-0 py-3" placeholder="Mario" required>
+        <div class="row g-2 mb-3"> <div class="col-md-6">
+          <label class="form-label fw-bold small text-uppercase text-muted mb-1">Nome *</label>
+          <div class="input-group shadow-sm-focus"> <span class="input-group-text bg-light border-0 px-3"><i class="bi bi-person text-muted"></i></span>
+            <input type="text" [(ngModel)]="nuovoUtente.nome" name="nome" class="form-control bg-light border-0 ps-0" placeholder="Mario" required>
           </div>
+        </div>
           <div class="col-md-6">
-            <label class="form-label fw-bold small text-muted">Cognome</label>
-            <input type="text" [(ngModel)]="nuovoUtente.cognome" name="cognome" class="form-control bg-light border-0 py-3" placeholder="Rossi" required>
+            <label class="form-label fw-bold small text-uppercase text-muted mb-1">Cognome *</label>
+            <div class="input-group shadow-sm-focus">
+              <span class="input-group-text bg-light border-0 px-3"><i class="bi bi-person text-muted"></i></span>
+              <input type="text" [(ngModel)]="nuovoUtente.cognome" name="cognome" class="form-control bg-light border-0 ps-0" placeholder="Rossi" required>
+            </div>
           </div>
         </div>
 
         <div class="mb-3">
-          <label class="form-label fw-bold small text-muted">Email</label>
-          <input type="email" [(ngModel)]="nuovoUtente.email" name="email" class="form-control bg-light border-0 py-3" placeholder="mario@esempio.com" required>
+          <label class="form-label fw-bold small text-uppercase text-muted mb-1">Email *</label>
+          <div class="input-group shadow-sm-focus">
+            <span class="input-group-text bg-light border-0 px-3"><i class="bi bi-envelope text-muted"></i></span>
+            <input type="email" [(ngModel)]="nuovoUtente.email" name="email" class="form-control bg-light border-0 ps-0" placeholder="mario.rossi@email.com" required>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label fw-bold small text-muted">Password</label>
-          <input type="password" [(ngModel)]="nuovoUtente.password" name="password" class="form-control bg-light border-0 py-3" placeholder="••••••••" required>
+        <div class="row g-2 mb-3">
+          <div class="col-md-6">
+            <label class="form-label fw-bold small text-uppercase text-muted mb-1">Password *</label>
+            <div class="input-group shadow-sm-focus">
+              <span class="input-group-text bg-light border-0 px-3"><i class="bi bi-lock text-muted"></i></span>
+              <input type="password" [(ngModel)]="nuovoUtente.password" name="password" class="form-control bg-light border-0 ps-0" placeholder="••••••••" required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold small text-uppercase text-muted mb-1">Telefono <span class="fw-normal text-lowercase">(Opz.)</span></label>
+            <div class="input-group shadow-sm-focus">
+              <span class="input-group-text bg-light border-0 px-3"><i class="bi bi-telephone text-muted"></i></span>
+              <input type="tel" [(ngModel)]="nuovoUtente.telefono" name="telefono" class="form-control bg-light border-0 ps-0" placeholder="333 1234567">
+            </div>
+          </div>
         </div>
 
         <div class="mb-4">
-          <label class="form-label fw-bold small text-muted">Cosa vuoi fare?</label>
-          <div class="d-flex gap-3">
-
-            <div class="form-check card-radio flex-fill p-0">
-              <input class="form-check-input d-none" type="radio" name="ruolo" id="roleBuyer" value="ACQUIRENTE" [(ngModel)]="nuovoUtente.ruolo">
-              <label class="form-check-label btn btn-outline-secondary w-100 py-3 fw-bold" for="roleBuyer">
-                <i class="bi bi-search me-2"></i> Cerco Casa
-              </label>
+          <label class="form-label fw-bold small text-uppercase text-muted mb-2 d-block">Il tuo ruolo *</label>
+          <div class="d-flex flex-wrap gap-2">
+            <div class="role-box flex-fill p-2" [class.active]="nuovoUtente.ruolo === 'ACQUIRENTE'" (click)="setRuolo('ACQUIRENTE')">
+              <i class="bi bi-search fs-5 mb-1 d-block"></i> <small>Cerco Casa</small>
             </div>
-
-            <div class="form-check card-radio flex-fill p-0">
-              <input class="form-check-input d-none" type="radio" name="ruolo" id="roleSeller" value="VENDITORE" [(ngModel)]="nuovoUtente.ruolo">
-              <label class="form-check-label btn btn-outline-secondary w-100 py-3 fw-bold" for="roleSeller">
-                <i class="bi bi-house-add me-2"></i> Vendo Casa
-              </label>
+            <div class="role-box flex-fill p-2" [class.active]="nuovoUtente.ruolo === 'VENDITORE'" (click)="setRuolo('VENDITORE')">
+              <i class="bi bi-shop-window fs-5 mb-1 d-block"></i> <small>Vendo Casa</small>
             </div>
-
           </div>
         </div>
 
-        <div class="d-grid mb-4">
-          <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm">REGISTRATI</button>
+        <div class="d-grid mb-3">
+          <button type="submit" class="btn btn-primary py-2 fw-bold shadow-sm rounded-pill transition-hover">
+            CREA ACCOUNT <i class="bi bi-check2-circle ms-2"></i>
+          </button>
         </div>
 
         <div class="text-center">
           <span class="text-muted small">Hai già un account? </span>
-          <a routerLink="/login" class="text-primary fw-bold text-decoration-none small">Accedi qui</a>
+          <a routerLink="/login" class="text-primary fw-bold text-decoration-none small hover-underline">Accedi qui</a>
         </div>
 
       </form>
     </div>
-  </div>
-
-  <div class="col-lg-6 d-none d-lg-block p-0 position-relative">
-    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-         class="w-100 h-100 object-fit-cover" alt="Register Background">
-    <div class="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-25"></div> <div class="position-absolute top-50 start-50 translate-middle text-white text-center w-75">
-    <h1 class="display-4 fw-bold">Unisciti a noi.</h1>
-    <p class="lead">Migliaia di immobili ti aspettano.</p>
-  </div>
   </div>
 
 </div>

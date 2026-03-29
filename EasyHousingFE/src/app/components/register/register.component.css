@@ -1,17 +1,62 @@
-/* Custom CSS: Radio Button che sembrano card */
-.card-radio input:checked + label {
-  background-color: var(--primary-color) !important; /* Arancione Easy Housing */
-  color: white !important;
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 5px 15px rgba(255, 90, 60, 0.3);
+/* Animazioni di entrata morbida */
+.fade-in {
+  animation: fadeInUp 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  opacity: 0;
+  transform: translateY(20px);
 }
 
-.card-radio label {
-  transition: all 0.3s ease;
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Stile Input e Focus coerente col Login */
+.input-group-text { border-radius: 12px 0 0 12px !important; }
+.form-control { border-radius: 0 12px 12px 0 !important; }
+
+.shadow-sm-focus:focus-within {
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15) !important;
+  border-radius: 12px;
+}
+
+.shadow-sm-focus:focus-within .form-control,
+.shadow-sm-focus:focus-within .input-group-text {
+  background-color: #fff !important;
+}
+
+/* Box di Selezione Ruolo Interattivi */
+.role-box {
   border: 2px solid #e9ecef;
+  background-color: #f8f9fa;
+  border-radius: 16px;
+  padding: 1.2rem;
+  text-align: center;
+  cursor: pointer;
+  color: #6c757d;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
-.card-radio label:hover {
-  background-color: #f8f9fa;
-  border-color: #dee2e6;
+.role-box:hover {
+  border-color: #0d6efd;
+  background-color: white;
+  color: #0d6efd;
+  transform: translateY(-2px);
 }
+
+.role-box.active {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: white;
+  box-shadow: 0 8px 20px rgba(13, 110, 253, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Effetti bottoni e link */
+.transition-hover { transition: all 0.3s ease; }
+.transition-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(13, 110, 253, 0.3) !important;
+}
+
+.hover-underline:hover { text-decoration: underline !important; }
+

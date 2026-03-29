@@ -1,0 +1,36 @@
+/* Animazioni di entrata morbida */
+.fade-in {
+  animation: fadeInUp 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stile Input e Focus */
+.input-group-text { border-radius: 12px 0 0 12px !important; }
+.form-control { border-radius: 0 12px 12px 0 !important; }
+
+.shadow-sm-focus:focus-within {
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15) !important;
+  border-radius: 12px;
+}
+
+.shadow-sm-focus:focus-within .form-control,
+.shadow-sm-focus:focus-within .input-group-text {
+  background-color: #fff !important;
+}
+
+/* Effetti bottoni e link */
+.transition-hover { transition: all 0.3s ease; }
+.transition-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(13, 110, 253, 0.3) !important;
+}
+
+.hover-underline:hover { text-decoration: underline !important; }

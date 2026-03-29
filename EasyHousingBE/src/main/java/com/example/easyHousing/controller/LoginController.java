@@ -4,6 +4,8 @@ import com.example.easyHousing.exception.exceptions.RecordNotFoundException;
 import com.example.easyHousing.persistence.model.Utente;
 import com.example.easyHousing.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,15 +16,22 @@ public class LoginController {
     @Autowired
     private UtenteService utenteService;
 
+    // Modificato per restituire ResponseEntity: così possiamo inviare codici di errore (es. 401)
     @PostMapping
-    public Utente login(@RequestBody Utente loginData) throws RecordNotFoundException {
-        // loginData conterrà solo email e password inviati dal frontend
-        Utente utenteTrovato = utenteService.getUtenteByEmail(loginData.getEmail());
+    public ResponseEntity<?> login(@RequestBody Utente loginData) {
+        try {
+            Utente utenteTrovato = utenteService.getUtenteByEmail(loginData.getEmail());
 
-        if (utenteTrovato != null && utenteTrovato.getPassword().equals(loginData.getPassword())) {
-            return utenteTrovato; // Login successo: restituisci l'utente completo (senza password magari)
-        } else {
-            return null; // O lancia un'eccezione / restituisci 401 Unauthorized
+            // Se l'utente esiste e la password combacia
+            if (utenteTrovato != null && utenteTrovato.getPassword().equals(loginData.getPassword())) {
+                return ResponseEntity.ok(utenteTrovato);
+            }
+        } catch (RecordNotFoundException e) {
+            // Se l'email non esiste
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenziali errate");
         }
+
+        // Se la password è sbagliata
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenziali errate");
     }
 }
