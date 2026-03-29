@@ -121,10 +121,16 @@ export class ImmobileDetailComponent implements OnInit, OnDestroy {
 
   aggiornaTimer() {
     if (!this.astaCorrente) return;
-    const oraAttuale = new Date().getTime();
-    const differenza = this.astaCorrente.fine - oraAttuale;
 
-    if (differenza <= 0) {
+    const oraAttuale = new Date().getTime();
+
+    const dataScadenza = new Date(this.astaCorrente.fine);
+    const scadenzaMillisecondi = dataScadenza.getTime();
+
+    const differenza = scadenzaMillisecondi - oraAttuale;
+
+    // Aggiungiamo isNaN per sicurezza, se il database invia valori corrotti chiude l'asta
+    if (differenza <= 0 || isNaN(differenza)) {
       this.astaConclusa = true;
       this.tempoRimanenteStr = 'ASTA CONCLUSA';
       if (this.timerInterval) clearInterval(this.timerInterval);
@@ -133,6 +139,7 @@ export class ImmobileDetailComponent implements OnInit, OnDestroy {
       const ore = Math.floor((differenza % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minuti = Math.floor((differenza % (1000 * 60 * 60)) / (1000 * 60));
       const secondi = Math.floor((differenza % (1000 * 60)) / 1000);
+
       this.tempoRimanenteStr = giorni + "g " + ore + "h " + minuti + "m " + secondi + "s";
     }
   }
