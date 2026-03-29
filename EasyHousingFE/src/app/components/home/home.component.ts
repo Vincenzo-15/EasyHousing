@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
+import {Component, OnInit, AfterViewInit, Inject, PLATFORM_ID, ElementRef, ViewChild} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImmobileService } from '../../services/immobile.service';
@@ -16,6 +16,8 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
   immobiliTutti: Immobile[] = [];
   immobili: Immobile[] = [];
@@ -53,6 +55,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
+
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       const observer = new IntersectionObserver((entries) => {
@@ -68,6 +71,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
           observer.observe(el);
         });
       }, 300);
+    }
+  }
+
+  scroll(direzione: 'sinistra' | 'destra') {
+    const container = this.scrollContainer.nativeElement;
+    const scrollAmount = 400; // Pixel di spostamento per ogni clic
+
+    if (direzione === 'sinistra') {
+      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    } else {
+      container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   }
 
