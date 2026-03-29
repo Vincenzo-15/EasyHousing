@@ -47,4 +47,26 @@ public class RecensioniProxy extends ArrayList<Recensione> {
         load();
         return super.toArray();
     }
+
+    // ==============================================================
+    // METODI AGGIUNTIVI PER GARANTIRE IL LAZY LOADING IN OGNI CASO
+    // ==============================================================
+
+    @Override
+    public boolean isEmpty() {
+        load();
+        return super.isEmpty();
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        load();
+        return super.contains(o);
+    }
+
+    @Override
+    public java.util.stream.Stream<Recensione> stream() {
+        load();
+        return super.stream();
+    }
 }

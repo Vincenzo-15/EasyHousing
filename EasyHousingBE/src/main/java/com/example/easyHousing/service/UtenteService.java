@@ -43,7 +43,10 @@ public class UtenteService {
     }
 
     public void creaUtente(Utente utente) {
-
+        // --- NUOVO CONTROLLO: Esiste già questa email? ---
+        if (utenteDao.findByEmail(utente.getEmail()) != null) {
+            throw new IllegalArgumentException("EMAIL_ESISTENTE");
+        }
         utenteDao.save(utente);
     }
 
@@ -51,6 +54,14 @@ public class UtenteService {
         if (utenteDao.findByIdUtente(utente.getIdUtente()) == null) {
             throw new RecordNotFoundException("Impossibile aggiornare: Utente non trovato.", 404);
         }
+
+        // --- NUOVO CONTROLLO: Qualcun altro sta usando questa email? ---
+        Utente esistente = utenteDao.findByEmail(utente.getEmail());
+        // Se esiste un utente con questa email, E non è l'utente stesso che si sta aggiornando...
+        if (esistente != null && !esistente.getIdUtente().equals(utente.getIdUtente())) {
+            throw new IllegalArgumentException("EMAIL_ESISTENTE");
+        }
+
         utenteDao.update(utente);
     }
 

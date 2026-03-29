@@ -4,6 +4,8 @@ import com.example.easyHousing.exception.exceptions.RecordNotFoundException;
 import com.example.easyHousing.persistence.model.Utente;
 import com.example.easyHousing.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,18 +38,26 @@ public class UtenteController {
         return utenteService.getUtentiByRuolo(ruolo);
     }
 
-    // CORREZIONE: URL pulito, dati nel Body
     @PostMapping("/save")
-    public void save(@RequestBody Utente utente) throws RecordNotFoundException {
-        utenteService.creaUtente(utente);
+    public ResponseEntity<?> save(@RequestBody Utente utente) throws RecordNotFoundException {
+        try {
+            utenteService.creaUtente(utente);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"errore\": \"EMAIL_ESISTENTE\"}");
+        }
     }
 
     @PutMapping("/update")
-    public void update(@RequestBody Utente utente) throws RecordNotFoundException {
-        utenteService.aggiornaUtente(utente);
+    public ResponseEntity<?> update(@RequestBody Utente utente) throws RecordNotFoundException {
+        try {
+            utenteService.aggiornaUtente(utente);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"errore\": \"EMAIL_ESISTENTE\"}");
+        }
     }
 
-    // CORREZIONE: Cancellazione per ID
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Integer id) throws RecordNotFoundException {
         Utente utente = new Utente();
