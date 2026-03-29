@@ -23,13 +23,6 @@ SET row_security = off;
 -- Name: immobiliare_db; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-CREATE DATABASE immobiliare_db WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'Italian_Italy.1252';
-
-
-ALTER DATABASE immobiliare_db OWNER TO postgres;
-
-\connect immobiliare_db
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
