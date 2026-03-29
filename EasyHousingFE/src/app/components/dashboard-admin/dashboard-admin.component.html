@@ -1,14 +1,27 @@
 <div class="admin-wrapper py-5">
   <div class="container">
 
-    <div class="d-flex justify-content-between align-items-center mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
         <h2 class="fw-bold text-dark display-6"><i class="bi bi-shield-lock text-primary me-3"></i>Admin Workspace</h2>
-        <p class="text-muted fs-5">Gestisci utenti, permessi e accessi in un unico posto.</p>
+        <p class="text-muted fs-5">Gestisci utenti e annunci in un unico posto. Le recensioni sono moderate direttamente nelle pagine annuncio.</p>
       </div>
     </div>
 
-    <div class="card custom-card">
+    <ul class="nav nav-pills mb-4 p-2 bg-white rounded-pill shadow-sm d-inline-flex">
+      <li class="nav-item">
+        <a class="nav-link rounded-pill fw-bold" [class.active]="tabAttivo === 'utenti'" (click)="cambiaTab('utenti')" style="cursor: pointer;">
+          <i class="bi bi-people me-2"></i>Gestione Utenti
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link rounded-pill fw-bold ms-2" [class.active]="tabAttivo === 'immobili'" (click)="cambiaTab('immobili')" style="cursor: pointer;">
+          <i class="bi bi-house me-2"></i>Gestione Annunci
+        </a>
+      </li>
+    </ul>
+
+    <div class="card custom-card" *ngIf="tabAttivo === 'utenti'">
       <div class="card-body p-0">
         <div class="table-responsive">
           <table class="table custom-table mb-0 align-middle">
@@ -21,9 +34,7 @@
             </tr>
             </thead>
             <tbody>
-
             <tr *ngFor="let u of utenti" class="user-row">
-
               <td class="ps-4 py-3 border-bottom-0">
                 <div class="d-flex align-items-center">
                   <div class="avatar bg-primary-soft text-primary me-3">
@@ -35,7 +46,6 @@
                   </div>
                 </div>
               </td>
-
               <td class="border-bottom-0">
                   <span class="custom-badge"
                         [ngClass]="{
@@ -47,17 +57,14 @@
                     {{ u.ruolo }}
                   </span>
               </td>
-
               <td class="text-center border-bottom-0">
                   <span class="status-indicator" [ngClass]="u.bannato ? 'status-banned' : 'status-active'">
                     <span class="status-dot"></span>
                     {{ u.bannato ? 'Sospeso' : 'Attivo' }}
                   </span>
               </td>
-
               <td class="text-end pe-4 border-bottom-0">
                 <div class="d-flex justify-content-end gap-2">
-
                   <button class="btn action-btn"
                           [ngClass]="u.bannato ? 'btn-light-success' : 'btn-light-warning'"
                           (click)="toggleBan(u)"
@@ -65,36 +72,79 @@
                           title="{{ u.bannato ? 'Sblocca Utente' : 'Banna Utente' }}">
                     <i class="bi" [ngClass]="u.bannato ? 'bi-unlock' : 'bi-slash-circle'"></i>
                   </button>
-
                   <button class="btn action-btn btn-light-info"
                           (click)="promuovi(u)"
                           *ngIf="u.ruolo !== 'ADMIN'"
                           title="Promuovi ad Admin">
                     <i class="bi bi-person-up"></i>
                   </button>
-
                   <button class="btn action-btn btn-light-danger"
                           (click)="eliminaUtente(u.idUtente!)"
                           [disabled]="u.ruolo === 'ADMIN'"
                           title="Elimina Definitivamente">
                     <i class="bi bi-trash3"></i>
                   </button>
-
                 </div>
               </td>
             </tr>
-
             </tbody>
           </table>
         </div>
-
         <div *ngIf="utenti.length === 0" class="text-center py-5">
           <div class="empty-avatar mb-3"><i class="bi bi-people text-muted display-4"></i></div>
           <h5 class="fw-bold text-dark">Nessun utente trovato</h5>
-          <p class="text-muted">Il database è attualmente vuoto.</p>
         </div>
-
       </div>
     </div>
+
+    <div class="card custom-card" *ngIf="tabAttivo === 'immobili'">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table custom-table mb-0 align-middle">
+            <thead class="bg-light text-uppercase text-muted small fw-bold">
+            <tr>
+              <th class="ps-4 py-4 border-0 rounded-start-4">Annuncio</th>
+              <th class="py-4 border-0">Proprietario</th>
+              <th class="py-4 border-0 text-center">Prezzo</th>
+              <th class="py-4 pe-4 border-0 text-end rounded-end-4">Azioni</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let imm of immobili" class="user-row">
+              <td class="ps-4 py-3 border-bottom-0">
+                <div>
+                  <h6 class="mb-0 fw-bold text-dark">{{ imm.nome }}</h6>
+                  <small class="text-muted"><i class="bi bi-geo-alt me-1"></i>{{ imm.indirizzo }}</small>
+                </div>
+              </td>
+              <td class="border-bottom-0">
+                <span class="text-secondary small fw-medium">{{ imm.proprietario }}</span>
+              </td>
+              <td class="text-center border-bottom-0">
+                <span class="badge bg-primary text-white px-3 py-2 rounded-pill">€ {{ imm.prezzoAttuale | number }}</span>
+              </td>
+              <td class="text-end pe-4 border-bottom-0">
+                <div class="d-flex justify-content-end gap-2">
+                  <a [routerLink]="['/dettaglio', imm.idImmobile]" target="_blank" class="btn action-btn btn-light-info" title="Visualizza Annuncio">
+                    <i class="bi bi-box-arrow-up-right"></i>
+                  </a>
+                  <button class="btn action-btn btn-light-danger"
+                          (click)="eliminaImmobile(imm.idImmobile)"
+                          title="Elimina Annuncio">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="immobili.length === 0" class="text-center py-5">
+          <div class="empty-avatar mb-3"><i class="bi bi-house text-muted display-4"></i></div>
+          <h5 class="fw-bold text-dark">Nessun immobile trovato</h5>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

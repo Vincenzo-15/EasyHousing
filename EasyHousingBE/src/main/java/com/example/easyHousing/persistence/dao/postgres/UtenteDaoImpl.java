@@ -150,12 +150,41 @@ public class UtenteDaoImpl implements UtenteDao {
 
     @Override
     public void deleteById(Integer idUtente) {
-        String query = "DELETE FROM utente WHERE \"idUtente\" = ?";
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query)) {
-            statement.setInt(1, idUtente);
-            statement.executeUpdate();
-        } catch (SQLException e) { e.printStackTrace(); }
+        try (Connection conn = dbConnection.getConnection()) {
+
+            // 1. Troviamo l'email dell'utente prima di cancellarlo (ci serve per trovare i suoi immobili)
+            String email = null;
+            try (PreparedStatement psEmail = conn.prepareStatement("SELECT email FROM utente WHERE \"idUtente\" = ?")) {
+                psEmail.setInt(1, idUtente);
+                ResultSet rs = psEmail.executeQuery();
+                if (rs.next()) {
+                    email = rs.getString("email");
+                }
+            }
+
+            // 2. ELIMINAZIONE A CASCATA: Eliminiamo tutte le recensioni scritte da lui
+            try (PreparedStatement psRec = conn.prepareStatement("DELETE FROM recensione WHERE \"idUtente\" = ?")) {
+                psRec.setInt(1, idUtente);
+                psRec.executeUpdate();
+            }
+
+            // 3. ELIMINAZIONE A CASCATA: Se è un venditore, eliminiamo i suoi immobili
+            if (email != null) {
+                try (PreparedStatement psImm = conn.prepareStatement("DELETE FROM immobile WHERE proprietario = ?")) {
+                    psImm.setString(1, email);
+                    psImm.executeUpdate();
+                }
+            }
+
+            // 4. INFINE: Eliminiamo l'utente
+            try (PreparedStatement psUtente = conn.prepareStatement("DELETE FROM utente WHERE \"idUtente\" = ?")) {
+                psUtente.setInt(1, idUtente);
+                psUtente.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private Utente mapResultSetToUtente(ResultSet resultSet) throws SQLException {

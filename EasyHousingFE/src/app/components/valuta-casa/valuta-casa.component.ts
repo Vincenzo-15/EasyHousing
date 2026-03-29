@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-valuta-casa',
@@ -25,7 +26,8 @@ export class ValutaCasaComponent {
   isCalculating: boolean = false;
   stimaFinale: number | null = null;
 
-  // Controlli per i pulsanti +/-
+  constructor(public authService: AuthService) {}
+
   cambiaValore(campo: 'locali' | 'bagni', operazione: 1 | -1) {
     if (campo === 'locali') {
       if (operazione === 1) this.locali++;
@@ -43,22 +45,31 @@ export class ValutaCasaComponent {
   avanti() {
     if (this.step === 1 && this.indirizzo.trim().length > 2) {
       this.step = 2;
+      // Riporta la visuale in alto in modo fluido
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (this.step === 2 && this.superficie) {
       this.calcolaStima();
     }
   }
 
   indietro() {
-    if (this.step > 1) this.step--;
+    if (this.step > 1) {
+      this.step--;
+      // Riporta la visuale in alto in modo fluido
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   calcolaStima() {
     this.isCalculating = true;
     this.step = 3;
 
+    // Riporta la visuale in alto per vedere la rotellina di caricamento
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     setTimeout(() => {
       // Algoritmo di base
-      let prezzoMq = 2200; // default
+      let prezzoMq = 2200;
       const indLow = this.indirizzo.toLowerCase();
 
       if (indLow.includes('milano')) prezzoMq = 4500;
@@ -72,6 +83,13 @@ export class ValutaCasaComponent {
 
       this.stimaFinale = Math.round(base);
       this.isCalculating = false;
+
+      // Riporta la visuale in alto per mostrare il prezzo finale
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 2000);
+  }
+
+  mostraErroreRuolo() {
+    alert("⛔ Attenzione: Solo gli utenti con un account 'VENDITORE' possono pubblicare un annuncio di vendita. Se desideri vendere il tuo immobile, devi registrarti o accedere con un account venditore.");
   }
 }

@@ -20,19 +20,22 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router, private preferitiService: PreferitiService) {}
 
   onLogin() {
-    // Qui chiamiamo il servizio
-    // NOTA: Se il backend non è pronto, possiamo simulare il login qui per testare la grafica
-    console.log('Tentativo login:', this.email);
-
     this.authService.login(this.email, this.password).subscribe({
       next: (user) => {
-        console.log('Login riuscito!', user);
         this.preferitiService.caricaPreferitiUtenteCorrente();
-        this.router.navigate(['/home']); // Vai alla home dopo il login
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         console.error('Login fallito', err);
-        alert('Credenziali errate (o backend non collegato)');
+
+        // --- NUOVA GESTIONE ERRORI ---
+        if (err.status === 403) {
+          // Se il server ci manda un 403 Forbidden, l'account è bannato!
+          alert('⛔ ACCESSO NEGATO: Il tuo account è stato sospeso da un Amministratore per violazione delle regole.');
+        } else {
+          // Altrimenti ha solo sbagliato la password
+          alert('Credenziali errate. Riprova.');
+        }
       }
     });
   }

@@ -17,7 +17,6 @@ import { AstaService } from '../../services/asta.service';
 })
 export class InserisciAnnuncioComponent {
 
-  // --- VARIABILE PER GESTIRE I PASSAGGI ---
   step: number = 1;
 
   nuovoImmobile: Immobile = {
@@ -46,7 +45,8 @@ export class InserisciAnnuncioComponent {
     classeEnergetica: 'G'
   };
 
-  isSubmitting = false; // Per il bottone finale
+  durataAstaGg: number = 30; // Valore di default per le aste
+  isSubmitting = false;
 
   constructor(
     private immobileService: ImmobileService,
@@ -56,9 +56,7 @@ export class InserisciAnnuncioComponent {
     private astaService: AstaService
   ) {}
 
-  // --- FUNZIONI DI NAVIGAZIONE STEP ---
   avanti() {
-    // Validazione base per evitare passaggi a vuoto
     if (this.step === 1) {
       if (!this.nuovoImmobile.nome || !this.nuovoImmobile.indirizzo) {
         alert("Inserisci Titolo e Indirizzo per continuare.");
@@ -102,10 +100,8 @@ export class InserisciAnnuncioComponent {
 
     this.isSubmitting = true;
 
-    // Impacchetta i dettagli extra dentro la descrizione
     const extraJson = JSON.stringify(this.dettagliExtra);
     this.nuovoImmobile.descrizione = this.descrizioneLibera + '|||' + extraJson;
-
     this.nuovoImmobile.proprietario = utenteCorrente.email;
     this.nuovoImmobile.prezzoAttuale = this.nuovoImmobile.prezzoOrig;
 
@@ -132,11 +128,12 @@ export class InserisciAnnuncioComponent {
           const nuovoId = mieiImmobili[0].idImmobile;
 
           if (this.nuovoImmobile.tipoAnnuncio === 'ASTA') {
+            const millisecondi = this.durataAstaGg * 24 * 60 * 60 * 1000;
             const nuovaAsta: any = {
               idAsta: 0, idImmobile: nuovoId, acquirente: null,
               prezzoOrig: Number(this.nuovoImmobile.prezzoOrig),
               prezzoAttuale: Number(this.nuovoImmobile.prezzoOrig),
-              fine: new Date().getTime() + 2592000000
+              fine: new Date().getTime() + millisecondi
             };
             this.astaService.creaAsta(nuovaAsta).subscribe({
               next: () => this.uploadFiles(nuovoId),

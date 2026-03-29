@@ -1,5 +1,12 @@
 <div class="container-fluid min-vh-100 bg-white">
 
+  <div class="py-3 border-bottom px-4 d-flex justify-content-between align-items-center">
+    <a routerLink="/home" class="text-decoration-none fw-bold fs-4 text-dark d-flex align-items-center">
+      <i class="bi bi-house-door-fill text-primary me-2"></i> Easy Housing
+    </a>
+    <a routerLink="/home" class="text-muted text-decoration-none small">Annulla inserimento</a>
+  </div>
+
   <div class="row min-vh-100">
 
     <div class="col-lg-8 p-4 p-md-5">
@@ -10,7 +17,6 @@
         <p class="text-muted mb-5">Iniziamo con le informazioni fondamentali del tuo immobile per attirare l'attenzione.</p>
 
         <div class="row g-4" style="max-width: 700px;">
-
           <div class="col-12">
             <label class="form-label fw-bold text-dark">Titolo Annuncio *</label>
             <input type="text" [(ngModel)]="nuovoImmobile.nome" class="form-control form-control-lg bg-light" placeholder="Es. Bellissimo attico luminoso in centro" required>
@@ -44,14 +50,12 @@
               <option value="ASTA">All'Asta (Offerta Base)</option>
             </select>
           </div>
-
         </div>
 
         <div class="mt-5 pt-3 border-top d-flex justify-content-end" style="max-width: 700px;">
           <button class="btn btn-primary btn-lg px-5 rounded-pill fw-bold" (click)="avanti()">Continua <i class="bi bi-arrow-right ms-2"></i></button>
         </div>
       </div>
-
 
       <div *ngIf="step === 2" class="fade-in">
         <button class="btn btn-link text-decoration-none text-muted px-0 mb-4" (click)="indietro()"><i class="bi bi-arrow-left me-2"></i>Indietro</button>
@@ -74,6 +78,18 @@
             <div class="input-group input-group-lg">
               <input type="number" [(ngModel)]="nuovoImmobile.metriQuadri" class="form-control bg-light" placeholder="Es. 120" required>
               <span class="input-group-text bg-light text-muted">m²</span>
+            </div>
+          </div>
+
+          <div class="col-12 mt-3" *ngIf="nuovoImmobile.tipoAnnuncio === 'ASTA'">
+            <div class="p-3 bg-warning bg-opacity-10 border border-warning rounded-3">
+              <label class="form-label fw-bold text-dark"><i class="bi bi-clock-history me-2"></i>Durata dell'Asta</label>
+              <select [(ngModel)]="durataAstaGg" class="form-select bg-white">
+                <option [ngValue]="7">1 Settimana (Asta Veloce)</option>
+                <option [ngValue]="15">15 Giorni</option>
+                <option [ngValue]="30">30 Giorni (Consigliata)</option>
+              </select>
+              <small class="text-muted d-block mt-2">L'asta si concluderà automaticamente allo scadere dei giorni selezionati.</small>
             </div>
           </div>
 
@@ -134,7 +150,6 @@
         </div>
       </div>
 
-
       <div *ngIf="step === 3" class="fade-in">
         <button class="btn btn-link text-decoration-none text-muted px-0 mb-4" (click)="indietro()"><i class="bi bi-arrow-left me-2"></i>Indietro</button>
         <p class="text-muted fw-bold mb-2 text-uppercase small">Passaggio 3 di 3</p>
@@ -153,7 +168,6 @@
               <i class="bi bi-cloud-arrow-up display-4 text-primary opacity-75"></i>
               <h5 class="fw-bold mt-3">Carica le Foto dell'Immobile</h5>
               <p class="text-muted small mb-4">Trascina qui le immagini o clicca per sfogliare. (Formati supportati: JPG, PNG)</p>
-
               <input type="file" class="form-control" id="inputFoto" (change)="onFileSelected($event)" multiple accept="image/jpeg, image/png">
             </div>
 
@@ -189,7 +203,6 @@
 
     <div class="col-lg-4 bg-light d-none d-lg-flex flex-column justify-content-center p-5 border-start position-relative">
       <div class="tracker-wrapper">
-
         <div class="tracker-step d-flex mb-5" [ngClass]="{'active': step === 1, 'completed': step > 1}">
           <div class="tracker-icon rounded-circle d-flex align-items-center justify-content-center me-3 border border-2 bg-white">
             <i class="bi bi-pencil-square fs-5" *ngIf="step === 1"></i>
@@ -221,7 +234,6 @@
             <p class="text-muted small mb-0">Descrizione e Foto</p>
           </div>
         </div>
-
       </div>
     </div>
 

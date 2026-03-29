@@ -16,22 +16,25 @@ public class LoginController {
     @Autowired
     private UtenteService utenteService;
 
-    // Modificato per restituire ResponseEntity: così possiamo inviare codici di errore (es. 401)
     @PostMapping
     public ResponseEntity<?> login(@RequestBody Utente loginData) {
         try {
             Utente utenteTrovato = utenteService.getUtenteByEmail(loginData.getEmail());
 
-            // Se l'utente esiste e la password combacia
             if (utenteTrovato != null && utenteTrovato.getPassword().equals(loginData.getPassword())) {
+
+                // --- NUOVO: CONTROLLO BAN ---
+                if (utenteTrovato.getBannato() != null && utenteTrovato.getBannato()) {
+                    // Se l'utente è bannato, blocchiamo l'accesso
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"errore\": \"ACCOUNT_BANNATO\"}");
+                }
+
                 return ResponseEntity.ok(utenteTrovato);
             }
         } catch (RecordNotFoundException e) {
-            // Se l'email non esiste
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenziali errate");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"errore\": \"Credenziali errate\"}");
         }
 
-        // Se la password è sbagliata
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenziali errate");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"errore\": \"Credenziali errate\"}");
     }
 }

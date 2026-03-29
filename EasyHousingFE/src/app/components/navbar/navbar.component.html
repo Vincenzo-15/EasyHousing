@@ -25,6 +25,12 @@
             <i class="bi bi-plus-circle me-1"></i> Inserisci Annuncio
           </a>
         </li>
+
+        <li class="nav-item px-2" *ngIf="authService.isAdmin()">
+          <a class="nav-link text-danger fw-bold" routerLink="/dashboard-admin">
+            <i class="bi bi-shield-lock-fill me-1"></i> Pannello Admin
+          </a>
+        </li>
       </ul>
 
       <div class="d-flex align-items-center gap-3">

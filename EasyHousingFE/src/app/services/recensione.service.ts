@@ -15,4 +15,18 @@ export class RecensioneService {
   creaRecensione(recensione: Recensione): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/save`, recensione);
   }
+
+  // Corretto da /findAll a /findAllRecensioni
+  getAllRecensioni(): Observable<Recensione[]> {
+    return this.http.get<Recensione[]>(`${this.apiUrl}/findAllRecensioni`);
+  }
+
+  // Questo è l'endpoint specifico del tuo backend che useremo!
+  getRecensioniByImmobile(idImmobile: number): Observable<Recensione[]> {
+    return this.http.get<Recensione[]>(`${this.apiUrl}/findByIdImmobile/${idImmobile}`);
+  }
+
+  deleteRecensione(idRecensione: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/delete/${idRecensione}`);
+  }
 }

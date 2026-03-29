@@ -107,8 +107,20 @@
           </div>
           <p class="text-muted mb-5">Indice di affidabilità della stima: <strong class="text-success">Alto</strong></p>
 
-          <button class="btn btn-outline-secondary btn-lg rounded-pill px-4 me-3" (click)="step = 1; indirizzo = ''">Nuova Valutazione</button>
-          <button class="btn btn-primary btn-lg rounded-pill px-4" routerLink="/inserisci-annuncio">Vendi Ora</button>
+          <button class="btn btn-outline-secondary btn-lg rounded-pill px-4 me-3 mb-3 mb-md-0" (click)="step = 1; indirizzo = ''">Nuova Valutazione</button>
+
+          <button *ngIf="authService.isVenditore()" class="btn btn-primary btn-lg rounded-pill px-4" routerLink="/inserisci-annuncio">
+            Vendi Ora <i class="bi bi-arrow-right ms-1"></i>
+          </button>
+
+          <button *ngIf="authService.isLoggedIn() && !authService.isVenditore()" class="btn btn-secondary btn-lg rounded-pill px-4" (click)="mostraErroreRuolo()">
+            <i class="bi bi-lock-fill me-1"></i> Vendi Ora
+          </button>
+
+          <button *ngIf="!authService.isLoggedIn()" class="btn btn-primary btn-lg rounded-pill px-4" routerLink="/login">
+            Accedi per Vendere
+          </button>
+
         </div>
       </div>
 

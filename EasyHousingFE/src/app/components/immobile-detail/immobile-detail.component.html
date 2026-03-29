@@ -2,7 +2,11 @@
 
   <nav aria-label="breadcrumb" class="mb-4">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+      <li class="breadcrumb-item">
+        <a href="javascript:void(0)" (click)="tornaIndietro()" class="text-decoration-none fw-bold text-primary">
+          <i class="bi bi-arrow-left me-1"></i>Torna alla ricerca
+        </a>
+      </li>
       <li class="breadcrumb-item active" aria-current="page">{{ immobile.nome }}</li>
     </ol>
   </nav>
@@ -25,338 +29,278 @@
         </button>
       </div>
 
-      <img *ngIf="immagini.length === 0" src="https://placehold.co/800x500?text=Nessuna+Foto" class="img-fluid rounded shadow-sm mb-4 w-100" alt="Placeholder">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold text-dark mb-0">{{ immobile.nome }}</h1>
+        <span class="badge fs-6 px-3 py-2 rounded-pill shadow-sm"
+              [ngClass]="{'bg-primary': immobile.tipoAnnuncio === 'VENDITA', 'bg-success': immobile.tipoAnnuncio === 'AFFITTO', 'bg-warning text-dark': immobile.tipoAnnuncio === 'ASTA'}">
+          {{ immobile.tipoAnnuncio }}
+        </span>
+      </div>
 
-      <h1 class="fw-bold mb-3">{{ immobile.nome }}</h1>
-      <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> {{ immobile.indirizzo }}</p>
-
-      <hr>
+      <div class="d-flex flex-wrap gap-4 text-muted fs-5 mb-5 border-bottom pb-4">
+        <div class="d-flex align-items-center"><i class="bi bi-arrows-fullscreen me-2 text-primary"></i>{{ immobile.metriQuadri }} m²</div>
+        <div class="d-flex align-items-center"><i class="bi bi-house me-2 text-primary"></i>{{ immobile.tipoImmobile }}</div>
+      </div>
 
       <div *ngIf="dettagliExtra" class="mb-5">
         <h4 class="fw-bold mb-4">Caratteristiche dell'immobile</h4>
         <div class="row g-4">
-
           <div class="col-6 col-md-4">
             <div class="d-flex align-items-center">
-              <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;">
-                <i class="bi bi-door-open fs-5"></i>
-              </div>
-              <div>
-                <div class="small text-muted mb-0">Locali</div>
-                <div class="fw-bold">{{ dettagliExtra.locali }}</div>
-              </div>
+              <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;"><i class="bi bi-door-open fs-5"></i></div>
+              <div><div class="small text-muted mb-0">Locali</div><div class="fw-bold">{{ dettagliExtra.locali }}</div></div>
             </div>
           </div>
-
           <div class="col-6 col-md-4">
             <div class="d-flex align-items-center">
-              <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;">
-                <i class="bi bi-droplet fs-5"></i>
-              </div>
-              <div>
-                <div class="small text-muted mb-0">Bagni</div>
-                <div class="fw-bold">{{ dettagliExtra.bagni }}</div>
-              </div>
+              <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;"><i class="bi bi-droplet fs-5"></i></div>
+              <div><div class="small text-muted mb-0">Bagni</div><div class="fw-bold">{{ dettagliExtra.bagni }}</div></div>
             </div>
           </div>
-
           <div class="col-6 col-md-4">
             <div class="d-flex align-items-center">
-              <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;">
-                <i class="bi bi-building fs-5"></i>
-              </div>
-              <div>
-                <div class="small text-muted mb-0">Piano</div>
-                <div class="fw-bold">{{ dettagliExtra.piano }}</div>
-              </div>
+              <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;"><i class="bi bi-building fs-5"></i></div>
+              <div><div class="small text-muted mb-0">Piano</div><div class="fw-bold">{{ dettagliExtra.piano }}</div></div>
             </div>
           </div>
-
           <div class="col-6 col-md-4">
             <div class="d-flex align-items-center">
-              <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;">
-                <i class="bi bi-stars fs-5"></i>
-              </div>
-              <div>
-                <div class="small text-muted mb-0">Condizioni</div>
-                <div class="fw-bold">{{ dettagliExtra.condizioni }}</div>
-              </div>
+              <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;"><i class="bi bi-stars fs-5"></i></div>
+              <div><div class="small text-muted mb-0">Condizioni</div><div class="fw-bold">{{ dettagliExtra.condizioni }}</div></div>
             </div>
           </div>
-
           <div class="col-6 col-md-4">
             <div class="d-flex align-items-center">
-              <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;">
-                <i class="bi bi-arrow-up-circle fs-5"></i>
-              </div>
-              <div>
-                <div class="small text-muted mb-0">Ascensore</div>
-                <div class="fw-bold">{{ dettagliExtra.ascensore }}</div>
-              </div>
+              <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;"><i class="bi bi-arrow-up-circle fs-5"></i></div>
+              <div><div class="small text-muted mb-0">Ascensore</div><div class="fw-bold">{{ dettagliExtra.ascensore }}</div></div>
             </div>
           </div>
-
           <div class="col-6 col-md-4">
             <div class="d-flex align-items-center">
-              <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;">
-                <i class="bi bi-lightning-charge fs-5"></i>
-              </div>
-              <div>
-                <div class="small text-muted mb-0">Classe Energetica</div>
-                <div class="fw-bold">{{ dettagliExtra.classeEnergetica }}</div>
-              </div>
+              <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;"><i class="bi bi-lightning-charge fs-5"></i></div>
+              <div><div class="small text-muted mb-0">Classe Energetica</div><div class="fw-bold">{{ dettagliExtra.classeEnergetica }}</div></div>
             </div>
           </div>
-
         </div>
       </div>
-
-      <hr class="mb-4" *ngIf="dettagliExtra">
+      <hr class="mb-4">
 
       <h4 class="fw-bold mb-3">Descrizione</h4>
       <p class="text-secondary" style="line-height: 1.8; white-space: pre-wrap;">{{ descrizionePulita }}</p>
 
       <hr class="my-5">
 
-      <div class="row text-center mb-4">
-        <div class="col-4">
-          <div class="p-3 border rounded bg-light">
-            <strong>Mq</strong><br>{{ immobile.metriQuadri }}
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="p-3 border rounded bg-light">
-            <strong>Tipo</strong><br>{{ immobile.tipoImmobile }}
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="p-3 border rounded bg-light">
-            <strong>Contratto</strong><br>{{ immobile.tipoAnnuncio }}
-          </div>
-        </div>
+      <h4 class="fw-bold mb-3">Posizione Mappa</h4>
+      <div class="rounded-4 overflow-hidden mb-5 border shadow-sm" style="height: 350px;" *ngIf="mappaUrlSicuro">
+        <iframe width="100%" height="100%" frameborder="0" style="border:0" [src]="mappaUrlSicuro" allowfullscreen></iframe>
       </div>
-
-      <h3>Descrizione</h3>
-      <p class="lead text-secondary">{{ immobile.descrizione }}</p>
 
       <hr class="my-5">
 
-      <h3 class="mb-4"><i class="bi bi-geo-alt-fill text-danger me-2"></i>Posizione sulla Mappa</h3>
-      <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
-        <div class="ratio ratio-21x9" *ngIf="mappaUrlSicuro">
-          <iframe
-            [src]="mappaUrlSicuro"
-            width="100%"
-            height="100%"
-            style="border:0;"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
+      <div class="mb-5">
+        <h4 class="fw-bold mb-4">Recensioni ({{ recensioni.length }})</h4>
+        <div class="d-flex align-items-center mb-4">
+          <div class="display-4 fw-bold text-dark me-3">{{ valutazioneMedia | number:'1.1-1' }}</div>
+          <div>
+            <div class="text-warning fs-5">
+              <i class="bi bi-star-fill" *ngFor="let s of [1,2,3,4,5]"></i>
+            </div>
+            <div class="text-muted small">Basato su {{ recensioni.length }} recensioni</div>
+          </div>
         </div>
-        <div class="card-footer bg-white text-muted small py-3">
-          <i class="bi bi-info-circle me-1"></i> La posizione esatta è calcolata in base all'indirizzo fornito dal venditore: <strong>{{ immobile.indirizzo }}</strong>
+
+        <button *ngIf="authService.isLoggedIn() && !mostraFormRecensione && !haGiaRecensito && (authService.getUser()?.email !== immobile.proprietario)"
+                class="btn btn-outline-primary mb-4 fw-bold" (click)="mostraFormRecensione = true">
+          <i class="bi bi-pencil-square me-2"></i>Scrivi una Recensione
+        </button>
+
+        <div class="alert alert-secondary mt-3 text-center" *ngIf="!authService.isLoggedIn()">
+          <i class="bi bi-info-circle me-2"></i><small>Solo gli utenti registrati possono lasciare una recensione per l'immobile.</small>
         </div>
-      </div>
 
-      <h3 class="mb-4">Recensioni ({{ immobile.recensioni?.length || 0 }})</h3>
-
-      <div *ngIf="!immobile.recensioni || immobile.recensioni.length === 0" class="alert alert-info">
-        Nessuna recensione presente per questo immobile.
-      </div>
-
-      <div class="card mb-3 border-0 shadow-sm review-card" *ngFor="let recensione of immobile.recensioni">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <h5 class="fw-bold mb-1">{{ recensione.titolo }}</h5>
-            <span class="badge bg-warning text-dark align-self-start">
-              <i class="bi bi-star-fill"></i> {{ recensione.valutazione }}/5
-            </span>
-          </div>
-          <p class="mb-1 text-muted small fw-medium">
-            <i class="bi bi-person-circle me-1"></i>
-            {{ nomiRecensori[recensione.idUtente] || 'Caricamento...' }}
-          </p>
+        <div *ngIf="mostraFormRecensione" class="card border-0 bg-light p-4 mb-4 rounded-4 shadow-sm">
+          <h5 class="fw-bold mb-3">Lascia la tua opinione</h5>
+          <form (ngSubmit)="inviaRecensione()">
+            <div class="mb-3">
+              <label class="form-label small fw-bold text-muted">Voto</label>
+              <select [(ngModel)]="nuovaRecensione.valutazione" name="valutazione" class="form-select border-0 shadow-sm w-auto">
+                <option [value]="5">⭐⭐⭐⭐⭐ 5 Stelle (Eccellente)</option>
+                <option [value]="4">⭐⭐⭐⭐ 4 Stelle (Molto Buono)</option>
+                <option [value]="3">⭐⭐⭐ 3 Stelle (Nella Media)</option>
+                <option [value]="2">⭐⭐ 2 Stelle (Scarso)</option>
+                <option [value]="1">⭐ 1 Stella (Pessimo)</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-bold text-muted">Titolo</label>
+              <input type="text" [(ngModel)]="nuovaRecensione.titolo" name="titolo" class="form-control border-0 shadow-sm" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-bold text-muted">La tua recensione</label>
+              <textarea [(ngModel)]="nuovaRecensione.testo" name="testo" rows="3" class="form-control border-0 shadow-sm" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary fw-bold">Pubblica Recensione</button>
+            <button type="button" class="btn btn-link text-muted ms-2" (click)="mostraFormRecensione = false">Annulla</button>
+          </form>
         </div>
-      </div>
 
-      <div class="card mt-5 border-0 bg-light p-4 rounded-4" *ngIf="authService.isLoggedIn() && authService.getUser()?.ruolo === 'ACQUIRENTE'">
-        <h5 class="fw-bold mb-3"><i class="bi bi-pencil-square me-2"></i>Scrivi una Recensione</h5>
-        <form (ngSubmit)="inviaRecensione()" #reviewForm="ngForm">
+        <div *ngIf="recensioni.length === 0" class="text-muted fst-italic mb-4">Nessuna recensione presente per questo annuncio.</div>
 
-          <div class="mb-3">
-            <label class="form-label text-muted small fw-bold text-uppercase">La tua opinione</label>
-            <input type="text" class="form-control" [(ngModel)]="nuovaRecensione.titolo" name="titolo" placeholder="Es. Casa luminosa e spaziosa..." required>
+        <div class="row g-3">
+          <div class="col-md-6" *ngFor="let rec of recensioni">
+            <div class="card h-100 border-0 shadow-sm review-card rounded-4 p-3">
+
+              <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                <div class="d-flex align-items-center">
+                  <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 30px; height: 30px; font-size: 0.8rem; font-weight: bold;">
+                    {{ (nomiRecensori[rec.idUtente] ? nomiRecensori[rec.idUtente].charAt(0) : 'U') | uppercase }}
+                  </div>
+                  <span class="fw-bold text-secondary small">{{ nomiRecensori[rec.idUtente] || 'Caricamento...' }}</span>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                  <div class="text-warning small"><i class="bi bi-star-fill" *ngFor="let s of [].constructor(rec.valutazione)"></i></div>
+
+                  <button *ngIf="authService.isAdmin()" class="btn btn-sm btn-outline-danger border-0 py-0 px-1" (click)="eliminaRecensioneAdmin(rec.idRecensione!)" title="Elimina come Admin">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                </div>
+              </div>
+
+              <h6 class="fw-bold text-dark">{{ rec.titolo }}</h6>
+              <p class="text-muted small mb-0">{{ rec.testo }}</p>
+            </div>
           </div>
-
-          <div class="mb-3">
-            <label class="form-label text-muted small fw-bold text-uppercase">Voto</label>
-            <select class="form-select" [(ngModel)]="nuovaRecensione.valutazione" name="valutazione">
-              <option [ngValue]="5">⭐⭐⭐⭐⭐ (5/5) - Eccellente</option>
-              <option [ngValue]="4">⭐⭐⭐⭐ (4/5) - Molto Buono</option>
-              <option [ngValue]="3">⭐⭐⭐ (3/5) - Nella media</option>
-              <option [ngValue]="2">⭐⭐ (2/5) - Scarso</option>
-              <option [ngValue]="1">⭐ (1/5) - Pessimo</option>
-            </select>
-          </div>
-
-          <div class="d-grid mt-4">
-            <button type="submit" class="btn btn-warning fw-bold" [disabled]="!reviewForm.valid">
-              Pubblica Recensione
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <div class="alert alert-secondary mt-5 text-center" *ngIf="!authService.isLoggedIn() || authService.getUser()?.ruolo !== 'ACQUIRENTE'">
-        <i class="bi bi-info-circle me-2"></i><small>Solo gli acquirenti registrati possono lasciare una recensione per l'immobile.</small>
+        </div>
       </div>
     </div>
 
     <div class="col-lg-4">
-      <div class="card shadow-sm border-0 sticky-top" style="top: 100px; z-index: 1;">
-        <div class="card-body">
-          <h5 class="text-muted text-uppercase small fw-bold">Prezzo</h5>
+      <div class="card border-0 shadow-sm p-4 mb-4 sticky-top" style="top: 100px; z-index: 10;">
 
-          <div *ngIf="immobile.prezzoAttuale < immobile.prezzoOrig">
-            <span class="text-decoration-line-through text-danger h5">€ {{ immobile.prezzoOrig | number }}</span>
-            <br>
-            <span class="h2 text-primary fw-bold">€ {{ immobile.prezzoAttuale | number }}</span>
+        <h5 class="fw-bold text-muted mb-2 text-uppercase small">{{ immobile.tipoImmobile }} in {{ immobile.tipoAnnuncio }}</h5>
+
+        <h3 class="fw-bold text-primary mb-3" *ngIf="immobile.tipoAnnuncio !== 'ASTA'">
+          € {{ immobile.prezzoAttuale | number }}
+          <small class="text-muted fs-6" *ngIf="immobile.tipoAnnuncio === 'AFFITTO'"> / mese</small>
+        </h3>
+
+        <div class="p-3 mb-4 rounded-3 border" [ngClass]="astaConclusa ? 'bg-light border-secondary' : 'bg-warning bg-opacity-10 border-warning'" *ngIf="immobile.tipoAnnuncio === 'ASTA' && astaCorrente">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="badge" [ngClass]="astaConclusa ? 'bg-secondary' : (seiInVantaggio ? 'bg-success' : 'bg-danger')">
+              <i class="bi" [ngClass]="astaConclusa ? 'bi-lock-fill' : (seiInVantaggio ? 'bi-trophy-fill' : 'bi-activity')"></i>
+              {{ astaConclusa ? 'ASTA CHIUSA' : (seiInVantaggio ? 'SEI IN VANTAGGIO' : 'ASTA IN CORSO') }}
+            </span>
+          </div>
+          <h3 class="fw-bold text-dark mb-1">€ {{ immobile.prezzoAttuale | number }}</h3>
+          <p class="small text-muted mb-3">Offerta attuale migliore</p>
+
+          <div class="bg-white p-2 rounded border d-flex justify-content-between align-items-center mb-2">
+            <span class="small fw-bold text-muted"><i class="bi bi-clock-history me-1"></i> Scadenza:</span>
+            <span class="fw-bold" [ngClass]="astaConclusa ? 'text-danger' : 'text-primary'">{{ tempoRimanenteStr }}</span>
           </div>
 
-          <div *ngIf="immobile.prezzoAttuale >= immobile.prezzoOrig">
-            <span class="h2 text-primary fw-bold">€ {{ immobile.prezzoAttuale | number }}</span>
-            <small class="text-muted" *ngIf="immobile.tipoAnnuncio === 'AFFITTO'"> / mese</small>
+          <div class="bg-white p-2 rounded border d-flex justify-content-between align-items-center">
+            <span class="small fw-bold text-muted"><i class="bi bi-arrow-up-right-circle me-1"></i> Rilancio minimo:</span>
+            <span class="fw-bold text-dark">+ € {{ rilancioMinimo | number }}</span>
           </div>
 
-          <div class="d-grid gap-2 mt-4">
-
-            <ng-container *ngIf="authService.getUser()?.email !== immobile.proprietario">
-
-              <button class="btn btn-primary btn-lg fw-bold" data-bs-toggle="modal" data-bs-target="#contactModal" *ngIf="immobile.tipoAnnuncio !== 'ASTA'">
-                Contatta Venditore
-              </button>
-
-              <button class="btn btn-warning btn-lg fw-bold text-dark" data-bs-toggle="modal" data-bs-target="#offertaModal" *ngIf="immobile.tipoAnnuncio === 'ASTA'">
-                <i class="bi bi-gavel me-2"></i>Fai un'offerta
-              </button>
-
-              <button class="btn btn-outline-danger btn-lg fw-bold" (click)="togglePreferito()" *ngIf="authService.isLoggedIn()">
-                <i class="bi me-2" [ngClass]="isPreferito() ? 'bi-heart-fill' : 'bi-heart'"></i>
-                {{ isPreferito() ? 'Salvato nei Preferiti' : 'Salva nei Preferiti' }}
-              </button>
-
-            </ng-container>
-
-            <ng-container *ngIf="authService.getUser()?.email === immobile.proprietario">
-              <button class="btn btn-secondary btn-lg fw-bold" disabled>
-                <i class="bi bi-person-badge me-2"></i> Questo è il tuo annuncio
-              </button>
-            </ng-container>
-
+          <div *ngIf="astaConclusa" class="mt-3 text-center text-success fw-bold p-2 bg-success bg-opacity-10 rounded">
+            Aggiudicato a:<br> <small>{{ astaCorrente.acquirente ? astaCorrente.acquirente : 'Nessuna offerta' }}</small>
           </div>
+        </div>
 
-          <div class="mt-3 text-center small text-muted border-top pt-3">
-            <p class="mb-0">Venduto da: <strong>{{ nomeVenditore || immobile.proprietario }}</strong></p>
+        <p class="text-muted border-bottom pb-3"><i class="bi bi-geo-alt-fill text-danger me-2"></i>{{ immobile.indirizzo }}</p>
+
+        <div class="d-flex align-items-center my-3">
+          <div class="bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3 fw-bold fs-4" style="width: 50px; height: 50px;">
+            <i class="bi bi-person"></i>
           </div>
+          <div>
+            <div class="small text-muted">Inserzionista</div>
+            <div class="fw-bold">{{ nomeVenditore || immobile.proprietario }}</div>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+          <ng-container *ngIf="authService.getUser()?.email !== immobile.proprietario">
+            <button class="btn btn-primary btn-lg fw-bold" data-bs-toggle="modal" data-bs-target="#contactModal" *ngIf="immobile.tipoAnnuncio !== 'ASTA'">Contatta Venditore</button>
+            <button class="btn btn-warning btn-lg fw-bold text-dark" data-bs-toggle="modal" data-bs-target="#offertaModal" *ngIf="immobile.tipoAnnuncio === 'ASTA'"><i class="bi bi-gavel me-2"></i>Fai un'offerta</button>
+            <button class="btn btn-outline-danger btn-lg fw-bold" (click)="togglePreferito()" *ngIf="authService.isLoggedIn()"><i class="bi me-2" [ngClass]="isPreferito() ? 'bi-heart-fill' : 'bi-heart'"></i>{{ isPreferito() ? 'Salvato nei Preferiti' : 'Salva nei Preferiti' }}</button>
+          </ng-container>
+          <ng-container *ngIf="authService.getUser()?.email === immobile.proprietario">
+            <button class="btn btn-secondary btn-lg fw-bold" disabled><i class="bi bi-person-badge me-2"></i> Questo è il tuo annuncio</button>
+          </ng-container>
         </div>
       </div>
     </div>
-
   </div>
-</div>
 
-<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 shadow-lg rounded-4">
-
-      <div class="modal-header bg-primary text-white border-0 rounded-top-4">
-        <h5 class="modal-title fw-bold" id="contactModalLabel">
-          <i class="bi bi-envelope-paper me-2"></i>Contatta il Venditore
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+        <div class="modal-header bg-primary text-white border-0 p-4">
+          <h5 class="modal-title fw-bold"><i class="bi bi-envelope-paper me-2"></i>Contatta l'inserzionista</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4 p-md-5">
+          <form (ngSubmit)="inviaMessaggio()">
+            <div class="mb-4">
+              <label class="form-label fw-bold text-muted small">Il tuo messaggio</label>
+              <textarea class="form-control bg-light border-0" rows="5" [(ngModel)]="messaggioTesto" name="messaggioTesto" placeholder="Salve, sono interessato a questo immobile e vorrei ricevere maggiori informazioni..." required></textarea>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary py-3 fw-bold fs-5" data-bs-dismiss="modal" [disabled]="!messaggioTesto.trim()">Invia Messaggio <i class="bi bi-send ms-2"></i></button>
+            </div>
+          </form>
+        </div>
       </div>
-
-      <div class="modal-body p-4">
-        <p class="text-muted small mb-4">
-          Stai per inviare un messaggio a <strong>{{ nomeVenditore || immobile?.proprietario }}</strong> per l'annuncio selezionato.
-        </p>
-
-        <form (ngSubmit)="inviaMessaggio()" #contactForm="ngForm">
-
-          <div class="mb-3">
-            <label class="form-label fw-bold text-muted small text-uppercase">Oggetto</label>
-            <input type="text" class="form-control bg-light"
-                   [value]="'Rif. ' + immobile?.idImmobile + ' - ' + immobile?.nome" readonly>
-          </div>
-
-          <div class="mb-4">
-            <label class="form-label fw-bold text-muted small text-uppercase">Il tuo messaggio</label>
-            <textarea class="form-control" rows="5" placeholder="Scrivi qui la tua richiesta..."
-                      [(ngModel)]="messaggioTesto" name="messaggioTesto" required></textarea>
-          </div>
-
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary py-2 fw-bold" [disabled]="!contactForm.valid" data-bs-dismiss="modal">
-              <i class="bi bi-send-fill me-2"></i>Invia Messaggio
-            </button>
-          </div>
-        </form>
-      </div>
-
     </div>
   </div>
-</div>
 
-<div class="modal fade" id="offertaModal" tabindex="-1" aria-labelledby="offertaModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 shadow-lg rounded-4">
+  <div class="modal fade" id="offertaModal" tabindex="-1" aria-hidden="true" *ngIf="immobile.tipoAnnuncio === 'ASTA'">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4">
 
-      <div class="modal-header bg-warning text-dark border-0 rounded-top-4">
-        <h5 class="modal-title fw-bold" id="offertaModalLabel">
-          <i class="bi bi-gavel me-2"></i>Partecipa all'Asta
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+        <div class="modal-header bg-warning border-0 p-4">
+          <h5 class="modal-title fw-bold text-dark"><i class="bi bi-gavel me-2"></i>Piazza la tua offerta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
 
-      <div class="modal-body p-4 text-center" *ngIf="astaCorrente">
-        <h6 class="text-muted text-uppercase small fw-bold mb-3">Offerta Attuale Massima</h6>
-        <h2 class="text-success fw-bold mb-4">€ {{ astaCorrente.prezzoAttuale | number }}</h2>
+        <div class="modal-body p-4 p-md-5" *ngIf="astaCorrente && !astaConclusa">
+          <p class="text-muted text-center mb-4">L'offerta attuale più alta è di <strong>€ {{ astaCorrente.prezzoAttuale | number }}</strong>. Inserisci la tua offerta per aggiudicarti l'immobile. Il rilancio minimo obbligatorio è di <strong>€ {{ rilancioMinimo | number }}</strong>.</p>
 
-        <p class="text-muted small mb-4">
-          Inserisci la tua offerta. L'importo deve essere strettamente superiore al prezzo attuale.
-        </p>
-
-        <form (ngSubmit)="inviaOfferta()" #offertaForm="ngForm">
-          <div class="mb-4 px-3 px-md-5">
-            <div class="input-group input-group-lg shadow-sm">
-              <span class="input-group-text bg-light fw-bold border-end-0">€</span>
-              <input type="number" class="form-control border-start-0 text-center fw-bold fs-4"
-                     [(ngModel)]="nuovaOfferta" name="nuovaOfferta"
-                     [min]="astaCorrente.prezzoAttuale + 1" required>
+          <form #offertaForm="ngForm" (ngSubmit)="inviaOfferta()">
+            <div class="mb-4 px-3 px-md-5">
+              <div class="input-group input-group-lg shadow-sm">
+                <span class="input-group-text bg-light fw-bold border-end-0">€</span>
+                <input type="number" class="form-control border-start-0 text-center fw-bold fs-4"
+                       [(ngModel)]="nuovaOfferta" name="nuovaOfferta"
+                       [min]="astaCorrente.prezzoAttuale + rilancioMinimo" required>
+              </div>
+              <div class="text-danger small mt-2 fw-bold text-center" *ngIf="nuovaOfferta < (astaCorrente.prezzoAttuale + rilancioMinimo)">
+                <i class="bi bi-exclamation-triangle me-1"></i>L'offerta deve essere di almeno € {{ (astaCorrente.prezzoAttuale + rilancioMinimo) | number }}
+              </div>
             </div>
 
-            <div class="text-danger small mt-2 fw-bold" *ngIf="nuovaOfferta <= astaCorrente.prezzoAttuale">
-              <i class="bi bi-exclamation-triangle me-1"></i>L'offerta deve essere maggiore di €{{ astaCorrente.prezzoAttuale }}
+            <div class="d-grid">
+              <button type="submit" class="btn btn-dark py-3 fw-bold fs-5"
+                      [disabled]="!offertaForm.valid || nuovaOfferta < (astaCorrente.prezzoAttuale + rilancioMinimo)"
+                      data-bs-dismiss="modal">
+                Conferma Offerta
+              </button>
             </div>
-          </div>
+          </form>
+        </div>
 
-          <div class="d-grid">
-            <button type="submit" class="btn btn-dark py-3 fw-bold fs-5"
-                    [disabled]="!offertaForm.valid || nuovaOfferta <= astaCorrente.prezzoAttuale"
-                    data-bs-dismiss="modal">
-              Conferma Offerta
-            </button>
-          </div>
-        </form>
+        <div class="modal-body p-5 text-center" *ngIf="astaConclusa">
+          <i class="bi bi-lock-fill text-secondary display-1 mb-3 d-block"></i>
+          <h4 class="fw-bold text-dark">Asta Terminata</h4>
+          <p class="text-muted">Il tempo per effettuare offerte su questo immobile è scaduto.</p>
+          <button type="button" class="btn btn-outline-secondary px-4 mt-2" data-bs-dismiss="modal">Chiudi</button>
+        </div>
+
       </div>
-
-      <div class="modal-body p-5 text-center" *ngIf="!astaCorrente">
-        <i class="bi bi-exclamation-circle text-danger display-1 mb-3 d-block"></i>
-        <h5 class="fw-bold">Asta non configurata</h5>
-        <p class="text-muted mb-0">L'amministratore o il venditore non hanno ancora inizializzato i dati dell'asta nel database per questo immobile.</p>
-      </div>
-
     </div>
   </div>
 </div>

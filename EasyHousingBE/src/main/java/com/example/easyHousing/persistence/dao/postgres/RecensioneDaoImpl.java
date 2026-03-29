@@ -123,33 +123,35 @@ public class RecensioneDaoImpl implements RecensioneDao {
 
     @Override
     public void save(Recensione recensione) {
-        // CORREZIONE: Rimossa "idRecensione" dalla query.
-        // Essendo auto-increment, Postgres lo calcolerà da solo.
-        String query = "INSERT INTO recensione (titolo, valutazione, \"idUtente\", \"idImmobile\") VALUES (?, ?, ?, ?)";
+        // Aggiunto 'testo' nella query
+        String query = "INSERT INTO recensione (titolo, testo, valutazione, \"idUtente\", \"idImmobile\") VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
-            // Ricalcoliamo gli indici dei parametri (ora sono solo 4)
+
             statement.setString(1, recensione.getTitolo());
-            statement.setInt(2, recensione.getValutazione());
-            statement.setInt(3, recensione.getIdUtente());
-            statement.setInt(4, recensione.getIdImmobile());
+            statement.setString(2, recensione.getTesto()); // <--- SALVA IL TESTO
+            statement.setInt(3, recensione.getValutazione());
+            statement.setInt(4, recensione.getIdUtente());
+            statement.setInt(5, recensione.getIdImmobile());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-
     @Override
     public void update(Recensione recensione) {
-        String query = "UPDATE recensione SET titolo = ?, valutazione = ?, \"idUtente\" = ?, \"idImmobile\" = ? WHERE \"idRecensione\" = ?";
+        // Aggiunto 'testo' nella query
+        String query = "UPDATE recensione SET titolo = ?, testo = ?, valutazione = ?, \"idUtente\" = ?, \"idImmobile\" = ? WHERE \"idRecensione\" = ?";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
+
             statement.setString(1, recensione.getTitolo());
-            statement.setInt(2, recensione.getValutazione());
-            statement.setInt(3, recensione.getIdUtente());
-            statement.setInt(4, recensione.getIdImmobile());
-            statement.setInt(5, recensione.getIdRecensione());
+            statement.setString(2, recensione.getTesto()); // <--- AGGIORNA IL TESTO
+            statement.setInt(3, recensione.getValutazione());
+            statement.setInt(4, recensione.getIdUtente());
+            statement.setInt(5, recensione.getIdImmobile());
+            statement.setInt(6, recensione.getIdRecensione());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -172,9 +174,11 @@ public class RecensioneDaoImpl implements RecensioneDao {
         Recensione recensione = new Recensione();
         recensione.setIdRecensione(resultSet.getInt("idRecensione"));
         recensione.setTitolo(resultSet.getString("titolo"));
+
+        // ESTRAE IL TESTO DAL DATABASE
+        recensione.setTesto(resultSet.getString("testo"));
+
         recensione.setValutazione(resultSet.getInt("valutazione"));
-        // Attenzione: se getAutore è stringa ma la colonna è idUtente (intero), qui potresti avere problemi di tipo.
-        // Se la colonna contiene un intero, fai resultSet.getString("idUtente")
         recensione.setIdUtente(resultSet.getInt("idUtente"));
         recensione.setIdImmobile(resultSet.getInt("idImmobile"));
         return recensione;

@@ -13,6 +13,7 @@ public class Recensione {
 
     private Integer idRecensione;
     private String titolo;
+    private String testo;
     private Integer valutazione;
     private Integer idUtente;
     private Integer idImmobile;
