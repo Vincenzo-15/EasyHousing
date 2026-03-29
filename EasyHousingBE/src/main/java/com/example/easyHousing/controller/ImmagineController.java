@@ -62,7 +62,6 @@ public class ImmagineController {
         immagineService.creaImmagine(imgObj);
     }
 
-    // CORREZIONE DELETE per ID
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Integer id) throws RecordNotFoundException  {
         Immagine immagine = new Immagine();

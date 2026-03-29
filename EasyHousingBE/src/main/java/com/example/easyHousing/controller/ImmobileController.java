@@ -56,19 +56,16 @@ public class ImmobileController {
         return immobileService.getImmobiliOrderByPrezzoDesc();
     }
 
-    // CORREZIONE: Rimosso {immobile} dall'URL
     @PostMapping("/save")
     public void save(@RequestBody Immobile immobile) throws RecordNotFoundException {
         immobileService.creaImmobile(immobile);
     }
 
-    // CORREZIONE: Rimosso {immobile} dall'URL
     @PutMapping("/update")
     public void update(@RequestBody Immobile immobile) throws RecordNotFoundException {
         immobileService.aggiornaImmobile(immobile);
     }
 
-    // CORREZIONE: Si passa l'ID, poi creiamo l'oggetto per il DAO
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Integer id) throws RecordNotFoundException {
         Immobile immobile = new Immobile();

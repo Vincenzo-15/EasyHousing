@@ -5,10 +5,9 @@ import { Immobile } from '../models/immobile.model';
 
 @Injectable({
   providedIn: 'root'
-}) // <--- RIMOSSO IL PUNTO E VIRGOLA QUI
+})
 export class ImmobileService {
 
-  // URL del tuo backend Spring Boot
   private apiUrl = 'http://localhost:8080/api/immobili';
 
   constructor(private http: HttpClient) { }
@@ -36,12 +35,9 @@ export class ImmobileService {
   }
 
   deleteImmobile(id: number): Observable<void> {
-    // Corretto l'URL: il Controller si aspetta /delete/{id}
-    // Passiamo direttamente l'id invece dell'oggetto intero
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 
-  // Aggiungi questo in immobile.service.ts
   updateImmobile(immobile: Immobile): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/update`, immobile);
   }

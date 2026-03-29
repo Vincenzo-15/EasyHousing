@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Immobile } from '../models/immobile.model';
-import { AuthService } from './auth.service'; // <--- IMPORTANTE
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'

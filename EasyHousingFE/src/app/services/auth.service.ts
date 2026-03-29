@@ -8,7 +8,7 @@ import { Utente } from '../models/utente.model';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8080/api/login'; // L'endpoint del tuo Controller
+  private apiUrl = 'http://localhost:8080/api/login';
 
   // BehaviorSubject: Mantiene lo stato dell'utente anche se cambi pagina
   private userSubject = new BehaviorSubject<Utente | null>(this.getUserFromStorage());

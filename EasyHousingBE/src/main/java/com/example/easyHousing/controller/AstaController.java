@@ -26,13 +26,11 @@ public class AstaController {
         return astaService.getAstaByImmobile(idImmobile);
     }
 
-    // CORREZIONE: Aggiunto lo slash iniziale "/" che mancava
     @GetMapping("/findByIdAsta/{idAsta}")
     public Asta findByIdAsta(@PathVariable Integer idAsta) throws RecordNotFoundException {
         return astaService.getAstaById(idAsta);
     }
 
-    // CORREZIONE: Rimosso la doppia 'a' in 'acquirente'
     @GetMapping("/findByAcquirente/{acquirente}")
     public List<Asta> findByAcquirente(@PathVariable String acquirente) throws RecordNotFoundException {
         return astaService.getAsteByAcquirente(acquirente);
@@ -43,19 +41,16 @@ public class AstaController {
         return astaService.getAsteByPrezzoOrig(prezzoOrig);
     }
 
-    // CORREZIONE POST
     @PostMapping("/save")
     public void save(@RequestBody Asta asta) throws RecordNotFoundException {
         astaService.creaAsta(asta);
     }
 
-    // CORREZIONE PUT
     @PutMapping("/update")
     public void update(@RequestBody Asta asta) throws RecordNotFoundException {
         astaService.aggiornaAsta(asta);
     }
 
-    // CORREZIONE DELETE per ID
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Integer id) throws RecordNotFoundException {
         Asta asta = new Asta();
