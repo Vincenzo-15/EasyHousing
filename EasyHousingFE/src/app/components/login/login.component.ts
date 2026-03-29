@@ -36,4 +36,15 @@ export class LoginComponent {
       }
     });
   }
+
+  recuperaPassword() {
+    // Chiediamo all'utente di inserire l'email
+    const emailInserita = window.prompt("Inserisci l'indirizzo email associato al tuo account per recuperare la password:");
+
+    // Se l'utente ha inserito qualcosa e ha premuto OK
+    if (emailInserita && emailInserita.trim() !== '') {
+      // Fingiamo un caricamento e poi diamo il messaggio di successo
+      alert(`✅ Ottimo! Abbiamo inviato un link di recupero all'indirizzo:\n${emailInserita}`);
+    }
+  }
 }

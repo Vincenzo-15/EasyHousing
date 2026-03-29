@@ -145,6 +145,14 @@ export class ImmobileDetailComponent implements OnInit {
   inviaMessaggio() {
     if (!this.immobile) return;
 
+    const utenteCorrente = this.authService.getUser();
+
+    // --- NUOVO CONTROLLO DI SICUREZZA ---
+    if (utenteCorrente && utenteCorrente.email === this.immobile.proprietario) {
+      alert("Operazione non valida: non puoi inviare un messaggio a te stesso.");
+      return;
+    }
+
     const oggetto = `Rif. ${this.immobile.idImmobile} - ${this.immobile.nome}`;
 
     console.log("--- SIMULAZIONE INVIO EMAIL ---");

@@ -231,18 +231,28 @@
 
           <div class="d-grid gap-2 mt-4">
 
-            <button class="btn btn-primary btn-lg fw-bold" data-bs-toggle="modal" data-bs-target="#contactModal" *ngIf="immobile.tipoAnnuncio !== 'ASTA'">
-              Contatta Venditore
-            </button>
+            <ng-container *ngIf="authService.getUser()?.email !== immobile.proprietario">
 
-            <button class="btn btn-warning btn-lg fw-bold text-dark" data-bs-toggle="modal" data-bs-target="#offertaModal" *ngIf="immobile.tipoAnnuncio === 'ASTA'">
-              <i class="bi bi-gavel me-2"></i>Fai un'offerta
-            </button>
+              <button class="btn btn-primary btn-lg fw-bold" data-bs-toggle="modal" data-bs-target="#contactModal" *ngIf="immobile.tipoAnnuncio !== 'ASTA'">
+                Contatta Venditore
+              </button>
 
-            <button class="btn btn-outline-danger btn-lg fw-bold" (click)="togglePreferito()" *ngIf="authService.isLoggedIn()">
-              <i class="bi me-2" [ngClass]="isPreferito() ? 'bi-heart-fill' : 'bi-heart'"></i>
-              {{ isPreferito() ? 'Salvato nei Preferiti' : 'Salva nei Preferiti' }}
-            </button>
+              <button class="btn btn-warning btn-lg fw-bold text-dark" data-bs-toggle="modal" data-bs-target="#offertaModal" *ngIf="immobile.tipoAnnuncio === 'ASTA'">
+                <i class="bi bi-gavel me-2"></i>Fai un'offerta
+              </button>
+
+              <button class="btn btn-outline-danger btn-lg fw-bold" (click)="togglePreferito()" *ngIf="authService.isLoggedIn()">
+                <i class="bi me-2" [ngClass]="isPreferito() ? 'bi-heart-fill' : 'bi-heart'"></i>
+                {{ isPreferito() ? 'Salvato nei Preferiti' : 'Salva nei Preferiti' }}
+              </button>
+
+            </ng-container>
+
+            <ng-container *ngIf="authService.getUser()?.email === immobile.proprietario">
+              <button class="btn btn-secondary btn-lg fw-bold" disabled>
+                <i class="bi bi-person-badge me-2"></i> Questo è il tuo annuncio
+              </button>
+            </ng-container>
 
           </div>
 

@@ -70,7 +70,17 @@
                 <div>
                   <h6 class="fw-bold text-danger mb-1">Email non verificata</h6>
                   <p class="text-danger opacity-75 small mb-3">Finché non verificherai l'email continuerai a ricevere comunicazioni nella casella: <strong>{{ utenteCorrente.email }}</strong></p>
-                  <button class="btn btn-danger btn-sm fw-bold px-3">VERIFICA EMAIL</button>
+                  <button class="btn btn-sm fw-bold px-3 transition-hover"
+                          [ngClass]="emailVerificata ? 'btn-success' : 'btn-danger'"
+                          (click)="inviaEmailVerifica()"
+                          [disabled]="verificaInCorso || emailVerificata">
+
+                    <span *ngIf="!verificaInCorso && !emailVerificata">VERIFICA EMAIL</span>
+
+                    <span *ngIf="verificaInCorso"><i class="spinner-border spinner-border-sm me-2"></i>Invio in corso...</span>
+
+                    <span *ngIf="emailVerificata"><i class="bi bi-check-circle-fill me-2"></i>Email Inviata!</span>
+                  </button>
                 </div>
               </div>
             </div>

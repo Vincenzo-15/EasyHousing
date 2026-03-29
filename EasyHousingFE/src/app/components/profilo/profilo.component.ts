@@ -24,6 +24,10 @@ export class ProfiloComponent implements OnInit {
   vecchiaPassword = '';
   nuovaPassword = '';
 
+  verificaInCorso = false;
+  emailVerificata = false;
+
+
   constructor(
     public authService: AuthService,
     private utenteService: UtenteService, // <-- Iniettato qui
@@ -119,5 +123,16 @@ export class ProfiloComponent implements OnInit {
   doLogout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  inviaEmailVerifica() {
+    this.verificaInCorso = true; // Fa comparire la rotellina
+
+    // Simuliamo un'attesa di rete di 1.5 secondi
+    setTimeout(() => {
+      this.verificaInCorso = false;
+      this.emailVerificata = true; // Cambia il bottone in "Inviata"
+      alert(`✅ Ti abbiamo appena inviato un link di verifica all'indirizzo:\n${this.utenteCorrente?.email}`);
+    }, 1500);
   }
 }
