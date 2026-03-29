@@ -29,7 +29,11 @@
         <h5 class="fw-bold mb-3">Privati</h5>
         <ul class="list-unstyled d-flex flex-column gap-2">
           <li><a href="javascript:void(0)" (click)="mostraAvviso($event)" class="text-white text-decoration-none footer-link">Assistenza</a></li>
-          <li><a routerLink="/inserisci-annuncio" class="text-white text-decoration-none footer-link">Pubblica un annuncio</a></li>
+
+          <li *ngIf="authService.isVenditore()">
+            <a routerLink="/inserisci-annuncio" class="text-white text-decoration-none footer-link">Pubblica un annuncio</a>
+          </li>
+
           <li><a routerLink="/valuta-casa" class="text-white text-decoration-none footer-link">Valuta casa</a></li>
           <li><a routerLink="/prezzi-immobili" class="text-white text-decoration-none footer-link">Prezzi immobili</a></li>
           <li><a href="javascript:void(0)" (click)="mostraAvviso($event)" class="text-white text-decoration-none footer-link">Mutui</a></li>

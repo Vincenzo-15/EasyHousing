@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-footer',
@@ -11,6 +12,8 @@ import { RouterModule } from '@angular/router';
 })
 export class FooterComponent {
   annoCorrente = new Date().getFullYear();
+
+  constructor(public authService: AuthService) {}
 
   mostraAvviso(event: Event) {
     event.preventDefault(); // Blocca lo scatto della pagina verso l'alto
